@@ -1,2 +1,20 @@
-<!--pages/play/play.wxml-->
-<text>pages/play/play.wxml</text>
+<view class="fill-width flex-column">
+    <navbar title=""></navbar>
+
+    <view class="flex-row align-items-center space-between box-sizing-border-box" style="padding: 0 65rpx;">
+        <image src="" class="play-top-action"></image>
+        <image src="" class="play-top-action"></image>
+    </view>
+
+    <view style="position: relative;align-self: center;">
+        <view class="flex-column align-items-center justify-center play-music-center-layout">
+            <view class="play-music-name">入睡催眠</view>
+            <view class="flex-row align-items-center">
+                <image src="" class="play-music-duration-icon"></image>
+                <view class="play-music-duration-time">入睡催眠</view>
+            </view>
+        </view>
+        <view></view>
+    </view>
+
+</view>

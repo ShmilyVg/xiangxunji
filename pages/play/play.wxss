@@ -1,1 +1,37 @@
-/* pages/play/play.wxss */
+.play-top-action{
+    width: 62rpx;
+    height: 62rpx;
+    background-color: white;
+}
+
+.play-music-center-layout{
+    width:430rpx;
+    height:430rpx;
+    border:2rpx solid rgba(255,255,255,1);
+    opacity:0.8;
+    border-radius:50%;
+    margin-top: 85rpx;
+}
+
+.play-music-name{
+    font-size:50rpx;
+    font-family:PingFang SC;
+    font-weight:400;
+    color:rgba(255,255,255,1);
+    line-height:28rpx;
+    margin-bottom: 35rpx;
+}
+
+.play-music-duration-icon{
+    width: 10rpx;
+    height: 10rpx;
+}
+
+.play-music-duration-time{
+    font-size:28rpx;
+    font-family:PingFang SC;
+    font-weight:400;
+    color:rgba(255,255,255,1);
+    line-height:28rpx;
+    opacity:0.5;
+}

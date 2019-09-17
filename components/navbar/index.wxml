@@ -6,5 +6,8 @@
         <view class="navbar-back-button common-position" bindtap="navBack" wx:if="{{showBack}}">
             <image src="./back.png" class="navbar-back-image"></image>
         </view>
+        <view class="navbar-back-button common-position" bindtap="navCustomBack" wx:elif="{{showCustomBack}}">
+            <image src="./back.png" class="navbar-back-image"></image>
+        </view>
     </view>
 </view>

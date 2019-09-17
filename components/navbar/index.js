@@ -13,20 +13,12 @@ Component({
             type: String,
             value: ''
         },
-        showNav: {
-            type: Boolean,
-            value: true
-        },
-        showBack: {
-            type: Boolean,
-            value: true
-        }
     },
 
     /**
      * 组件的初始数据
      */
-    data: {},
+    data: {showBack: false, showCustomBack: false},
     lifetimes: {
         attached: function () {
             const currentPages = getCurrentPages();
@@ -47,5 +39,8 @@ Component({
                 delta: 1
             });
         },
+        navCustomBack() {
+            this.triggerEvent('onBack');
+        }
     }
 })

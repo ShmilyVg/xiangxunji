@@ -1,4 +1,3 @@
-<!--index.wxml-->
 <view class="fill-width flex-column">
     <navbar title="HiPee香薰助眠仪"></navbar>
 
@@ -10,7 +9,7 @@
         <image src="" class="index-user-head"></image>
     </view>
 
-    <image src="" class="index-bg-line"></image>
+    <image src="../../images/index/wave.png" class="index-bg-line"></image>
 
 
     <view class="flex-row box-sizing-border-box space-between align-items-center index-part-title-layout">

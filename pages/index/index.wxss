@@ -30,8 +30,7 @@
 
 .index-bg-line{
     width: 100%;
-    height: 52rpx;
-    background-color: white;
+    height: 60rpx;
 }
 
 .flex-row.index-part-title-layout{

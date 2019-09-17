@@ -1,6 +1,5 @@
 {
   "backgroundColor": "rgb(23,53,105)",
-  "navigationBarTitleText": "HiPee香薰助眠仪",
   "usingComponents": {
     "navbar": "/components/navbar/index"
   }

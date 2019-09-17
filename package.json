@@ -1,0 +1,8 @@
+{
+  "name": "xiangxunji",
+  "version": "1.0.0",
+  "dependencies": {},
+  "devDependencies": {
+    "wechat-mini-programs-apis": "^1.6.2"
+  }
+}

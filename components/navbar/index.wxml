@@ -1,0 +1,10 @@
+<!--components/navbar/index.wxml-->
+<view class="navbar" style='height:{{navH}}px'>
+    <view class="navbar" style="position: fixed;height:{{navH}}px;">
+        <view class='navbar-title common-position'>{{title||''}}</view>
+
+        <view class="navbar-back-button common-position" bindtap="navBack" wx:if="{{showBack}}">
+            <image src="./back.png" class="navbar-back-image"></image>
+        </view>
+    </view>
+</view>

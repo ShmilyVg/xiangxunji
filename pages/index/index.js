@@ -4,7 +4,8 @@ const app = getApp();
 
 Page({
     data: {
-        pageName:''
+        habits: [{},{},{}],
+        minds:[{},{},{},]
     },
     //事件处理函数
     bindViewTap() {

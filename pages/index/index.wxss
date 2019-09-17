@@ -1,21 +1,148 @@
-/**index.wxss**/
-.userinfo {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.user-layout{
+    padding: 57rpx 33rpx 60rpx 43rpx;
 }
 
-.userinfo-avatar {
-  width: 128rpx;
-  height: 128rpx;
-  margin: 20rpx;
-  border-radius: 50%;
+.index-title {
+    font-size:50rpx;
+    font-family:PingFang SC;
+    font-weight:bold;
+    color:rgba(184,175,214,1);
+    line-height:28rpx;
+    margin-bottom: 26rpx;
+    margin-bottom: 26rpx;
 }
 
-.userinfo-nickname {
-  color: #aaa;
+.index-subtitle {
+    font-size:28rpx;
+    font-family:PingFang SC;
+    font-weight:400;
+    color:rgba(118,109,148,1);
+    line-height:28rpx;
 }
 
-.usermotto {
-  margin-top: 200px;
+.index-user-head{
+    width: 117rpx;
+    height: 117rpx;
+    background-color: #fff;
+    border: 12rpx solid rgba(51,42,80,1);
+    border-radius: 50%;
+}
+
+.index-bg-line{
+    width: 100%;
+    height: 52rpx;
+    background-color: white;
+}
+
+.flex-row.index-part-title-layout{
+    margin-top: 61rpx;
+    margin-bottom: 42rpx;
+    padding: 0 41rpx;
+}
+
+.index-part-title{
+    font-size:38rpx;
+    font-family:PingFang SC;
+    font-weight:bold;
+    color:rgba(184,175,214,1);
+    line-height:28rpx;
+}
+
+
+.index-part-subtitle{
+    font-size:26rpx;
+    font-family:PingFang SC;
+    font-weight:400;
+    color:rgba(127,116,207,1);
+    line-height:28rpx;
+}
+
+.index-habit-layout{
+    height: 160rpx;
+    white-space: nowrap;
+}
+.index-habit-item-layout{
+    height: 100%;
+    padding: 30rpx 22rpx;
+    background:rgba(47,41,76,1);
+    border-radius:20rpx;
+    margin-left: 30rpx;
+}
+
+.index-habit-item-img{
+    width: 100rpx;
+    height: 100rpx;
+    border-radius: 50%;
+    background-color: white;
+}
+
+.index-habit-item-title{
+    font-size:30rpx;
+    font-family:PingFang SC;
+    font-weight:500;
+    color:rgba(184,175,214,1);
+    line-height:28rpx;
+    margin-left: 20rpx;
+}
+
+.index-habit-item-line{
+    width:2rpx;
+    height:91rpx;
+    border-left:2rpx dashed rgba(91,84,127,1);
+    margin-left: 30rpx;
+    margin-right: 20rpx;
+}
+
+.index-habit-item-heart{
+    width:44rpx;
+    height:38rpx;
+    background-color: white;
+}
+
+.index-content-super-layout{
+    flex-wrap: wrap;
+    padding: 0 30rpx;
+}
+
+.index-content-layout{
+    flex-grow: 1;
+    margin-bottom: 42rpx;
+}
+view.index-content-layout:nth-child(odd){
+    margin-right: 42rpx;
+}
+.index-content-img{
+    width:324rpx;
+    height:180rpx;
+    border-radius:20rpx;
+    background-color: white;
+}
+
+.index-content-title{
+    font-size:34rpx;
+    font-family:PingFang SC;
+    font-weight:500;
+    color:rgba(184,175,214,1);
+    line-height:28rpx;
+    margin-top: 31rpx;
+    margin-bottom: 15rpx;
+}
+
+.index-content-subtitle{
+    font-size:24rpx;
+    font-family:PingFang SC;
+    font-weight:400;
+    color:rgba(118,109,148,1);
+    line-height:28rpx;
+}
+
+.index-bottom-text{
+    font-size:24rpx;
+    font-family:PingFang SC;
+    font-weight:400;
+    color:rgba(90,82,116,1);
+    line-height:28rpx;
+    margin-top: 26rpx;
+    margin-bottom: 70rpx;
+    align-self: center;
 }

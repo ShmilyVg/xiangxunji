@@ -1,0 +1,13 @@
+<view class="fill-width flex-column align-items-center">
+    <navbar title=""></navbar>
+
+    <view class="connect-device-title">{{stateObj.title}}</view>
+    <view wx:if="{{stateObj.subtitle}}" class="connect-device-subtitle">{{stateObj.subtitle}}</view>
+
+
+    <view  class="fill-width fixed bottom flex-column align-items-center">
+        <image src="../../images/connect-device/{{stateObj.img}}.png" class="connect-device-img"></image>
+        <button wx:if="{{stateObj.buttonText}}" class="button-radius">{{stateObj.buttonText}}</button>
+        <view wx:else class="button-radius" style="background-color: transparent;"></view>
+    </view>
+</view>

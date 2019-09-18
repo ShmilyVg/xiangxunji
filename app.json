@@ -2,7 +2,9 @@
   "pages": [
     "pages/index/index",
     "pages/play/play",
-    "pages/setting/setting"
+    "pages/setting/setting",
+    "pages/user-center/user-center",
+    "pages/connect-device/connect-device"
   ],
   "window": {
     "backgroundTextStyle": "light",

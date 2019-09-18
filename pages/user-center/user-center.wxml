@@ -1,2 +1,71 @@
-<!--pages/user-center/user-center.wxml-->
-<text>pages/user-center/user-center.wxml</text>
+<view class="fill-width fill-height absolute flex-column align-items-center user-center-bg">
+    <navbar title="个人中心"></navbar>
+
+    <view class="flex-row align-items-center" style="margin-left: 40rpx;margin-top: 45rpx;margin-bottom: 42rpx;align-self: flex-start;">
+        <image src="../../images/user-center/default.png" class="user-center-head"></image>
+        <view class="user-center-name">陆小贱Lucy</view>
+    </view>
+
+    <view class="flex-row align-items-center space-between box-sizing-border-box user-center-data-layout">
+        <view class="flex-column align-items-center flex-sub user-center-data-item-layout">
+            <view class="flex-row user-center-num-layout">
+                <view class="user-center-large-num">14</view>
+                <view class="user-center-small-text">天</view>
+            </view>
+            <view class="user-center-middle-text">累计天数</view>
+        </view>
+        <view class="flex-column align-items-center flex-sub user-center-data-item-layout">
+            <view class="flex-row user-center-num-layout">
+                <view class="user-center-large-num">0</view>
+                <view class="user-center-small-text">时</view>
+                <view class="user-center-large-num" style="margin-left: 7rpx">53</view>
+                <view class="user-center-small-text">分</view>
+            </view>
+            <view class="user-center-middle-text">累计时长</view>
+        </view>
+        <view class="flex-column align-items-center flex-sub user-center-data-item-layout">
+            <view class="flex-row user-center-num-layout">
+                <view class="user-center-large-num">26</view>
+                <view class="user-center-small-text">次</view>
+            </view>
+            <view class="user-center-middle-text">共使用</view>
+        </view>
+    </view>
+
+
+    <view class="flex-row align-items-center" style="align-self: flex-start;">
+        <image src="../../images/user-center/device.png" class="user-center-icon"></image>
+        <view class="user-center-icon-text">我的设备</view>
+    </view>
+
+
+    <view class="flex-row align-items-center space-between box-sizing-border-box user-center-my-device-layout">
+        <view class="flex-row align-items-center">
+            <image class="user-center-my-device-icon" src="../../images/user-center/my_device.png"></image>
+            <view class="flex-column">
+                <view class="user-center-my-device-name">HiPee香薰助眠仪</view>
+                <view class="user-center-my-device-connect-status">蓝牙已连接</view>
+            </view>
+        </view>
+        <view class="user-center-my-device-setting-layout">
+            <image src="../../images/user-center/setting.png" class="user-center-my-device-setting-img"></image>
+        </view>
+    </view>
+
+    <view bindtap="addDeviceEvent" class="flex-column align-items-center justify-center box-sizing-border-box user-center-add-device-layout">
+        <image src="../../images/user-center/add_device.png" class="user-center-add-device-icon"></image>
+        <view class="user-center-add-device-content">添加智能设备</view>
+    </view>
+    <view class="fill-width flex-row align-items-center space-between" style="align-self: flex-start;padding: 30rpx 0;margin-top: 44rpx;">
+        <view class="flex-row align-items-center">
+            <image src="../../images/user-center/feedback.png" class="user-center-icon"></image>
+            <view class="user-center-icon-text">意见反馈</view>
+        </view>
+        <image src="../../images/user-center/arrow.png" style="width: 14rpx;height: 32rpx;margin-right: 67rpx;"></image>
+    </view>
+
+
+    <view class="flex-row flex-sub">
+        <view class="user-center-software-version">版本号 v0.1.0</view>
+    </view>
+</view>

@@ -1,3 +1,18 @@
 <view class="fill-width flex-column">
-    <navbar></navbar>
+    <navbar title="自定义设置"></navbar>
+
+    <view class="fill-width flex-column align-items-center box-sizing-border-box setting-part-layout" style="margin-top: 40rpx; ">
+        <view class="setting-title">灯光颜色</view>
+        <view class=""></view>
+
+
+        <view class="flex-row align-items-center">
+            <image src="../../images/setting/dark.png" class="setting-light-icon"></image>
+            <slider activeColor="#9485FF" backgroundColor="#403B5F" block-size="12"
+                    block-color="#9485FF" bindchange="onLightChanged" class="setting-light-slider"></slider>
+            <image src="../../images/setting/light.png" class="setting-light-icon"></image>
+        </view>
+
+        <view ></view>
+    </view>
 </view>

@@ -1,1 +1,23 @@
-/* pages/setting/setting.wxss */
+.setting-part-layout{
+    padding: 0 32rpx;
+}
+
+.setting-title{
+    font-size:38rpx;
+    font-family:PingFang SC;
+    font-weight:bold;
+    color:rgba(184,175,214,1);
+    line-height:28rpx;
+    margin-top: 58rpx;
+    margin-bottom: 48rpx;
+    align-self: flex-start;
+}
+
+.setting-light-icon{
+    width: 40rpx;
+    height: 40rpx;
+}
+
+.setting-light-slider{
+    width: 550rpx;
+}

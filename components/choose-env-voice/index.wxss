@@ -1,0 +1,39 @@
+.play-bottom-dialog-layout{
+    position: fixed;
+    z-index: 100;
+    left: 0;
+    top: 0;
+    background-color: rgba(0,0,0,0.6);
+    align-items: flex-end;
+}
+
+.play-bottom-dialog{
+    background-color: white;
+    border-radius: 80rpx 80rpx 0 0;
+    padding: 60rpx 0 78rpx;
+}
+
+.play-bottom-dialog-title{
+    font-size:32rpx;
+    font-family:PingFang SC;
+    font-weight:500;
+    color:rgba(83,80,104,1);
+    line-height:28rpx;
+    margin-bottom: 45rpx;
+}
+
+.play-bottom-dialog-item-icon{
+    width:140rpx;
+    height:140rpx;
+    border-radius:50%;
+    background-color: bisque;
+}
+
+.play-bottom-dialog-item-content{
+    font-size:26rpx;
+    font-family:PingFang SC;
+    font-weight:500;
+    color:rgba(83,80,104,1);
+    line-height:28rpx;
+    margin-top: 20rpx;
+}

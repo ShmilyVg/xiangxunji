@@ -1,0 +1,3 @@
+<view class="fill-width flex-column">
+    <navbar></navbar>
+</view>

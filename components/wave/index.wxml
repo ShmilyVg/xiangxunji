@@ -1,0 +1,14 @@
+<view class="fill-width flex-column align-items-center absolute" style="left: 0;bottom: 0;">
+    <view class="flex-row align-items-center" style="margin-bottom: 32rpx;">
+        <image class="play-pause-icon" src="../../images/play/stop.png"></image>
+    </view>
+
+    <view class="fill-width flex-row justify-center align-items-center" style="overflow: hidden;height: 180rpx;">
+        <view class="wave-common absolute wave-01"></view>
+        <view class="wave-common absolute wave-02"></view>
+        <view class="wave-common absolute wave-03"></view>
+        <view class="wave-common absolute wave-04"></view>
+        <!--        <view class="wave-common absolute wave-05"></view>-->
+    </view>
+</view>
+

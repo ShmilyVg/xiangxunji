@@ -1,16 +1,17 @@
-.play-top-action{
-    width: 62rpx;
-    height: 62rpx;
-    background-color: white;
-}
-
-.play-music-center-layout{
+.play-music-center-super-layout{
     width:430rpx;
     height:430rpx;
+    position: relative;
+    align-self: center;
+    margin-top: 85rpx;
+    margin-bottom: 77rpx;
+}
+.play-music-center-layout{
+    width: 100%;
+    height: 100%;
     border:2rpx solid rgba(255,255,255,1);
     opacity:0.8;
     border-radius:50%;
-    margin-top: 85rpx;
 }
 
 .play-music-name{
@@ -23,8 +24,9 @@
 }
 
 .play-music-duration-icon{
-    width: 10rpx;
-    height: 10rpx;
+    width: 18rpx;
+    height: 22rpx;
+    margin-right: 10rpx;
 }
 
 .play-music-duration-time{
@@ -35,3 +37,43 @@
     line-height:28rpx;
     opacity:0.5;
 }
+
+.play-point{
+    width: 24rpx;
+    height: 24rpx;
+    left: calc(65.5rpx - 24rpx / 2);
+    top: calc(65.5rpx - 24rpx / 2);
+    background:rgba(255,255,255,1);
+    box-shadow:0 0 18rpx 2rpx rgba(255,255,255,1);
+    border-radius: 50%;
+    transform-origin: calc(215rpx - 24rpx * 2 - 4rpx) calc(215rpx - 24rpx * 2 - 4rpx);
+    animation: play-point 10s linear infinite;
+
+}
+
+@keyframes play-point {
+    100% {transform:  rotate(360deg)}
+}
+
+.play-left-icon{
+    width: 34rpx;
+    height: 21rpx;
+}
+
+.play-left-swipe{
+    font-size:28rpx;
+    font-family:PingFang SC;
+    font-weight:400;
+    color:rgba(255,255,255,1);
+    line-height:28rpx;
+    opacity:0.6;
+    margin: 0 10rpx;
+}
+
+.play-pause-icon{
+    width: 120rpx;
+    height: 120rpx;
+}
+
+
+

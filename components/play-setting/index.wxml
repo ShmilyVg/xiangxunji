@@ -1,0 +1,23 @@
+<image src="../../images/play/setting.png" class="play-top-action" bindtap="_showFun"></image>
+
+<view wx:if="{{show}}" class="fill-width fill-height flex-row justify-center play-setting-dialog-fixed-layout" bindtap="_hideFun">
+    <view class="flex-column box-sizing-border-box play-setting-dialog-layout" catchtap="_doNothing">
+        <view class="flex-row space-between align-items-center play-setting-dialog-item">
+            <view class="play-setting-dialog-item-title">灯光开关</view>
+            <image src="./images/switch_close.png" class="play-setting-dialog-switch"></image>
+        </view>
+        <view class="play-setting-dialog-line"></view>
+
+
+        <view class="flex-row space-between align-items-center play-setting-dialog-item">
+            <view class="play-setting-dialog-item-title">喷雾开关</view>
+            <image src="./images/switch_close.png" class="play-setting-dialog-switch"></image>
+        </view>
+        <view class="play-setting-dialog-line"></view>
+
+        <view class="flex-row space-between align-items-center play-setting-dialog-item" bindtap="_toMoreSettingPage">
+            <view class="play-setting-dialog-item-title">更多设置</view>
+            <image src="./images/arrow.png" class="play-setting-dialog-arrow"></image>
+        </view>
+    </view>
+</view>

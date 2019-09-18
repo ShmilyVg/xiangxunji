@@ -1,20 +1,27 @@
-<view class="fill-width flex-column">
+<view class="fill-width flex-column align-items-center">
     <navbar title=""></navbar>
 
-    <view class="flex-row align-items-center space-between box-sizing-border-box" style="padding: 0 65rpx;">
-        <image src="" class="play-top-action"></image>
-        <image src="" class="play-top-action"></image>
+    <view class="fill-width flex-row align-items-center space-between box-sizing-border-box" style="padding: 48rpx 65rpx 0;">
+        <env-choose env-voices="{{envVoices}}" bind:onChooseEnvVoiceItem="onChooseEnvVoiceItem"></env-choose>
+        <play-setting></play-setting>
     </view>
 
-    <view style="position: relative;align-self: center;">
+    <view class="play-music-center-super-layout">
         <view class="flex-column align-items-center justify-center play-music-center-layout">
             <view class="play-music-name">入睡催眠</view>
             <view class="flex-row align-items-center">
-                <image src="" class="play-music-duration-icon"></image>
-                <view class="play-music-duration-time">入睡催眠</view>
+                <image src="../../images/play/time.png" class="play-music-duration-icon"></image>
+                <view class="play-music-duration-time">09:54</view>
             </view>
         </view>
-        <view></view>
+        <view class="play-point absolute"></view>
     </view>
+
+    <view class="flex-row align-items-center">
+        <image src="../../images/play/left_01.png" class="play-left-icon"></image>
+        <view class="play-left-swipe">左滑切换场景音</view>
+        <image src="../../images/play/left_02.png" class="play-left-icon"></image>
+    </view>
+    <wave></wave>
 
 </view>

@@ -2,7 +2,10 @@
   "name": "xiangxunji",
   "version": "1.0.0",
   "dependencies": {
-    "heheda-navigator": "^1.0.0"
+    "heheda-navigator": "^1.0.0",
+    "heheda-update": "^1.0.0",
+    "heheda-bluetooth-state": "^1.0.2",
+    "heheda-common-view": "^1.0.0"
   },
   "devDependencies": {
     "wechat-mini-programs-apis": "^1.6.2"

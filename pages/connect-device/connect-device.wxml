@@ -1,13 +1,24 @@
 <view class="fill-width flex-column align-items-center">
     <navbar title=""></navbar>
+    <view class="fill-width flex-column align-items-center connect-device-top-layout">
+        <text class="connect-device-title" style="align-self: {{stateObj.flexStart?'flex-start':'center'}}">{{stateObj.title}}</text>
+        <view wx:if="{{stateObj.subtitle}}" class="connect-device-subtitle">{{stateObj.subtitle}}</view>
+    </view>
+    <image wx:if="{{stateObj.img}}" src="../../images/connect-device/{{stateObj.img}}.png" class="connect-device-img"></image>
 
-    <view class="connect-device-title">{{stateObj.title}}</view>
-    <view wx:if="{{stateObj.subtitle}}" class="connect-device-subtitle">{{stateObj.subtitle}}</view>
-
+    <block  wx:if="{{stateObj.failedDescription}}">
+        <view style="margin-top: 70rpx;"></view>
+        <block wx:for="{{stateObj.failedDescription}}" wx:key="index">
+            <view class="connect-device-failed-line" wx:if="{{index!==0}}"></view>
+            <view class="flex-row align-items-center connect-device-failed-layout">
+                <view class="flex-row align-items-center justify-center connect-device-failed-index">{{index+1}}</view>
+                <view class="connect-device-failed-content">{{item.content}}</view>
+            </view>
+        </block>
+    </block>
 
     <view  class="fill-width fixed bottom flex-column align-items-center">
-        <image src="../../images/connect-device/{{stateObj.img}}.png" class="connect-device-img"></image>
         <button wx:if="{{stateObj.buttonText}}" class="button-radius">{{stateObj.buttonText}}</button>
-        <view wx:else class="button-radius" style="background-color: transparent;"></view>
+<!--        <view wx:else class="button-radius" style="background-color: transparent;"></view>-->
     </view>
 </view>

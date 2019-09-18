@@ -19,8 +19,14 @@ function state() {
         },
         failed: {
             title: '出了点小问题\n需要您检查再试试',
+            flexStart: true,
             img: '',
-            buttonText: '重试'
+            buttonText: '重试',
+            failedDescription: [
+                {content: '手机未开启蓝牙'},
+                {content: '手机未授权微信获取定位权限'},
+                {content: '设备离手机太远'},
+            ]
         },
     }
 }
@@ -45,13 +51,12 @@ Page({
      * 生命周期函数--监听页面初次渲染完成
      */
     onReady() {
-        setTimeout(()=>{
+        setTimeout(() => {
             this.setData({
                 stateObj: state()['connecting']
             })
-        },3000)
+        }, 1500)
     },
-
 
 
 });

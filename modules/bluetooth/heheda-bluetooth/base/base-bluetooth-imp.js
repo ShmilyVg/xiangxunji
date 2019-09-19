@@ -30,7 +30,8 @@ export default class BaseBlueToothImp extends BaseBlueTooth {
             const {deviceId, connected} = res;
             console.log(`device ${deviceId} state has changed, connected: ${connected}`);
             if (!connected) {
-                this.openAdapterAndConnectLatestBLE();
+                this.updateBLEConnectState({state: CommonConnectState.DISCONNECT});
+                //     this.openAdapterAndConnectLatestBLE();
             }
         });
         wx.onBluetoothDeviceFound(async (res) => {

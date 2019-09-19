@@ -47,6 +47,7 @@ export default class AbstractBlueTooth {
      * @returns {Promise<any>}
      */
     async closeAdapter() {
+        console.log('关闭蓝牙适配器');
         return await closeBlueToothAdapter();
     }
 

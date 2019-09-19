@@ -64,10 +64,6 @@ export default class BaseBlueTooth extends AbstractBlueTooth {
         }
     }
 
-    async dealScanAndReconnectBLE() {
-
-    }
-
     async sendData({buffer}) {
         return super.sendData({
             buffer,

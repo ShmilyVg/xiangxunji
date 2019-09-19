@@ -37,10 +37,17 @@ export default class BaseBlueTooth extends AbstractBlueTooth {
             this._serviceId = serviceId;
             this._characteristicId = characteristicId;
             this.setDeviceId({deviceId});
+            await super.stopBlueToothDevicesDiscovery();
             return Promise.resolve();
         } catch (e) {
-            console.warn('连接失败，重新连接', e);
-            // return await this.createBLEConnection({deviceId});
+            if (e.errCode === -1) {
+                console.log('已连接上，无需重新连接');
+                await super.stopBlueToothDevicesDiscovery();
+                return Promise.resolve();
+            } else {
+                console.warn('连接失败，重新连接', e);
+                return await this.createBLEConnection({deviceId});
+            }
         }
     }
 

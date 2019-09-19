@@ -105,7 +105,8 @@ export function notifyBLECharacteristicValueChange({deviceId, serviceId, charact
  * @returns {Promise<{serviceId, characteristicId: *, deviceId: *}>}
  */
 export async function notifyBLE({deviceId, targetServiceUUID}) {
-    const {characteristics, serviceId} = findTargetServiceByUUID({deviceId, targetServiceUUID});
+    // const {characteristics, serviceId} = findTargetServiceByUUID({deviceId, targetServiceUUID});
+    const {characteristics, serviceId} = await findTargetServiceByUUID({deviceId, targetServiceUUID});
     let read = -1, notify = -1, write = -1, characteristicId = '';
     for (let i = 0, len = characteristics.length; i < len; i++) {
         let item = characteristics[i], properties = item.properties, uuid = item.uuid;

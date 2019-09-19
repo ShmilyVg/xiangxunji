@@ -9,8 +9,9 @@ App({
         this.bLEManager = new HiSmellBlueToothManager();
         this.bLEManager.init();
         this.bLEManager.setBLEListener({
-            listener: ({connectState, protocolState, value}) => {
-
+            listener: (res) => {
+                const {connectState, protocolState, value} = res;
+                console.log('触发蓝牙事件', res);
             },
         });
         await Login.doLogin();

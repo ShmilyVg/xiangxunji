@@ -55,7 +55,7 @@ export default class BaseBlueToothImp extends BaseBlueTooth {
         };
         this.errorType[ErrorState.DISCOVER_TIMEOUT.errorCode] = ErrorState.DISCOVER_TIMEOUT;
         wx.onBluetoothAdapterStateChange((res) => {
-            console.log('适配器状态changed, now is', res, '是否处于升级状态', getApp().isOTAUpdate);
+            console.log('适配器状态changed, now is', res);
             const {available, discovering} = res;
 
         });
@@ -119,7 +119,6 @@ export default class BaseBlueToothImp extends BaseBlueTooth {
      * @returns {*}
      */
     async openAdapterAndConnectLatestBLE() {
-        console.log('deviceId', this._deviceId || 'undefined', '当前是否已连接');
         super.updateBLEConnectState({state: CommonConnectState.CONNECTING});
         await super.openAdapter();
         const connectedDeviceId = super.getConnectedDeviceId();
@@ -127,8 +126,14 @@ export default class BaseBlueToothImp extends BaseBlueTooth {
             console.log(`上次连接过设备${connectedDeviceId}，现在直接连接该设备`);
             await this._updateBLEConnectFinalState({promise: await super.createBLEConnection({deviceId: connectedDeviceId})});
         } else {
-            await super.startBlueToothDevicesDiscovery();
+            console.log('上次未连接过设备，现开始扫描周围设备');
+            await this.startBlueToothDevicesDiscovery();
         }
+    }
+
+    async startBlueToothDevicesDiscovery() {
+        this._isConnectBindDevice = true;
+        return super.startBlueToothDevicesDiscovery();
     }
 
     updateBLEState({state}) {

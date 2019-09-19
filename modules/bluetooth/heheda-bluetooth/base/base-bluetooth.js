@@ -91,4 +91,17 @@ export default class BaseBlueTooth extends AbstractBlueTooth {
         }
     }
 
+    /**
+     * 清除上一次连接的蓝牙设备
+     * 这会导致断开目前连接的蓝牙设备
+     * @returns {*|Promise<any>}
+     */
+    async clearConnectedBLE() {
+        await super.closeAdapter();
+        wx.removeStorageSync('deviceId');
+        this._deviceId = '';
+        this._serviceId = '';
+        this._characteristicId = '';
+        return Promise.resolve();
+    }
 }

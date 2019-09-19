@@ -139,22 +139,4 @@ export default class AbstractBlueTooth {
         throw new Error('the type of services is Array!Please check it out.');
     }
 
-
-    /**
-     * 清除上一次连接的蓝牙设备
-     * 这会导致断开目前连接的蓝牙设备
-     * @returns {*|Promise<any>}
-     */
-    clearConnectedBLE() {
-
-        return new Promise((resolve) => {
-            this.closeAdapter().finally(() => {
-                wx.removeStorageSync('deviceId');
-                this._deviceId = '';
-                this.resetConnectTimeout();
-                resolve();
-            });
-        });
-    }
-
 }

@@ -1,15 +1,5 @@
 import {CommonConnectState} from "heheda-bluetooth-state";
-import {ErrorState} from "../utils/error-state";
 import BaseBlueTooth from "./base-bluetooth";
-
-function inArray(arr, key, val) {
-    for (let i = 0; i < arr.length; i++) {
-        if (arr[i][key] === val) {
-            return i;
-        }
-    }
-    return -1;
-}
 
 /**
  * 蓝牙核心业务的封装
@@ -19,51 +9,29 @@ export default class BaseBlueToothImp extends BaseBlueTooth {
     constructor() {
         super();
         this._hiDeviceName = '';
-        this.errorType = {
-            '-1': {
-                errMsg: 'createBLEConnection:fail:already connect', type: CommonConnectState.CONNECTED,
-            },
-            '10000': {
-                errMsg: 'closeBLEConnection:fail:not init', type: CommonConnectState.UNAVAILABLE,
-            },
-            '10001': {
-                errMsg: '', type: CommonConnectState.UNAVAILABLE,
-            },
-            '10003': {
-                errMsg: '', type: CommonConnectState.DISCONNECT,
-            },
-            '10004': {
-                errMsg: '没有找到指定服务', type: CommonConnectState.DISCONNECT,
-            },
-            '10005': {
-                errMsg: '获取特征值失败:fail', type: CommonConnectState.DISCONNECT,
-            },
-            '10006': {
-                errMsg: 'closeBLEConnection:fail:no connection', type: CommonConnectState.DISCONNECT,
-            },
-            '10009': {
-                errMsg: 'Android System not support', type: CommonConnectState.NOT_SUPPORT
-            },
-            '10012': {
-                errMsg: 'createBLEConnection:fail:operate time out',
-                type: CommonConnectState.DISCONNECT,
-            },
-            '10013': {
-                errMsg: '连接deviceId为空或者是格式不正确',
-                type: CommonConnectState.DISCONNECT,
+        const that = this;
+        wx.onBluetoothAdapterStateChange((function () {
+            let available = true;
+            return async (res) => {
+                console.log('适配器状态changed, now is', res);
+                // discovering
+                const {available: nowAvailable} = res;
+                if (!nowAvailable) {
+                    await that.closeAdapter();
+                } else if (!available) {//当前适配器状态是可用的，但上一次是不可用的，说明是用户刚刚重新打开了
+                    await that.openAdapterAndConnectLatestBLE();
+                }
+                available = nowAvailable;
             }
-        };
-        this.errorType[ErrorState.DISCOVER_TIMEOUT.errorCode] = ErrorState.DISCOVER_TIMEOUT;
-        wx.onBluetoothAdapterStateChange((res) => {
-            console.log('适配器状态changed, now is', res);
-            const {available, discovering} = res;
-
-        });
+        })());
 
         wx.onBLEConnectionStateChange((res) => {
             // 该方法回调中可以用于处理连接意外断开等异常情况
-            console.log(`device ${res.deviceId} state has changed, connected: ${res.connected}`);
-
+            const {deviceId, connected} = res;
+            console.log(`device ${deviceId} state has changed, connected: ${connected}`);
+            if (!connected) {
+                this.openAdapterAndConnectLatestBLE();
+            }
         });
         wx.onBluetoothDeviceFound(async (res) => {
             await this.baseDeviceFindAction(res);
@@ -119,8 +87,8 @@ export default class BaseBlueToothImp extends BaseBlueTooth {
      * @returns {*}
      */
     async openAdapterAndConnectLatestBLE() {
-        super.updateBLEConnectState({state: CommonConnectState.CONNECTING});
         await super.openAdapter();
+        super.updateBLEConnectState({state: CommonConnectState.CONNECTING});
         const connectedDeviceId = super.getConnectedDeviceId();
         if (connectedDeviceId) {
             console.log(`上次连接过设备${connectedDeviceId}，现在直接连接该设备`);
@@ -132,7 +100,7 @@ export default class BaseBlueToothImp extends BaseBlueTooth {
     }
 
     async startBlueToothDevicesDiscovery() {
-        this._isConnectBindDevice = true;
+        this._isConnectBindDevice = false;
         return super.startBlueToothDevicesDiscovery();
     }
 
@@ -144,13 +112,28 @@ export default class BaseBlueToothImp extends BaseBlueTooth {
         return {state: {connectState, protocolState}};
     }
 
+    /**
+     * 统一处理一次蓝牙连接流程
+     * 如果接收到失败，则是需要重新执行一遍扫描连接流程的情况
+     * @param promise
+     * @returns {Promise<*>}
+     * @private
+     */
     async _updateBLEConnectFinalState({promise}) {
         try {
             const result = await promise;
-            super.updateBLEConnectState({state: CommonConnectState.CONNECTED});
+            if (result.isConnected && !result.filter) {
+                super.updateBLEConnectState({state: CommonConnectState.CONNECTED});
+            }
             return result;
         } catch (e) {
-            console.warn('_updateBLEConnectFinalState error', e);
+            switch (e.errCode) {
+                case 10000:
+                case 10001:
+                    super.updateBLEConnectState({state: CommonConnectState.UNAVAILABLE});
+                    break;
+
+            }
         }
     }
 

@@ -30,6 +30,7 @@ export default class BaseBlueTooth extends AbstractBlueTooth {
 
     async createBLEConnection({deviceId}) {
         try {
+            await super.stopBlueToothDevicesDiscovery();
             const {serviceId, characteristicId} = await super.createBLEConnection({
                 deviceId,
                 valueChangeListener: this._listener
@@ -37,20 +38,22 @@ export default class BaseBlueTooth extends AbstractBlueTooth {
             this._serviceId = serviceId;
             this._characteristicId = characteristicId;
             this.setDeviceId({deviceId});
-            await super.stopBlueToothDevicesDiscovery();
-            return Promise.resolve();
+            return Promise.resolve({isConnected: true});
         } catch (e) {
             switch (e.errCode) {
                 case -1:
                     console.log('已连接上，无需重新连接');
-                    await super.stopBlueToothDevicesDiscovery();
-                    return Promise.resolve();
+                    return Promise.resolve({isConnected: true});
                 case 10003:
                 case 10012:
-                    console.log('连接不上，现重启蓝牙适配器');
+                    console.log('连接不上，现重启蓝牙适配器', e);
                     await super.closeAdapter();
                     await super.openAdapter();
-                    console.log('重试连接');
+                    console.log('开始重新扫描连接');
+                    await this.startBlueToothDevicesDiscovery();
+                    return Promise.resolve({isConnected: false, filter: true});//这种是需要重新执行一遍扫描连接流程的，filter是否过滤掉本次事件
+                case 10004:
+                    await super.closeBLEConnection();
                     return await this.createBLEConnection({deviceId});
                 default:
                     console.warn('连接失败，重新连接', e);
@@ -58,6 +61,10 @@ export default class BaseBlueTooth extends AbstractBlueTooth {
             }
 
         }
+    }
+
+    async dealScanAndReconnectBLE() {
+
     }
 
     async sendData({buffer}) {

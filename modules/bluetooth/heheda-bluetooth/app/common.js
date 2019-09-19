@@ -23,44 +23,12 @@ const obj = {
         this.bLEManager = bLEManager;
         this.appIsConnected = false;
         this.bLEManager.setBLEListener({
-            bleSignPowerListener: (hiDevices) => {
-                this.commonAppSignPowerListener && this.commonAppSignPowerListener(hiDevices);
+            listener: ({connectState,protocolState,value}) => {
+
             },
+
             receiveDataListener: ({finalResult, state}) => {
-                // if (CommonProtocolState.GET_CONNECTED_RESULT_SUCCESS === state.protocolState) {
-                    // const {isConnected, deviceId} = finalResult;
-                    // if (isConnected) {
-                    //     if (needNetwork) {
-                    //         !this.bLEManager.getBindMarkStorage() && Protocol.postDeviceBind({
-                    //             deviceId,
-                    //             mac: this.bLEManager.getDeviceMacAddress()
-                    //         }).then(() => {
-                    //             console.log('绑定协议发送成功');
-                    //             this.bLEManager.setBindMarkStorage();
-                    //             this.bLEManager.sendQueryDataRequiredProtocol();
-                    //             this.commonAppReceiveDataListener && this.commonAppReceiveDataListener({
-                    //                 finalResult,
-                    //                 state
-                    //             });
-                    //         }).catch((res) => {
-                    //             console.log('绑定协议报错', res);
-                    //             this._updateBLEState({state: {connectState: CommonConnectState.UNBIND}});
-                    //         });
-                    //     } else {
-                    //         console.log('绑定成功，不需发送协议情况下');
-                    //         this.bLEManager.setBindMarkStorage();
-                    //         this.bLEManager.sendQueryDataRequiredProtocol();
-                    //         this.commonAppReceiveDataListener && this.commonAppReceiveDataListener({
-                    //             finalResult,
-                    //             state
-                    //         });
-                    //     }
-                    // } else {
-                    //     this.bLEManager.clearConnectedBLE();
-                    // }
-                // } else {
                 this.commonAppReceiveDataListener && this.commonAppReceiveDataListener({finalResult, state});
-                // }
             }, bleStateListener: ({state}) => {
                 this.bLEManager.latestState = state;
                 console.log('状态更新', state, 'isConnected:', this.appIsConnected);
@@ -116,13 +84,6 @@ const obj = {
         this.commonAppSignPowerListener = commonAppSignPowerListener;
     },
 
-    getLatestBLEState() {
-        return this.bLEManager.getLatestState();
-    },
-
-    _updateBLEState({state}) {
-        this.commonAppBLEStateListener && this.commonAppBLEStateListener({state});
-    },
 
     doLogin() {
         setTimeout(() =>

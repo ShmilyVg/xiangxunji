@@ -99,7 +99,7 @@ export function notifyBLECharacteristicValueChange({deviceId, serviceId, charact
 }
 
 /**
- * 注册读写notify监听
+ * 注册读写notify监听，该事件要发生在连接上设备之后
  * @param deviceId 已连接的设备id
  * @param targetServiceUUID 目标蓝牙服务UUID
  * @returns {Promise<{serviceId, characteristicId: *, deviceId: *}>}
@@ -122,7 +122,7 @@ export async function notifyBLE({deviceId, targetServiceUUID}) {
             characteristicId = uuid;
         }
     }
-    return {serviceId, characteristicId, deviceId};
+    return {serviceId, characteristicId};
 }
 
 async function findTargetServiceByUUID({deviceId, targetServiceUUID}) {

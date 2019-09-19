@@ -15,7 +15,7 @@ export default class SimpleBlueToothImp {
      * @param bleStateListener 必须设置
      * @param scanBLEListener 不必须设置 如果没有设置该监听，则在扫描蓝牙设备后，会自动连接距离手机最近的蓝牙设备；否则，会返回扫描到的所有设备
      */
-    setBLEListener({receiveDataListener, bleStateListener, scanBLEListener, bleSignPowerListener}) {
+    setBLEListener({listener}) {
         this.bluetoothManager.setBLEListener(arguments[0]);
     }
 
@@ -31,22 +31,14 @@ export default class SimpleBlueToothImp {
         return this.bluetoothManager.getDeviceMacAddress();
     }
 
-    setBLEUpdateListener({scanBLEListener, connectionStateListener, adapterStateListener, receiveDataListener}) {
-        this.bluetoothManager.setBLEUpdateListener(arguments[0]);
-    }
-
     /**
      * 连接蓝牙
      * @returns {*}
      */
-    connect({macId} = {}) {
-        return this.bluetoothManager.openAdapterAndConnectLatestBLE({macId});
+    connect() {
+        return this.bluetoothManager.openAdapterAndConnectLatestBLE();
     }
 
-    startScanAndConnectDevice() {
-        this.bluetoothManager.resetDevices();
-        return this.bluetoothManager.openAdapterAndStartBlueToothDeviceDiscovery();
-    }
 
     getConnectDevices() {
         return this.bluetoothManager.getConnectedBlueToothDevices();
@@ -57,12 +49,10 @@ export default class SimpleBlueToothImp {
      * @returns {Promise<any>}
      */
     closeAll() {
-        this.bluetoothManager.resetDevices();
         return this.bluetoothManager.closeAdapter();
     }
 
     clearConnectedBLE() {
-        this.bluetoothManager.resetDevices();
         return this.bluetoothManager.clearConnectedBLE();
     }
 

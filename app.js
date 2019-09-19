@@ -1,15 +1,20 @@
 //app.js
+import Login from "./modules/network/network/libs/login";
+import HiSmellBlueToothManager from "./modules/bluetooth/hi-smell-bluetooth-manager";
+
 App({
-    onLaunch() {
+    async onLaunch() {
         this.globalData.systemInfo = wx.getSystemInfoSync();
         this.globalData.navHeight = this.globalData.systemInfo.statusBarHeight + 46;
-        // 登录
-        wx.login({
-            success: res => {
-                // 发送 res.code 到后台换取 openId, sessionKey, unionId
-            }
-        })
+        this.bLEManager = new HiSmellBlueToothManager();
+        this.bLEManager.init();
+        this.bLEManager.setBLEListener({
+            listener: ({connectState, protocolState, value}) => {
 
+            },
+        });
+        await Login.doLogin();
+        this.bLEManager.connect();
     },
 
     getBackgroundAudioManager() {

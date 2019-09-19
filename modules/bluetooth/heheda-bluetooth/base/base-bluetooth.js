@@ -30,11 +30,11 @@ export default class BaseBlueTooth extends AbstractBlueTooth {
 
     async createBLEConnection({deviceId}) {
         try {
-            await super.stopBlueToothDevicesDiscovery();
             const {serviceId, characteristicId} = await super.createBLEConnection({
                 deviceId,
                 valueChangeListener: this._listener
             });
+            await super.stopBlueToothDevicesDiscovery();
             this._serviceId = serviceId;
             this._characteristicId = characteristicId;
             this.setDeviceId({deviceId});
@@ -43,6 +43,7 @@ export default class BaseBlueTooth extends AbstractBlueTooth {
             switch (e.errCode) {
                 case -1:
                     console.log('已连接上，无需重新连接');
+                    await super.stopBlueToothDevicesDiscovery()
                     return Promise.resolve({isConnected: true});
                 case 10003:
                 case 10012:

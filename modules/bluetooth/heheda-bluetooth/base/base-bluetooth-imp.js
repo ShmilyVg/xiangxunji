@@ -10,6 +10,7 @@ function inArray(arr, key, val) {
     }
     return -1;
 }
+
 /**
  * 蓝牙核心业务的封装
  */
@@ -147,6 +148,7 @@ export default class BaseBlueToothImp extends BaseBlueTooth {
         await super.openAdapter();
         const connectedDeviceId = super.getConnectedDeviceId();
         if (connectedDeviceId) {
+            console.log(`上次连接过设备${connectedDeviceId}，现在直接连接该设备`);
             await this._updateBLEConnectFinalState({promise: await super.createBLEConnection({deviceId: connectedDeviceId})});
         } else {
             await super.startBlueToothDevicesDiscovery();

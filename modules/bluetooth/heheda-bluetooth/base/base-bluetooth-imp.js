@@ -87,19 +87,6 @@ export default class BaseBlueToothImp extends BaseBlueTooth {
                     }
                 }
 
-
-                // for (let i = 0, len = devices.length; i < len; i++) {
-                //     const device = devices[i];
-                //     const deviceId = device.deviceId;
-                //     if (deviceId === myBindDeviceId) {
-                //         this._isConnectBindDevice = true;
-                //         console.log('找到设备并开始连接', myBindDeviceId, device);
-                //         this._updateFinalState({
-                //             promise: this.createBLEConnection({deviceId, signPower: device.RSSI})
-                //         });
-                //         break;
-                //     }
-                // }
             } else if (!myBindDeviceId) {
                 const hiDeviceName = this._hiDeviceName || '';
                 for (let device of devices) {
@@ -110,18 +97,7 @@ export default class BaseBlueToothImp extends BaseBlueTooth {
                         break;
                     }
                 }
-                // for (let i = 0, len = devices.length; i < len; i++) {
-                //     const device = devices[i];
-                //     if (device.localName && device.localName.toUpperCase().indexOf(hiDeviceName) !== -1) {
-                //         console.log('扫描到药盒，并开始连接', device);
-                //         this._bleSignPowerListener && this._bleSignPowerListener(devices);
-                //         this._updateFinalState({
-                //             promise: this.createBLEConnection({deviceId: device.deviceId, signPower: device.RSSI})
-                //         });
-                //         break;
-                //     }
-                //
-                // }
+
             }
         }
     }

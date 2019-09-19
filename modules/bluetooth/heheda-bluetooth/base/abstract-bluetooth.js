@@ -6,6 +6,7 @@
  */
 
 import {
+    closeBLEConnection,
     closeBlueToothAdapter,
     createBLEConnection,
     getConnectedBlueToothDevices,
@@ -68,16 +69,12 @@ export default class AbstractBlueTooth {
         return await notifyBLE({deviceId, targetServiceUUID: this._hiServiceUUID});
     }
 
-    resetConnectTimeout() {
-
-    }
-
     /**
      * 断开处于连接状态的蓝牙连接
      * @returns {Promise<any>}
      */
-    closeBLEConnection() {
-
+    async closeBLEConnection({deviceId}) {
+        return await closeBLEConnection({deviceId});
     }
 
     /**

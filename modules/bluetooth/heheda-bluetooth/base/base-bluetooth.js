@@ -40,14 +40,23 @@ export default class BaseBlueTooth extends AbstractBlueTooth {
             await super.stopBlueToothDevicesDiscovery();
             return Promise.resolve();
         } catch (e) {
-            if (e.errCode === -1) {
-                console.log('已连接上，无需重新连接');
-                await super.stopBlueToothDevicesDiscovery();
-                return Promise.resolve();
-            } else {
-                console.warn('连接失败，重新连接', e);
-                return await this.createBLEConnection({deviceId});
+            switch (e.errCode) {
+                case -1:
+                    console.log('已连接上，无需重新连接');
+                    await super.stopBlueToothDevicesDiscovery();
+                    return Promise.resolve();
+                case 10003:
+                case 10012:
+                    console.log('连接不上，现重启蓝牙适配器');
+                    await super.closeAdapter();
+                    await super.openAdapter();
+                    console.log('重试连接');
+                    return await this.createBLEConnection({deviceId});
+                default:
+                    console.warn('连接失败，重新连接', e);
+                    return await this.createBLEConnection({deviceId});
             }
+
         }
     }
 

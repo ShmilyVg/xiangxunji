@@ -30,7 +30,7 @@ export default class BaseBlueToothImp extends BaseBlueTooth {
             const {deviceId, connected} = res;
             console.log(`device ${deviceId} state has changed, connected: ${connected}`);
             if (!connected) {
-                this.updateBLEConnectState({state: CommonConnectState.DISCONNECT});
+                this.updateBLEConnectState({connectState: CommonConnectState.DISCONNECT});
                 //     this.openAdapterAndConnectLatestBLE();
             }
         });
@@ -51,7 +51,7 @@ export default class BaseBlueToothImp extends BaseBlueTooth {
                         this._isConnectBindDevice = true;
                         console.log('找到设备并开始连接', myBindDeviceId, device);
                         await super.createBLEConnection({deviceId});
-                        super.updateBLEConnectState({state: CommonConnectState.CONNECTED});
+                        super.updateBLEConnectState({connectState: CommonConnectState.CONNECTED});
                         break;
                     }
                 }
@@ -89,7 +89,7 @@ export default class BaseBlueToothImp extends BaseBlueTooth {
      */
     async openAdapterAndConnectLatestBLE() {
         await super.openAdapter();
-        super.updateBLEConnectState({state: CommonConnectState.CONNECTING});
+        super.updateBLEConnectState({connectState: CommonConnectState.CONNECTING});
         const connectedDeviceId = super.getConnectedDeviceId();
         if (connectedDeviceId) {
             console.log(`上次连接过设备${connectedDeviceId}，现在直接连接该设备`);
@@ -116,14 +116,14 @@ export default class BaseBlueToothImp extends BaseBlueTooth {
         try {
             const result = await promise;
             if (result.isConnected && !result.filter) {
-                super.updateBLEConnectState({state: CommonConnectState.CONNECTED});
+                super.updateBLEConnectState({connectState: CommonConnectState.CONNECTED});
             }
             return result;
         } catch (e) {
             switch (e.errCode) {
                 case 10000:
                 case 10001:
-                    super.updateBLEConnectState({state: CommonConnectState.UNAVAILABLE});
+                    super.updateBLEConnectState({connectState: CommonConnectState.UNAVAILABLE});
                     break;
 
             }

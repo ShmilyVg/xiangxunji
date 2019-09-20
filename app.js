@@ -1,6 +1,7 @@
 //app.js
 import Login from "./modules/network/network/libs/login";
 import HiSmellBlueToothManager from "./modules/bluetooth/hi-smell-bluetooth-manager";
+import {ConnectState} from "./modules/bluetooth/bluetooth-state";
 
 App({
     async onLaunch() {
@@ -12,6 +13,14 @@ App({
             onConnectStateChanged: (res) => {
                 const {connectState} = res;
                 console.log('app.js 蓝牙连接状态更新', res);
+                switch (connectState) {
+                    case ConnectState.CONNECTED:
+
+                        break;
+                    default:
+                        break;
+                }
+
             },
 
             onReceiveData: res => {

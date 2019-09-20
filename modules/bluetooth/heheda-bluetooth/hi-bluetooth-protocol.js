@@ -138,7 +138,7 @@ export default class HiBlueToothProtocol {
 
     clearSendProtocol() {
         let temp;
-        while (temp = this._protocolQueue.pop()) {
+        while ((temp = this._protocolQueue.pop())) {
             clearTimeout(temp);
         }
     }

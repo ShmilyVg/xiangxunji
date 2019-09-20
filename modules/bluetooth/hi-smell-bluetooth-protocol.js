@@ -16,7 +16,7 @@ export default class HiSmellBlueToothProtocol extends HiBlueToothProtocol {
             '0x31': ({dataArray}) => {
                 const isSetSingleAlertItemSuccess = HexTools.hexArrayToNum(dataArray.slice(0, 1)) === 1;
                 return {
-                    state: ProtocolState.SEND_ALERT_TIME_RESULT,
+                    protocolState: ProtocolState.SEND_ALERT_TIME_RESULT,
                     dataAfterProtocol: {isSetSingleAlertItemSuccess}
                 };
             },
@@ -26,7 +26,7 @@ export default class HiSmellBlueToothProtocol extends HiBlueToothProtocol {
                 const isEat = HexTools.hexArrayToNum(dataArray.slice(1, 2)) === 1;
                 const timestamp = HexTools.hexArrayToNum(dataArray.slice(2, 6));
                 const compartment = HexTools.hexArrayToNum(dataArray.slice(6));
-                return {state: ProtocolState.QUERY_DATA_ING, dataAfterProtocol: {length, isEat, timestamp, compartment}};
+                return {protocolState: ProtocolState.QUERY_DATA_ING, dataAfterProtocol: {length, isEat, timestamp, compartment}};
             },
         }
     }

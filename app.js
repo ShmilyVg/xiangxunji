@@ -15,7 +15,7 @@ App({
                 console.log('app.js 蓝牙连接状态更新', res);
                 switch (connectState) {
                     case ConnectState.CONNECTED:
-
+                        this.bLEManager.startProtocol();
                         break;
                     default:
                         break;
@@ -30,6 +30,14 @@ App({
         });
         await Login.doLogin();
         this.bLEManager.connect();
+    },
+
+    onShow() {
+        this.isAppOnShow = true;
+    },
+
+    onHide() {
+        this.isAppOnShow = false;
     },
 
     getBackgroundAudioManager() {

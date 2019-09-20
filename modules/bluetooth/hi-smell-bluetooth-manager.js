@@ -14,13 +14,6 @@ export default class HiSmellBlueToothManager extends HiBlueToothManager {
         });//设置主Services方式如 this.setUUIDs({services: ['xxxx']})  xxxx为UUID全称，可设置多个
     }
 
-    sendAlertTimeOperationProtocol({singleAlertData}) {
-        return this.bluetoothProtocol.sendAlertTime({singleAlertData});
-    }
-
-    sendQueryDataSuccessProtocol({isSuccess}) {
-        this.bluetoothProtocol.sendQueryDataSuccessProtocol(arguments[0]);
-    }
 
     sendFindDeviceProtocol() {
         this.bluetoothProtocol.sendFindDeviceProtocol();

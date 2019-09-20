@@ -56,12 +56,12 @@ export default class HiBlueToothProtocol {
                 this.sendData({command: '0x05', data: [now]}).then(() => {
                     this.sendQueryDataRequiredProtocol();
                 });
-                return {state: CommonProtocolState.TIMESTAMP, dataAfterProtocol: {battery, version, deviceId}};
+                return {protocolState: CommonProtocolState.TIMESTAMP, dataAfterProtocol: {battery, version, deviceId}};
             },
             //设备发出待机状态通知
             '0x06': () => {
                 this.sendData({command: '0x07'});
-                return {state: CommonProtocolState.DORMANT};
+                return {protocolState: CommonProtocolState.DORMANT};
             },
             //由手机发出的查找设备请求
             '0x08': () => {
@@ -69,7 +69,7 @@ export default class HiBlueToothProtocol {
             },
             //设备反馈的查找设备结果，找到了设备
             '0x09': () => {
-                return {state: CommonProtocolState.FIND_DEVICE};
+                return {protocolState: CommonProtocolState.FIND_DEVICE};
             },
             //App请求同步数据
             '0x0a': () => {

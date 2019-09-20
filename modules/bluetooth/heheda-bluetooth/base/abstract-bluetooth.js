@@ -63,7 +63,10 @@ export default class AbstractBlueTooth {
         // 操作之前先监听，保证第一时间获取数据
         await createBLEConnection({deviceId, timeout: 5000});
         wx.onBLECharacteristicValueChange((res) => {
-            valueChangeListener && valueChangeListener({receiveBuffer: res.value});
+            if (!!valueChangeListener) {
+                const {value, protocolState, filter} = this.dealReceiveData({receiveBuffer: res.value});
+                !filter && valueChangeListener({protocolState, value});
+            }
         });
 
         return await notifyBLE({deviceId, targetServiceUUID: this._hiServiceUUID});

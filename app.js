@@ -9,10 +9,15 @@ App({
         this.bLEManager = new HiSmellBlueToothManager();
         this.bLEManager.init();
         this.bLEManager.setBLEListener({
-            listener: (res) => {
-                const {connectState, protocolState, value} = res;
-                console.log('触发蓝牙事件', res);
+            onConnectStateChanged: (res) => {
+                const {connectState} = res;
+                console.log('app.js 蓝牙连接状态更新', res);
             },
+
+            onReceiveData: res => {
+                const {protocolState, value} = res;
+                console.log('app.js 蓝牙协议接收到新的', res);
+            }
         });
         await Login.doLogin();
         this.bLEManager.connect();

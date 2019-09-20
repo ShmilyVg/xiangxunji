@@ -101,7 +101,7 @@ export default class HiBlueToothManager extends SimpleBlueToothImp {
         if (this.getBindMarkStorage()) {
             return this.latestState;
         }
-        return this.latestState = this.getState({connectState: CommonConnectState.UNBIND});
+        return this.latestState = {connectState: CommonConnectState.UNBIND};
     }
 
     clearConnectedBLE() {
@@ -147,14 +147,13 @@ export default class HiBlueToothManager extends SimpleBlueToothImp {
      * @returns {*}
      */
     dealReceiveData({receiveBuffer}) {
-        const {dataAfterProtocol, state} = this.bluetoothProtocol.receive({receiveBuffer});
-        if (CommonProtocolState.UNKNOWN === state.protocolState) {
+        const {dataAfterProtocol, protocolState} = this.bluetoothProtocol.receive({receiveBuffer});
+        if (CommonProtocolState.UNKNOWN === protocolState) {
             return {filter: true};
         }
-        this.latestState = state;
-        super.updateBLEStateImmediately({state});
+        this.latestState.protocolState = protocolState;
         HiBlueToothManager.logReceiveData({receiveBuffer});
-        return {finalResult: dataAfterProtocol, state};
+        return {value: dataAfterProtocol, protocolState};
     }
 
     /**
@@ -163,7 +162,6 @@ export default class HiBlueToothManager extends SimpleBlueToothImp {
      */
     static logReceiveData({receiveBuffer}) {
         const byteLength = receiveBuffer.byteLength;
-        // const buffer = new ArrayBuffer(byteLength);
         const dataView = new DataView(receiveBuffer, 0);
         for (let k = 0; k < byteLength; k++) {
             console.log(`接收到的数据索引：${k} 值：${dataView.getUint8(k)}`);

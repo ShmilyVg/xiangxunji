@@ -1,13 +1,12 @@
-import {CommonConnectState, CommonProtocolState} from "heheda-bluetooth-state";
+import {CommonProtocolState} from "heheda-bluetooth-state";
 import {HexTools} from "./tools";
 
 export class ProtocolBody {
 
-    constructor({commandIndex, dataStartIndex, deviceIndexNum, blueToothManager}) {
+    constructor({commandIndex, dataStartIndex, deviceIndexNum}) {
         this.commandIndex = commandIndex;
         this.dataStartIndex = dataStartIndex;
         this.deviceIndexNum = deviceIndexNum;
-        this.blueToothManager = blueToothManager;
     }
 
     receive({action, receiveBuffer}) {
@@ -24,24 +23,17 @@ export class ProtocolBody {
         const doAction = action[commandHex];
         if (doAction) {
             const actionTemp = doAction({dataArray});
-            if (actionTemp && actionTemp.state) {
-                const {state: protocolState, dataAfterProtocol}  = actionTemp;
-                return this.getOtherStateAndResultWithConnectedState({protocolState, dataAfterProtocol});
+            if (actionTemp && actionTemp.protocolState) {
+                const {protocolState, dataAfterProtocol} = actionTemp;
+                return {protocolState, dataAfterProtocol};
             } else {
                 console.log('协议处理完成，并且返回无状态事件');
-                return this.getOtherStateAndResultWithConnectedState({protocolState: CommonProtocolState.UNKNOWN});
+                return {protocolState: CommonProtocolState.UNKNOWN};
             }
         } else {
             console.log('协议中包含了unknown状态');
-            return this.getOtherStateAndResultWithConnectedState({protocolState: CommonProtocolState.UNKNOWN});
+            return {protocolState: CommonProtocolState.UNKNOWN};
         }
-    }
-
-    getOtherStateAndResultWithConnectedState({protocolState, dataAfterProtocol}) {
-        return {
-            ...this.blueToothManager.getState({connectState: CommonConnectState.CONNECTED, protocolState}),
-            dataAfterProtocol
-        };
     }
 
     createBuffer({command, data}) {

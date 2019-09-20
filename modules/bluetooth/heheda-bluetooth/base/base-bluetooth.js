@@ -3,7 +3,8 @@ import AbstractBlueTooth from "./abstract-bluetooth";
 export default class BaseBlueTooth extends AbstractBlueTooth {
     constructor() {
         super();
-        this._listener = null;
+        this._onConnectStateChanged = null;
+        this._onReceiveData = null;
         this._deviceId = '';
         this._serviceId = '';
         this._characteristicId = '';
@@ -18,21 +19,28 @@ export default class BaseBlueTooth extends AbstractBlueTooth {
 
     /**
      * 在连接前，一定要先设置BLE监听
-     * @param listener  listener中的参数包括了 {connectState:'',protocolState:'',value:{}}
+     *
+     * @param onConnectStateChanged onConnectStateChanged中的参数包括{connectState:''}
+     * @param onReceiveData onReceiveData中的参数包括了 {protocolState:'',value:{}}
      */
-    setBLEListener({listener}) {
-        this._listener = listener;
+    setBLEListener({onConnectStateChanged, onReceiveData}) {
+        this._onConnectStateChanged = onConnectStateChanged;
+        this._onReceiveData = onReceiveData;
     }
 
-    updateBLEConnectState({state}) {
-        this._listener({connectState: state});
+    updateBLEConnectState({connectState}) {
+        this._onConnectStateChanged({connectState});
+    }
+
+    executeBLEReceiveDataCallBack({protocolState, value}) {
+        this._onReceiveData({protocolState, value});
     }
 
     async createBLEConnection({deviceId}) {
         try {
             const {serviceId, characteristicId} = await super.createBLEConnection({
                 deviceId,
-                valueChangeListener: this._listener
+                valueChangeListener: this._onReceiveData
             });
             await super.stopBlueToothDevicesDiscovery();
             this._serviceId = serviceId;

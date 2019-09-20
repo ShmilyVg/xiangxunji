@@ -9,6 +9,7 @@ export default class SimpleBlueToothImp {
     init() {
         this.bluetoothManager.init();
     }
+
     /**
      * 设置蓝牙行为的监听
      * @param receiveDataListener 必须设置
@@ -19,7 +20,7 @@ export default class SimpleBlueToothImp {
         this.bluetoothManager.setBLEListener(arguments[0]);
     }
 
-    setUUIDs({services, hiServiceUUID,hiDeviceName}) {
+    setUUIDs({services, hiServiceUUID, hiDeviceName}) {
         this.bluetoothManager.setUUIDs({services, hiServiceUUID, hiDeviceName});
     }
 
@@ -56,17 +57,12 @@ export default class SimpleBlueToothImp {
         return this.bluetoothManager.clearConnectedBLE();
     }
 
-    getState({connectState, protocolState}) {
-        return this.bluetoothManager.getState(arguments[0]);
+    updateBLEConnectState({connectState}) {
+        this.bluetoothManager.updateBLEConnectState({connectState});
     }
 
-    /**
-     * 立即更新蓝牙设备状态
-     * 调用该函数会导致立刻回调bleStateListener函数
-     * @param state
-     */
-    updateBLEStateImmediately({state}) {
-        this.bluetoothManager.updateBLEState({state});
+    executeBLEReceiveDataCallBack({protocolState, value}) {
+        this.bluetoothManager.executeBLEReceiveDataCallBack({protocolState, value});
     }
 
     /**

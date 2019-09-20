@@ -105,14 +105,6 @@ export default class BaseBlueToothImp extends BaseBlueTooth {
         return super.startBlueToothDevicesDiscovery();
     }
 
-    updateBLEState({state}) {
-        return this._bleStateListener({state});
-    }
-
-    getState({connectState, protocolState}) {
-        return {state: {connectState, protocolState}};
-    }
-
     /**
      * 统一处理一次蓝牙连接流程
      * 如果接收到失败，则是需要重新执行一遍扫描连接流程的情况

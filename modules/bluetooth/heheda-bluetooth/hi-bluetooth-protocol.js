@@ -10,10 +10,7 @@ export default class HiBlueToothProtocol {
     constructor({blueToothManager, deviceIndexNum}) {
         this._blueToothManager = blueToothManager;
         this._protocolQueue = [];
-        this.updateDeviceSoftwareManager = new BlueToothUpdate();
-        this.protocolBody = new ProtocolBody({commandIndex, dataStartIndex, deviceIndexNum, blueToothManager});
-        this._updatingTimeoutIndex = 0;
-        // this._queryTimeoutIndex = -1;
+        this.protocolBody = new ProtocolBody({commandIndex, dataStartIndex, deviceIndexNum});
         this.action = {
             //由手机发出的连接请求
             '0x01': () => {
@@ -34,21 +31,16 @@ export default class HiBlueToothProtocol {
                         this.startCommunication();
                         blueToothManager.setBindMarkStorage();
                         blueToothManager.sendQueryDataRequiredProtocol();
-                        blueToothManager.updateBLEStateImmediately(
-                            this.protocolBody.getOtherStateAndResultWithConnectedState({protocolState: CommonProtocolState.CONNECTED_AND_BIND})
-                        )
+                        blueToothManager.executeBLEReceiveDataCallBack(
+                            {protocolState: CommonProtocolState.CONNECTED_AND_BIND},
+                        );
                     }).catch((res) => {
                         console.log('绑定协议报错', res);
-                        blueToothManager.updateBLEStateImmediately(blueToothManager.getState({connectState: CommonConnectState.UNBIND}))
+                        blueToothManager.updateBLEConnectState({connectState: CommonConnectState.UNBIND});
                     });
-                }else{
+                } else {
                     blueToothManager.clearConnectedBLE();
                 }
-                // isConnected && this.startCommunication();
-                // return {
-                //     state: CommonProtocolState.GET_CONNECTED_RESULT_SUCCESS,
-                //     dataAfterProtocol: {isConnected, deviceId}
-                // };
             },
             //App发送绑定成功
             '0x03': () => {
@@ -81,9 +73,7 @@ export default class HiBlueToothProtocol {
             },
             //App请求同步数据
             '0x0a': () => {
-                this.sendData({command: '0x0a'}).then(() => blueToothManager.updateBLEStateImmediately(
-                    this.protocolBody.getOtherStateAndResultWithConnectedState({protocolState: CommonProtocolState.QUERY_DATA_START})
-                ));
+                this.sendData({command: '0x0a'}).then(() => blueToothManager.executeBLEReceiveDataCallBack({protocolState: CommonProtocolState.QUERY_DATA_START}));
             },
             //App传给设备同步数据的结果
             '0x0b': ({isSuccess}) => {
@@ -91,41 +81,8 @@ export default class HiBlueToothProtocol {
                     command: '0x0b',
                     data: [isSuccess ? 1 : 2]
                 });
-                //     .finally(() => {
-                //     if (isSuccess) {
-                //         clearTimeout(this._queryTimeoutIndex);
-                //         this._queryTimeoutIndex = setTimeout(() => {
-                //             blueToothManager.updateBLEStateImmediately(this.protocolBody.getOtherStateAndResultWithConnectedState({protocolState: CommonProtocolState.QUERY_DATA_FINISH}));
-                //         }, 2000);
-                //     } else {
-                //         blueToothManager.updateBLEStateImmediately(this.protocolBody.getOtherStateAndResultWithConnectedState({protocolState: CommonProtocolState.QUERY_DATA_FINISH}));
-                //     }
-                // });
-            },
-            '0xab': ({dataArray}) => {
-                if (!!this._updateTool) {
-                    const index = HexTools.hexArrayToNum(dataArray.slice(0, 2));
-                    const data = this._updateTool.getDataByIndex({index});
-                    this._blueToothManager.sendData({
-                        buffer: this.protocolBody.createUpdateBuffer({
-                            index,
-                            data
-                        })
-                    }).then(() => {
-                        if (index < this._updateTool.count - 1) {
-                            clearTimeout(this._updatingTimeoutIndex);
-                            this._updatingTimeoutIndex = setTimeout(() => {
-                                blueToothManager.updateBLEStateImmediately(this.protocolBody.getOtherStateAndResultWithConnectedState({protocolState: CommonProtocolState.UPDATING}));
-                            }, 1500);
-                        } else {
-                            setTimeout(() => {
-                                blueToothManager.updateBLEStateImmediately(this.protocolBody.getOtherStateAndResultWithConnectedState({protocolState: CommonProtocolState.UPDATE_FINISH}));
-                            }, 500);
-                        }
-                    });
 
-                }
-            }
+            },
         }
     }
 

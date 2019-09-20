@@ -6,15 +6,16 @@ export class ProtocolBody {
     constructor({commandIndex, dataStartIndex, deviceIndexNum}) {
         this.commandIndex = commandIndex;
         this.dataStartIndex = dataStartIndex;
-        this.deviceIndexNum = deviceIndexNum;
+        // this.deviceIndexNum = deviceIndexNum;
     }
 
     receive({action, receiveBuffer}) {
         const receiveArray = [...new Uint8Array(receiveBuffer)];
+        console.log('接收到的数据', receiveArray);
         let command = receiveArray[this.commandIndex];
         let commandHex = `0x${HexTools.numToHex(command)}`;
         console.log('命令字', commandHex);
-        let dataLength = receiveArray[1] - 1;
+        let dataLength = 4;
         let dataArray;
         if (dataLength > 0) {
             const endIndex = this.dataStartIndex + dataLength;
@@ -57,8 +58,7 @@ export class ProtocolBody {
     _createDataBody({command = '', data = []}) {
         const dataPart = [];
         data.map(item => HexTools.numToHexArray(item)).forEach(item => dataPart.push(...item));
-        const lowLength = HexTools.hexToNum((dataPart.length + 1).toString(16));
-        const array = [this.deviceIndexNum, lowLength, HexTools.hexToNum(command), ...dataPart];
+        const array = [HexTools.hexToNum(command), ...dataPart];
         let count = 0;
         array.forEach(item => count += item);
         count = ~count + 1;

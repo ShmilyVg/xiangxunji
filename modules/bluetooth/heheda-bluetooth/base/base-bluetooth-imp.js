@@ -50,8 +50,7 @@ export default class BaseBlueToothImp extends BaseBlueTooth {
                     if (deviceId === myBindDeviceId) {
                         this._isConnectBindDevice = true;
                         console.log('找到设备并开始连接', myBindDeviceId, device);
-                        await super.createBLEConnection({deviceId});
-                        super.updateBLEConnectState({connectState: CommonConnectState.CONNECTED});
+                        await this._updateBLEConnectFinalState({promise: await super.createBLEConnection({deviceId})});
                         break;
                     }
                 }
@@ -61,8 +60,8 @@ export default class BaseBlueToothImp extends BaseBlueTooth {
                 for (let device of devices) {
                     if (device.localName && device.localName.toUpperCase().indexOf(hiDeviceName) !== -1) {
                         this._isConnectBindDevice = true;
-                        console.log('扫描到药盒，并开始连接', device);
-                        await super.createBLEConnection({deviceId: device.deviceId});
+                        console.log('扫描到目标设备，并开始连接', device);
+                        await this._updateBLEConnectFinalState({promise: await super.createBLEConnection({deviceId: device.deviceId})});
                         break;
                     }
                 }

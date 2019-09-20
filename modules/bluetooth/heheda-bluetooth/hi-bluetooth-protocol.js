@@ -3,7 +3,7 @@ import {HexTools} from "./utils/tools";
 import {ProtocolBody} from "./utils/protocol";
 import {BlueToothUpdate, Protocol} from "../../network/network/index";
 
-const commandIndex = 2, dataStartIndex = 3;
+const commandIndex = 0, dataStartIndex = 1;
 
 export default class HiBlueToothProtocol {
 
@@ -81,7 +81,6 @@ export default class HiBlueToothProtocol {
                     command: '0x0b',
                     data: [isSuccess ? 1 : 2]
                 });
-
             },
         }
     }

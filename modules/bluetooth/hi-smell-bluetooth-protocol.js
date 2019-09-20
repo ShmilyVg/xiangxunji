@@ -26,8 +26,14 @@ export default class HiSmellBlueToothProtocol extends HiBlueToothProtocol {
                 const isEat = HexTools.hexArrayToNum(dataArray.slice(1, 2)) === 1;
                 const timestamp = HexTools.hexArrayToNum(dataArray.slice(2, 6));
                 const compartment = HexTools.hexArrayToNum(dataArray.slice(6));
-                return {protocolState: ProtocolState.QUERY_DATA_ING, dataAfterProtocol: {length, isEat, timestamp, compartment}};
+                return {
+                    protocolState: ProtocolState.QUERY_DATA_ING,
+                    dataAfterProtocol: {length, isEat, timestamp, compartment}
+                };
             },
+            '0x88': ({dataArray}) => {
+                console.log('0x88获取到的数据',dataArray);
+            }
         }
     }
 

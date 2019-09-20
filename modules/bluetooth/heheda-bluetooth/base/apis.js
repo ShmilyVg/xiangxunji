@@ -20,7 +20,7 @@ export function writeBLECharacteristicValue({deviceId, serviceId, characteristic
 }
 
 export function readBLECharacteristicValue({deviceId, serviceId, characteristicId}) {
-    return new Promise((resolve, reject) => wx.writeBLECharacteristicValue({
+    return new Promise((resolve, reject) => wx.readBLECharacteristicValue({
         ...arguments[0],
         success: resolve,
         fail: reject
@@ -117,10 +117,12 @@ export async function notifyBLE({deviceId, targetServiceUUID}) {
         if (read === -1 && (properties.read)) {
             read = i;
             await readBLECharacteristicValue({deviceId, serviceId, characteristicId: uuid});
+            console.warn('读特征值是 characteristicId:', uuid);
         }
-        if (read !== i && write === -1 && properties.write) {
+        if (write !== i && write === -1 && properties.write) {
             write = i;
             characteristicId = uuid;
+            console.warn('写特征值是 characteristicId:', characteristicId);
         }
     }
     return {serviceId, characteristicId};

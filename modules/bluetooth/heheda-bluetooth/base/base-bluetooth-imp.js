@@ -87,6 +87,10 @@ export default class BaseBlueToothImp extends BaseBlueTooth {
      * @returns {*}
      */
     async openAdapterAndConnectLatestBLE() {
+        if (super.getLatestConnectState() === CommonConnectState.CONNECTING) {
+            console.warn('蓝牙正在连接中，还未返回结果，所以取消本次连接');
+            return;
+        }
         await super.openAdapter();
         super.updateBLEConnectState({connectState: CommonConnectState.CONNECTING});
         const connectedDeviceId = super.getConnectedDeviceId();
@@ -94,7 +98,7 @@ export default class BaseBlueToothImp extends BaseBlueTooth {
             console.log(`上次连接过设备${connectedDeviceId}，现在直接连接该设备`);
             await this._updateBLEConnectFinalState({promise: await super.createBLEConnection({deviceId: connectedDeviceId})});
         } else {
-            console.log('上次未连接过设备，现开始扫描周围设备');
+            console.log('上次未连接过设备或直连失败，现开始扫描周围设备');
             await this.startBlueToothDevicesDiscovery();
         }
     }

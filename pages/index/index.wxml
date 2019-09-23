@@ -1,6 +1,12 @@
 <view class="fill-width flex-column">
     <navbar title="HiPee香薰助眠仪"></navbar>
 
+    <view bindtap="toReconnectEvent" class="fill-width flex-row align-items-center justify-center box-sizing-border-box index-connect-device-layout">
+        <view class="flex-row align-items-center index-connect-device-text">
+            <image src="../../images/index/retry.png" class="index-retry-icon"></image>
+            与设备连接中断，点击此处
+            <view style="color: #F7879E;">重连</view></view>
+    </view>
     <view class="flex-row align-items-center space-between box-sizing-border-box user-layout">
         <view class="flex-column">
             <view class="index-title">晚上好</view>

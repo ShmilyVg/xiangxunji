@@ -1,5 +1,12 @@
 import AbstractBlueTooth from "./abstract-bluetooth";
 
+
+function* entries(obj) {
+    for (let key of Object.keys(obj)) {
+        yield [key, obj[key]];
+    }
+}
+
 export default class BaseBlueTooth extends AbstractBlueTooth {
     constructor() {
         super();
@@ -8,6 +15,8 @@ export default class BaseBlueTooth extends AbstractBlueTooth {
         this._deviceId = '';
         this._serviceId = '';
         this._characteristicId = '';
+        this._latestConnectState = '';
+        this._latestProtocolObj = {protocolState: '', value: {}};
     }
 
     init() {
@@ -29,11 +38,32 @@ export default class BaseBlueTooth extends AbstractBlueTooth {
     }
 
     updateBLEConnectState({connectState}) {
-        this._onConnectStateChanged({connectState});
+        if (this._latestConnectState !== connectState) {
+            this._onConnectStateChanged({connectState});
+            this._latestConnectState = connectState;
+        }
+    }
+
+    getLatestConnectState() {
+        return this._latestConnectState;
     }
 
     executeBLEReceiveDataCallBack({protocolState, value}) {
-        this._onReceiveData({protocolState, value});
+        if (this._latestProtocolObj.protocolState !== protocolState) {
+            this._onReceiveData({protocolState, value});
+        } else {
+            const latestValue = this._latestProtocolObj.value;
+            if (Object.getOwnPropertyNames(latestValue) === Object.getOwnPropertyNames(value)) {
+                for (let [key, item] of entries(latestValue)) {
+                    if (item !== value[key]) {
+                        this._onReceiveData({protocolState, value});
+                        break;
+                    }
+                }
+            } else {
+                this._onReceiveData({protocolState, value});
+            }
+        }
     }
 
     async createBLEConnection({deviceId}) {
@@ -42,10 +72,14 @@ export default class BaseBlueTooth extends AbstractBlueTooth {
                 deviceId,
                 valueChangeListener: this._onReceiveData
             });
-            await super.stopBlueToothDevicesDiscovery();
             this._serviceId = serviceId;
             this._characteristicId = characteristicId;
             this.setDeviceId({deviceId});
+            try {
+                await super.stopBlueToothDevicesDiscovery();
+            } catch (e) {
+                console.error('连接完成后，停止扫描周围设备失败', e);
+            }
             return Promise.resolve({isConnected: true});
         } catch (e) {
             switch (e.errCode) {

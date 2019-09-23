@@ -21,7 +21,7 @@ export function writeBLECharacteristicValue({deviceId, serviceId, characteristic
 
 export function readBLECharacteristicValue({deviceId, serviceId, characteristicId}) {
     return new Promise((resolve, reject) => wx.readBLECharacteristicValue({
-        ...arguments[0],
+        serviceId, deviceId, characteristicId,
         success: resolve,
         fail: reject
     }));
@@ -92,7 +92,7 @@ export function getBlueToothAdapterState() {
 
 export function notifyBLECharacteristicValueChange({deviceId, serviceId, characteristicId, state}) {
     return new Promise((resolve, reject) => wx.notifyBLECharacteristicValueChange({
-        ...arguments[0],
+        deviceId, serviceId, characteristicId, state,
         success: resolve,
         fail: reject
     }));

@@ -4,8 +4,8 @@ const app = getApp();
 
 Page({
     data: {
-        habits: [{},{},{}],
-        minds:[{},{},{},]
+        habits: [{}, {}, {}],
+        minds: [{}, {}, {},]
     },
     //事件处理函数
     bindViewTap() {
@@ -36,7 +36,16 @@ Page({
             }
         })
     },
+
+    onShow() {
+        console.log('开始执行index.js中的onShow()',this);
+
+    },
+    toReconnectEvent() {
+        app.getBLEManager().connect();
+    },
     onLoad() {
+        console.log('开始执行index.js中的onLoad()',this);
         this.backgroundAudioManager = app.getBackgroundAudioManager();
 
         this.backgroundAudioManager.onError(err => {

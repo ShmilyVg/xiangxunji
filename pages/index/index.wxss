@@ -145,3 +145,22 @@ view.index-content-layout:nth-child(odd){
     margin-bottom: 70rpx;
     align-self: center;
 }
+
+.index-connect-device-layout{
+    background:rgba(184,89,98,0.15);
+    padding: 30rpx 0;
+}
+
+.index-connect-device-text{
+    font-size:28rpx;
+    font-family:PingFang SC;
+    font-weight:500;
+    color:rgba(255,255,255,1);
+    line-height:28rpx;
+}
+
+.index-retry-icon{
+    width: 32rpx;
+    height: 26rpx;
+    margin-right: 10rpx;
+}

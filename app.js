@@ -2,6 +2,7 @@
 import Login from "./modules/network/network/libs/login";
 import HiSmellBlueToothManager from "./modules/bluetooth/hi-smell-bluetooth-manager";
 import {ConnectState} from "./modules/bluetooth/bluetooth-state";
+import './modules/bluetooth/heheda-bluetooth/page/hi-page';
 
 App({
     async onLaunch() {
@@ -18,6 +19,7 @@ App({
                         this.bLEManager.startProtocol();
                         break;
                     default:
+
                         break;
                 }
 
@@ -30,6 +32,10 @@ App({
         });
         await Login.doLogin();
         this.bLEManager.connect();
+    },
+
+    getBLEManager() {
+        return this.bLEManager;
     },
 
     onShow() {

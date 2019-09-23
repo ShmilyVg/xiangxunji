@@ -127,8 +127,8 @@ export default class HiBlueToothManager extends SimpleBlueToothImp {
     }
 
     startProtocol() {
-        console.log('startProtocol');
-        this.bluetoothProtocol.startCommunication()
+        // console.log('startProtocol');
+        // this.bluetoothProtocol.openWater({open: true, duration: 100});
     }
 
     sendQueryDataRequiredProtocol() {

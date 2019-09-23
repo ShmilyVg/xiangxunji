@@ -34,6 +34,18 @@ export default class AbstractBlueTooth {
 
     }
 
+    // async* operatorBLEAdapter() {
+    //     let isOpenAdapter = false;
+    //     for (; ;) {
+    //         if (isOpenAdapter) {
+    //             const result = await this.openAdapter();
+    //
+    //             yield
+    //         }
+    //
+    //     }
+    // }
+
     /**
      * 打开蓝牙适配器
      * 只有蓝牙开启的状态下，才可执行成功

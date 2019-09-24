@@ -37,18 +37,19 @@ export default class BaseBlueTooth extends AbstractBlueTooth {
         this._onReceiveData = onReceiveData;
     }
 
-    updateBLEConnectState({connectState}) {
-        if (this._latestConnectState !== connectState) {
-            this._onConnectStateChanged({connectState});
-            this._latestConnectState = connectState;
+    set latestConnectState(value) {
+        console.warn('更新蓝牙连接状态', value);
+        if (this._latestConnectState !== value) {
+            this._onConnectStateChanged({value});
+            this._latestConnectState = value;
         }
     }
 
-    getLatestConnectState() {
+    get latestConnectState() {
         return this._latestConnectState;
     }
 
-    executeBLEReceiveDataCallBack({protocolState, value}) {
+    set latestProtocolInfo({protocolState, value}) {
         if (this._latestProtocolObj.protocolState !== protocolState) {
             this._onReceiveData({protocolState, value});
         } else {
@@ -93,7 +94,7 @@ export default class BaseBlueTooth extends AbstractBlueTooth {
                     await super.closeAdapter();
                     await super.openAdapter();
                     console.log('开始重新扫描连接');
-                    await this.startBlueToothDevicesDiscovery();
+                    await this.startBlueToothDevicesDiscovery();//这里调用的是子类的startBlueToothDevicesDiscovery，因为子类有实现
                     return Promise.resolve({isConnected: false, filter: true});//这种是需要重新执行一遍扫描连接流程的，filter是否过滤掉本次事件
                 case 10004:
                     await super.closeBLEConnection({deviceId});

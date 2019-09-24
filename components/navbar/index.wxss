@@ -8,6 +8,7 @@
     z-index: 10;
     display: flex;
     align-items: center;
+    background-color: #24213A;
 }
 .navbar-back-button{
     display: flex;

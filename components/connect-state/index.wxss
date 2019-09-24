@@ -1,0 +1,30 @@
+.index-connect-device-layout{
+    height: 90rpx;
+    background:rgba(184,89,98,0.15);
+    transition: margin-top 400ms ease-out 1.5s;
+}
+
+.index-connect-device-text{
+    font-size:28rpx;
+    font-family:PingFang SC;
+    font-weight:500;
+    color:rgba(255,255,255,1);
+    line-height:28rpx;
+}
+
+.index-retry-icon{
+    width: 32rpx;
+    height: 26rpx;
+    margin-right: 10rpx;
+    animation: circleAnim 1s ease-out;
+}
+
+@keyframes circleAnim {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(180deg);
+    }
+}

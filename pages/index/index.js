@@ -1,5 +1,7 @@
 //index.js
 //获取应用实例
+import {ConnectState} from "../../modules/bluetooth/bluetooth-state";
+
 const app = getApp();
 
 Page({
@@ -38,14 +40,13 @@ Page({
     },
 
     onShow() {
-        console.log('开始执行index.js中的onShow()',this);
-
+        console.log('开始执行index.js中的onShow()', this);
     },
     toReconnectEvent() {
         app.getBLEManager().connect();
     },
     onLoad() {
-        console.log('开始执行index.js中的onLoad()',this);
+        console.log('开始执行index.js中的onLoad()', this);
         this.backgroundAudioManager = app.getBackgroundAudioManager();
 
         this.backgroundAudioManager.onError(err => {

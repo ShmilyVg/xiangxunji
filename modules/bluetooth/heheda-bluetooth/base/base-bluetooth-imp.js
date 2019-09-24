@@ -30,7 +30,7 @@ export default class BaseBlueToothImp extends BaseBlueTooth {
             const {deviceId, connected} = res;
             console.log(`device ${deviceId} state has changed, connected: ${connected}`);
             if (!connected) {
-                this.updateBLEConnectState({connectState: CommonConnectState.DISCONNECT});
+                this.latestConnectState = CommonConnectState.DISCONNECT;
                 //     this.openAdapterAndConnectLatestBLE();
             }
         });
@@ -87,12 +87,14 @@ export default class BaseBlueToothImp extends BaseBlueTooth {
      * @returns {*}
      */
     async openAdapterAndConnectLatestBLE() {
-        if (super.getLatestConnectState() === CommonConnectState.CONNECTING) {
+        if (this.latestConnectState === CommonConnectState.CONNECTING) {
             console.warn('蓝牙正在连接中，还未返回结果，所以取消本次连接');
             return;
         }
         await super.openAdapter();
-        super.updateBLEConnectState({connectState: CommonConnectState.CONNECTING});
+        console.warn('连接前，读取最新的蓝牙状态', this.latestConnectState);
+        this.latestConnectState = CommonConnectState.CONNECTING;
+        // super.updateBLEConnectState({connectState: CommonConnectState.CONNECTING});
         const connectedDeviceId = super.getConnectedDeviceId();
         if (connectedDeviceId) {
             console.log(`上次连接过设备${connectedDeviceId}，现在直接连接该设备`);
@@ -119,14 +121,14 @@ export default class BaseBlueToothImp extends BaseBlueTooth {
         try {
             const result = await promise;
             if (result.isConnected && !result.filter) {
-                super.updateBLEConnectState({connectState: CommonConnectState.CONNECTED});
+                this.latestConnectState = CommonConnectState.CONNECTED;
             }
             return result;
         } catch (e) {
             switch (e.errCode) {
                 case 10000:
                 case 10001:
-                    super.updateBLEConnectState({connectState: CommonConnectState.UNAVAILABLE});
+                    this.latestConnectState = CommonConnectState.UNAVAILABLE;
                     break;
 
             }

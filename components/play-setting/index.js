@@ -1,4 +1,5 @@
 import HiNavigator from "../navigator/hi-navigator";
+import Storage from "../../utils/storage";
 
 const App = getApp();
 
@@ -15,10 +16,15 @@ Component({
     /**
      * 组件的初始数据
      */
-    data: {show: false},
+    data: {show: false, isLightOpen: false, isWaterOpen: false},
     lifetimes: {
-        attached() {
-
+        async attached() {
+            const lightOpen = Storage.getLightOpen();
+            const waterOpen = Storage.getWaterOpen();
+            this.setData({
+                isWaterOpen: !!(await waterOpen),
+                isLightOpen: !!(await lightOpen),
+            })
         },
 
     },
@@ -26,6 +32,18 @@ Component({
      * 组件的方法列表
      */
     methods: {
+        _clickOpenSwitch(e) {
+            const {currentTarget: {dataset: {type, open}}} = e;
+            if (type === 'light') {
+                this.setData({isLightOpen: open}, async () => {
+                    await Storage.setLightOpen({open});
+                });
+            } else if (type === 'water') {
+                this.setData({isWaterOpen: open}, async () => {
+                    await Storage.setWaterOpen({open});
+                });
+            }
+        },
         _toMoreSettingPage() {
             HiNavigator.navigateToMoreSetting();
             this._hideFun();

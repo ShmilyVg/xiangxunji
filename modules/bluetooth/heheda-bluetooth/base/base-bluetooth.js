@@ -40,7 +40,7 @@ export default class BaseBlueTooth extends AbstractBlueTooth {
     set latestConnectState(value) {
         console.warn('更新蓝牙连接状态', value);
         if (this._latestConnectState !== value) {
-            this._onConnectStateChanged({value});
+            this._onConnectStateChanged({connectState: value});
             this._latestConnectState = value;
         }
     }

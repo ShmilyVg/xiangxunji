@@ -13,7 +13,6 @@ export default class BaseBlueToothImp extends BaseBlueTooth {
     constructor() {
         super();
         this._hiDeviceName = '';
-        const that = this;
         wx.onBluetoothAdapterStateChange((function () {
             let available = true;
             return async (res) => {
@@ -21,14 +20,14 @@ export default class BaseBlueToothImp extends BaseBlueTooth {
                 // discovering
                 const {available: nowAvailable} = res;
                 if (!nowAvailable) {
-                    that.dealBLEUnavailableScene();
+                    this.dealBLEUnavailableScene();
                 } else if (!available) {//当前适配器状态是可用的，但上一次是不可用的，说明是用户刚刚重新打开了
-                    await that.closeAdapter();
-                    await that.openAdapterAndConnectLatestBLE();
+                    await this.closeAdapter();
+                    await this.openAdapterAndConnectLatestBLE();
                 }
                 available = nowAvailable;
             }
-        })());
+        }).call(this));
 
         wx.onBLEConnectionStateChange(async (res) => {
             // 该方法回调中可以用于处理连接意外断开等异常情况
@@ -51,20 +50,13 @@ export default class BaseBlueToothImp extends BaseBlueTooth {
         const {devices} = res, tempFilterArray = [];
 
         if (!this._isConnectBindDevice) {
-            // console.log(JSON.stringify(devices));
-
+            const hiDeviceName = this._hiDeviceName;
             for (let device of devices) {
-                const arrayBuffer = device.serviceData['0000FE95-0000-1000-8000-00805F9B34FB'];
-                if (arrayBuffer && arrayBuffer.byteLength === 12) {
-                    const dateView = new DataView(arrayBuffer);
-                    if ((getHexStr(dateView, 2) + getHexStr(dateView, 3)) === '0A05') {
-                        this._isConnectBindDevice = true;
-                        tempFilterArray.push(device);
-                        break;
-                    }
+                if (device.localName && device.localName.includes(hiDeviceName)) {
+                    this._isConnectBindDevice = true;
+                    tempFilterArray.push(device);
                 }
             }
-            // console.log(JSON.stringify(tempFilterArray));
             const device = tempFilterArray.reduce((pre, cur) => {
                 return pre.RSSI > cur.RSSI ? pre : cur;
             });

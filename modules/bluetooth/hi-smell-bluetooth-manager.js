@@ -14,7 +14,7 @@ export default class HiSmellBlueToothManager extends HiBlueToothManager {
         this.setUUIDs({
             services: ['00006666-0000-1000-8000-00805F9B34FB'],
             hiServiceUUID: '00006666-0000-1000-8000-00805F9B34FB',
-            hiDeviceName:'AUDIO'
+            hiDeviceName:'Hi+aNiceSleep'
         });//设置主Services方式如 this.setUUIDs({services: ['xxxx']})  xxxx为UUID全称，可设置多个
     }
 

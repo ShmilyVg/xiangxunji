@@ -17,6 +17,79 @@ import {
     writeBLECharacteristicValue
 } from "./apis";
 
+
+function dontNeedOperation({errMsg}) {
+    console.warn(errMsg);
+    return Promise.resolve({errMsg});
+}
+
+const bleDiscovery = {
+    isStartDiscovery: false,
+    /**
+     * 停止蓝牙扫描
+     * @returns {Promise<any>}
+     */
+    async stopBlueToothDevicesDiscovery() {
+        if (this.isStartDiscovery) {
+            const result = await stopBlueToothDevicesDiscovery();
+            this.isStartDiscovery = false;
+            console.log('关闭扫描周围设备');
+            return result;
+        } else {
+            return dontNeedOperation({errMsg: '已关闭了扫描周围蓝牙设备，无需再次关闭'});
+        }
+    },
+    async startBlueToothDevicesDiscovery() {
+        if (!this.isStartDiscovery) {
+            const result = await startBlueToothDevicesDiscovery({
+                services: this.UUIDs,
+                allowDuplicatesKey: true,
+                interval: 300
+            });
+            console.log('开始扫描周围设备');
+            this.isStartDiscovery = true;
+            return result;
+        } else {
+            return dontNeedOperation({errMsg: '正在扫描周围蓝牙设备，无需再次开启扫描'});
+        }
+
+    }
+};
+
+const bleAdapter = {
+    isOpenAdapter: false,
+    /**
+     * 打开蓝牙适配器
+     * 只有蓝牙开启的状态下，才可执行成功
+     * @returns {Promise<any>}
+     */
+    async openAdapter() {
+        if (!this.isOpenAdapter) {
+            const result = await openBlueToothAdapter();
+            this.isOpenAdapter = true;
+            console.log('打开蓝牙适配器成功');
+            return result;
+        } else {
+            return dontNeedOperation({errMsg: '已打开了蓝牙适配器，无需重复打开'});
+        }
+    },
+
+    /**
+     * 关闭蓝牙适配器
+     * @returns {Promise<any>}
+     */
+    async closeAdapter() {
+        if (this.isOpenAdapter) {
+            const result = await closeBlueToothAdapter();
+            this.isOpenAdapter = false;
+            console.log('关闭蓝牙适配器成功');
+            return result;
+        } else {
+            return dontNeedOperation({errMsg: '已关闭了蓝牙适配器，无需重复关闭'});
+        }
+    }
+};
+
 export default class AbstractBlueTooth {
     constructor() {
 
@@ -46,24 +119,18 @@ export default class AbstractBlueTooth {
     //     }
     // }
 
-    /**
-     * 打开蓝牙适配器
-     * 只有蓝牙开启的状态下，才可执行成功
-     * @returns {Promise<any>}
-     */
     async openAdapter() {
         return await openBlueToothAdapter();
     }
 
-    /**
-     * 关闭蓝牙适配器
-     * @returns {Promise<any>}
-     */
     async closeAdapter() {
-        console.log('关闭蓝牙适配器');
         return await closeBlueToothAdapter();
     }
 
+    resetAllBLEFlag() {
+        bleAdapter.isOpenAdapter = false;
+        bleDiscovery.isStartDiscovery = false;
+    }
 
     /**
      * 建立蓝牙连接
@@ -73,7 +140,7 @@ export default class AbstractBlueTooth {
      */
     async createBLEConnection({deviceId, valueChangeListener}) {
         // 操作之前先监听，保证第一时间获取数据
-        await createBLEConnection({deviceId, timeout: 5000});
+        await createBLEConnection({deviceId, timeout: 7000});
         wx.onBLECharacteristicValueChange((res) => {
             if (!!valueChangeListener) {
                 const {value, protocolState, filter} = this.dealReceiveData({receiveBuffer: res.value});
@@ -124,16 +191,13 @@ export default class AbstractBlueTooth {
         });
     }
 
-    /**
-     * 停止蓝牙扫描
-     * @returns {Promise<any>}
-     */
-    async stopBlueToothDevicesDiscovery() {
-        return await stopBlueToothDevicesDiscovery();
-    }
 
     async startBlueToothDevicesDiscovery() {
-        return await startBlueToothDevicesDiscovery({services: this.UUIDs, allowDuplicatesKey: true, interval: 100});
+        return await startBlueToothDevicesDiscovery({services: this.UUIDs, allowDuplicatesKey: true, interval: 350});
+    }
+
+    async stopBlueToothDevicesDiscovery() {
+        return await stopBlueToothDevicesDiscovery();
     }
 
     /**

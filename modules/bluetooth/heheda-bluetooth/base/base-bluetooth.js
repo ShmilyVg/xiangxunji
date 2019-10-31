@@ -21,9 +21,22 @@ export default class BaseBlueTooth extends AbstractBlueTooth {
 
     init() {
         this._deviceId = this.getConnectedDeviceId();
+        const {model} = wx.getSystemInfoSync();
         setTimeout(() => {
-            this.isBugPhone = getApp().globalData.systemInfo.isBugPhone;
+            this.isBugPhone = model.indexOf('iPhone 6') !== -1 || model.indexOf('iPhone 7') !== -1;
         });
+    }
+
+    async openAdapter() {
+        if (!this.isBugPhone) {
+            return super.openAdapter();
+        } else {
+            return new Promise(resolve => {
+                setTimeout(async () => {
+                    resolve(await super.openAdapter());
+                }, 150);
+            });
+        }
     }
 
     /**
@@ -38,8 +51,8 @@ export default class BaseBlueTooth extends AbstractBlueTooth {
     }
 
     set latestConnectState(value) {
-        console.warn('更新蓝牙连接状态', value);
         if (this._latestConnectState !== value) {
+            console.warn('更新蓝牙连接状态', value);
             this._onConnectStateChanged({connectState: value});
             this._latestConnectState = value;
         }
@@ -53,7 +66,7 @@ export default class BaseBlueTooth extends AbstractBlueTooth {
         if (this._latestProtocolObj.protocolState !== protocolState) {
             this._onReceiveData({protocolState, value});
         } else {
-            const latestValue = this._latestProtocolObj.value;
+            const {value: latestValue} = this._latestProtocolObj;
             if (Object.getOwnPropertyNames(latestValue) === Object.getOwnPropertyNames(value)) {
                 for (let [key, item] of entries(latestValue)) {
                     if (item !== value[key]) {
@@ -86,14 +99,18 @@ export default class BaseBlueTooth extends AbstractBlueTooth {
             switch (e.errCode) {
                 case -1:
                     console.log('已连接上，无需重新连接');
-                    await super.stopBlueToothDevicesDiscovery()
+                    await super.stopBlueToothDevicesDiscovery();
                     return Promise.resolve({isConnected: true});
+                case 10000:
+                case 10001:
+                    return Promise.reject(e);
                 case 10003:
                 case 10012:
-                    console.log('连接不上，现重启蓝牙适配器', e);
-                    await super.closeAdapter();
-                    await super.openAdapter();
-                    console.log('开始重新扫描连接');
+                    console.warn('连接不上', e);
+                    // console.log('现重启蓝牙适配器');
+                    // await super.closeAdapter();
+                    // await super.openAdapter();
+                    console.warn('准备开始重新扫描连接');
                     await this.startBlueToothDevicesDiscovery();//这里调用的是子类的startBlueToothDevicesDiscovery，因为子类有实现
                     return Promise.resolve({isConnected: false, filter: true});//这种是需要重新执行一遍扫描连接流程的，filter是否过滤掉本次事件
                 case 10004:
@@ -121,7 +138,10 @@ export default class BaseBlueTooth extends AbstractBlueTooth {
      * @returns {string|*}
      */
     getConnectedDeviceId() {
-        return this._deviceId || wx.getStorageSync('deviceId') || '';
+        if (!this._deviceId) {
+            this._deviceId = wx.getStorageSync('deviceId') || '';
+        }
+        return this._deviceId;
     }
 
     setDeviceId({deviceId}) {

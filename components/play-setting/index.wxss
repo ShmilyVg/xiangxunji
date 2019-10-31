@@ -9,7 +9,7 @@
 
 .play-setting-dialog-layout {
     width: 90%;
-    background:rgba(255,255,255,1);
+    background:rgba(37,37,37,0.95);
     box-shadow:0 8rpx 20rpx 0 rgba(0, 0, 0, 0.1);
     border-radius:20rpx;
     padding-left: 46rpx;

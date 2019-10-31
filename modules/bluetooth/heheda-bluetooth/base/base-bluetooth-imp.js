@@ -1,6 +1,10 @@
 import {CommonConnectState} from "heheda-bluetooth-state";
 import BaseBlueTooth from "./base-bluetooth";
 
+function getHexStr(dataView, index) {
+    return ('0' + dataView.getUint8(index).toString(16)).slice(-2).toUpperCase();
+}
+
 /**
  * 蓝牙核心业务的封装
  */
@@ -17,20 +21,22 @@ export default class BaseBlueToothImp extends BaseBlueTooth {
                 // discovering
                 const {available: nowAvailable} = res;
                 if (!nowAvailable) {
-                    await that.closeAdapter();
+                    that.dealBLEUnavailableScene();
                 } else if (!available) {//当前适配器状态是可用的，但上一次是不可用的，说明是用户刚刚重新打开了
+                    await that.closeAdapter();
                     await that.openAdapterAndConnectLatestBLE();
                 }
                 available = nowAvailable;
             }
         })());
 
-        wx.onBLEConnectionStateChange((res) => {
+        wx.onBLEConnectionStateChange(async (res) => {
             // 该方法回调中可以用于处理连接意外断开等异常情况
             const {deviceId, connected} = res;
             console.log(`device ${deviceId} state has changed, connected: ${connected}`);
             if (!connected) {
-                this.latestConnectState = CommonConnectState.DISCONNECT;
+                await this.openAdapterAndConnectLatestBLE();
+                // this.latestConnectState = CommonConnectState.DISCONNECT;
                 //     this.openAdapterAndConnectLatestBLE();
             }
         });
@@ -42,31 +48,29 @@ export default class BaseBlueToothImp extends BaseBlueTooth {
 
     async baseDeviceFindAction(res) {
         console.log('开始扫描', res);
-        const myBindDeviceId = this._deviceId, {devices} = res;
+        const {devices} = res, tempFilterArray = [];
+
         if (!this._isConnectBindDevice) {
-            if (myBindDeviceId) {
-                for (let device of devices) {
-                    const deviceId = device.deviceId;
-                    if (deviceId === myBindDeviceId) {
+            // console.log(JSON.stringify(devices));
+
+            for (let device of devices) {
+                const arrayBuffer = device.serviceData['0000FE95-0000-1000-8000-00805F9B34FB'];
+                if (arrayBuffer && arrayBuffer.byteLength === 12) {
+                    const dateView = new DataView(arrayBuffer);
+                    if ((getHexStr(dateView, 2) + getHexStr(dateView, 3)) === '0A05') {
                         this._isConnectBindDevice = true;
-                        console.log('找到设备并开始连接', myBindDeviceId, device);
-                        await this._updateBLEConnectFinalState({promise: await super.createBLEConnection({deviceId})});
+                        tempFilterArray.push(device);
                         break;
                     }
                 }
-
-            } else if (!myBindDeviceId) {
-                const hiDeviceName = this._hiDeviceName || '';
-                for (let device of devices) {
-                    if (device.localName && device.localName.toUpperCase().indexOf(hiDeviceName) !== -1) {
-                        this._isConnectBindDevice = true;
-                        console.log('扫描到目标设备，并开始连接', device);
-                        await this._updateBLEConnectFinalState({promise: await super.createBLEConnection({deviceId: device.deviceId})});
-                        break;
-                    }
-                }
-
             }
+            // console.log(JSON.stringify(tempFilterArray));
+            const device = tempFilterArray.reduce((pre, cur) => {
+                return pre.RSSI > cur.RSSI ? pre : cur;
+            });
+            const {deviceId} = device;
+            console.log('baseDeviceFindAction 扫描到目标设备，并开始连接', deviceId, device);
+            await this._updateBLEConnectFinalState({promise: super.createBLEConnection({deviceId})});
         }
     }
 
@@ -88,26 +92,37 @@ export default class BaseBlueToothImp extends BaseBlueTooth {
      */
     async openAdapterAndConnectLatestBLE() {
         if (this.latestConnectState === CommonConnectState.CONNECTING) {
-            console.warn('蓝牙正在连接中，还未返回结果，所以取消本次连接');
+            console.warn('openAdapterAndConnectLatestBLE 蓝牙正在连接中，还未返回结果，所以取消本次连接');
             return;
         }
-        await super.openAdapter();
-        console.warn('连接前，读取最新的蓝牙状态', this.latestConnectState);
+        console.warn('openAdapterAndConnectLatestBLE 连接前，读取最新的蓝牙状态：', this.latestConnectState || '未初始化');
+        await this._updateBLEConnectFinalState({promise: super.openAdapter()});
+        // await super.openAdapter();
         this.latestConnectState = CommonConnectState.CONNECTING;
-        // super.updateBLEConnectState({connectState: CommonConnectState.CONNECTING});
-        const connectedDeviceId = super.getConnectedDeviceId();
-        if (connectedDeviceId) {
-            console.log(`上次连接过设备${connectedDeviceId}，现在直接连接该设备`);
-            await this._updateBLEConnectFinalState({promise: await super.createBLEConnection({deviceId: connectedDeviceId})});
-        } else {
-            console.log('上次未连接过设备或直连失败，现开始扫描周围设备');
-            await this.startBlueToothDevicesDiscovery();
-        }
+        // const connectedDeviceId = super.getConnectedDeviceId();
+        // if (connectedDeviceId) {
+        //     console.log(`上次连接过设备${connectedDeviceId}，现在直接连接该设备`);
+        //     await this._updateBLEConnectFinalState({promise: await super.createBLEConnection({deviceId: connectedDeviceId})});
+        // } else {
+        // console.log('上次未连接过设备或直连失败，现开始扫描周围设备');
+        console.log('openAdapterAndConnectLatestBLE 现开始扫描周围设备');
+        await this.startBlueToothDevicesDiscovery();
+        // }
     }
 
     async startBlueToothDevicesDiscovery() {
         this._isConnectBindDevice = false;
-        return super.startBlueToothDevicesDiscovery();
+        try {
+            return super.startBlueToothDevicesDiscovery();
+        } catch (e) {
+            switch (e.errCode) {
+                case 10000:
+                case 10001:
+                    this.dealBLEUnavailableScene();
+                    break;
+
+            }
+        }
     }
 
     /**
@@ -125,14 +140,20 @@ export default class BaseBlueToothImp extends BaseBlueTooth {
             }
             return result;
         } catch (e) {
+            console.warn('_updateBLEConnectFinalState 蓝牙连接出现问题', e);
             switch (e.errCode) {
                 case 10000:
                 case 10001:
-                    this.latestConnectState = CommonConnectState.UNAVAILABLE;
+                    this.dealBLEUnavailableScene();
                     break;
 
             }
+            return Promise.reject(e);
         }
     }
 
+    dealBLEUnavailableScene() {
+        this.latestConnectState = CommonConnectState.UNAVAILABLE;
+        super.resetAllBLEFlag();
+    }
 }

@@ -10,12 +10,6 @@ export default class SimpleBlueToothImp {
         this.bluetoothManager.init();
     }
 
-    /**
-     * 设置蓝牙行为的监听
-     * @param receiveDataListener 必须设置
-     * @param bleStateListener 必须设置
-     * @param scanBLEListener 不必须设置 如果没有设置该监听，则在扫描蓝牙设备后，会自动连接距离手机最近的蓝牙设备；否则，会返回扫描到的所有设备
-     */
     setBLEListener({listener}) {
         this.bluetoothManager.setBLEListener(arguments[0]);
     }

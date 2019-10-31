@@ -1,7 +1,7 @@
 import {CommonConnectState, CommonProtocolState} from "heheda-bluetooth-state";
 import {HexTools} from "./utils/tools";
-import {ProtocolBody} from "./utils/protocol";
-import {BlueToothUpdate, Protocol} from "../../network/network/index";
+import {ProtocolBody} from "./utils/protocol-body";
+import {Protocol} from "../../network/network";
 
 const commandIndex = 0, dataStartIndex = 1;
 
@@ -29,7 +29,6 @@ export default class HiBlueToothProtocol {
                     }).then(() => {
                         console.log('绑定协议发送成功');
                         this.startCommunication();
-                        blueToothManager.setBindMarkStorage();
                         blueToothManager.sendQueryDataRequiredProtocol();
                         blueToothManager.executeBLEReceiveDataCallBack(
                             {protocolState: CommonProtocolState.CONNECTED_AND_BIND},
@@ -86,16 +85,15 @@ export default class HiBlueToothProtocol {
     }
 
     requireDeviceBind() {
-        !this.getDeviceIsBind() && this.action['0x01']();
+        console.log('发送绑定消息');
+        this.action['0x01']();
     }
 
     sendQueryDataRequiredProtocol() {
-        if (this.getDeviceIsBind()) {
-            const queryDataTimeoutIndex = setTimeout(() => {
-                this.action['0x0a']();
-            }, 200);
-            this._protocolQueue.push(queryDataTimeoutIndex);
-        }
+        const queryDataTimeoutIndex = setTimeout(() => {
+            this.action['0x0a']();
+        }, 200);
+        this._protocolQueue.push(queryDataTimeoutIndex);
     }
 
     sendData({command, data}) {
@@ -103,36 +101,11 @@ export default class HiBlueToothProtocol {
     }
 
     sendQueryDataSuccessProtocol({isSuccess}) {
-        if (this.getDeviceIsBind()) {
-            this.action['0x0b']({isSuccess});
-        }
+        this.action['0x0b']({isSuccess});
     }
 
     startCommunication() {
         this.action['0x03']();
-    }
-
-    getDeviceIsBind() {
-        this._isBindMark = this._isBindMark || wx.getStorageSync('isBindDevice');
-        console.log('获取设备是否被绑定', this._isBindMark);
-        return this._isBindMark;
-    }
-
-    setBindMarkStorage() {
-        try {
-            wx.setStorageSync('isBindDevice', true);
-            this._isBindMark = true;
-        } catch (e) {
-            console.log('setBindMarkStorage()出现错误');
-            wx.setStorageSync('isBindDevice', true);
-            this._isBindMark = true;
-            console.log('setBindMarkStorage()重新存储成功');
-        }
-    }
-
-    clearBindMarkStorage() {
-        wx.removeStorageSync('isBindDevice');
-        this._isBindMark = false;
     }
 
     clearSendProtocol() {

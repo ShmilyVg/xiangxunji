@@ -15,9 +15,9 @@ export default class HiBlueToothManager extends SimpleBlueToothImp {
         this._BLEPush = [];
         this.reWriteIndex = 0;
         wx.onAppShow(() => {
-            if (this.getLatestState().connectState === CommonConnectState.CONNECTED) {
-                setTimeout(() => {
-                    this.resendBLEData();
+            if (this.getBLELatestConnectState() === CommonConnectState.CONNECTED) {
+                setTimeout(async () => {
+                    await this.resendBLEData();
                 }, 20);
             } else {
                 this._BLEPush.splice(0, this._BLEPush.length);
@@ -25,12 +25,12 @@ export default class HiBlueToothManager extends SimpleBlueToothImp {
         });
     }
 
-    resendBLEData() {
+    async resendBLEData() {
         if (this._BLEPush && this._BLEPush.length) {
             let item;
             while (!!(item = this._BLEPush.shift())) {
                 console.warn('回到前台，重新发送蓝牙协议', item);
-                this._sendData(item);
+                await this._sendData(item);
             }
         }
     }
@@ -47,39 +47,36 @@ export default class HiBlueToothManager extends SimpleBlueToothImp {
                     return reject();
                 }
             });
-        })
+        });
     }
 
     sendDataCatchError({buffer}) {
-        return new Promise((resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
             // if (buffer && buffer.byteLength) {
             if (getApp().isAppOnShow) {
-                this._sendData({buffer, resolve, reject});
+                await this._sendData({buffer, resolve, reject});
             } else {
                 this._BLEPush.push({buffer, resolve, reject});
                 console.warn('程序进入后台，停止发送蓝牙数据，数据放入队列', this._BLEPush);
             }
-            // } else {
-            //     console.log('发送的buffer是空');
-            //     reject();
-            // }
         });
     }
 
-    _sendData({buffer, resolve, reject}) {
-        super.sendData({buffer}).then(res => {
-            resolve();
-            console.log('writeBLECharacteristicValue success成功', res.errMsg);
+    async _sendData({buffer, resolve, reject}) {
+        try {
+            const result = await super.sendData({buffer});
+            console.log('writeBLECharacteristicValue success成功', result.errMsg);
             const dataView = new DataView(buffer, 0);
             const byteLength = buffer.byteLength;
             for (let i = 0; i < byteLength; i++) {
                 console.log(dataView.getUint8(i));
             }
-        }).catch(res => {
-            console.log('写入失败', res);
-            //TODO 推入队列
-            if (res.errCode === 10008 && this.reWriteIndex <= MAX_WRITE_NUM) {
-                this._sendData({buffer, resolve, reject});
+
+            resolve();
+        } catch (e) {
+            console.log('写入失败', e);
+            if (e.errCode === 10008 && this.reWriteIndex <= MAX_WRITE_NUM) {
+                await this._sendData({buffer, resolve, reject});
             } else {
                 this._BLEPush.push({buffer, resolve, reject});
                 this.closeAll().finally(() => {
@@ -87,33 +84,11 @@ export default class HiBlueToothManager extends SimpleBlueToothImp {
                 });
                 reject({needReconnect: true});
             }
-            // let connectState = CommonConnectState.DISCONNECT;
-            // if (res.errCode === 10001 || res.errCode === 10000) {
-            //     connectState = CommonConnectState.UNAVAILABLE;
-            // }
-            // this.updateBLEStateImmediately(this.getState({connectState}));
-            // setTimeout(() => this.closeAll().finally(() => this.connect()), 1000);
-        });
-    }
-
-    getLatestState() {
-        if (this.getBindMarkStorage()) {
-            return this.latestState;
         }
-        return this.latestState = {connectState: CommonConnectState.UNBIND};
     }
 
     clearConnectedBLE() {
-        this.bluetoothProtocol.clearBindMarkStorage();
         return super.clearConnectedBLE();
-    }
-
-    getBindMarkStorage() {
-        return this.bluetoothProtocol.getDeviceIsBind();
-    }
-
-    setBindMarkStorage() {
-        this.bluetoothProtocol.setBindMarkStorage();
     }
 
     /**

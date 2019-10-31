@@ -112,6 +112,7 @@ export async function notifyBLE({deviceId, targetServiceUUID}) {
         let item = characteristics[i], properties = item.properties, uuid = item.uuid;
         if (notify === -1 && (properties.notify || properties.indicate)) {
             await notifyBLECharacteristicValueChange({deviceId, serviceId, characteristicId: uuid, state: true});
+            console.warn('注册notify事件 characteristicId:', uuid);
             notify = i;
         }
         if (read === -1 && (properties.read)) {

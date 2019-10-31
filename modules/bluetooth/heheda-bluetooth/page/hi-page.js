@@ -11,3 +11,9 @@
 //
 //     return page.call(null, arguments[0]);
 // };
+// const tempFilterArray = [-81, -88, -70, -49];
+// const device = tempFilterArray.reduce((pre, cur) => {
+//     return pre.RSSI > cur.RSSI ? pre : cur;
+// });
+//
+// console.log(device);

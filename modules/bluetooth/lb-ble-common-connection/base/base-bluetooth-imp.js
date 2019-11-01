@@ -12,7 +12,7 @@ export default class BaseBlueToothImp extends BaseBlueTooth {
 
     constructor() {
         super();
-        this._hiDeviceName = '';
+        this._targetDeviceName = '';
         wx.onBluetoothAdapterStateChange((function () {
             let available = true;
             return async (res) => {
@@ -53,9 +53,9 @@ export default class BaseBlueToothImp extends BaseBlueTooth {
     }
 
     findTargetDeviceNeedConnected({devices}) {
-        const hiDeviceName = this._hiDeviceName, tempFilterArray = [];
+        const targetDeviceName = this._targetDeviceName, tempFilterArray = [];
         for (let device of devices) {
-            if (device.localName && device.localName.includes(hiDeviceName)) {
+            if (device.localName && device.localName.includes(targetDeviceName)) {
                 this._isConnectBindDevice = true;
                 tempFilterArray.push(device);
             }
@@ -70,9 +70,9 @@ export default class BaseBlueToothImp extends BaseBlueTooth {
     }
 
 
-    setUUIDs({services, hiServiceUUID, hiDeviceName}) {
-        this._hiDeviceName = hiDeviceName;
-        super.setUUIDs({services, hiServiceUUID});
+    setFilter({services, targetServiceUUID, targetDeviceName}) {
+        this._targetDeviceName = targetDeviceName;
+        super.setFilter({services, targetServiceUUID});
     }
 
     clearConnectedBLE() {

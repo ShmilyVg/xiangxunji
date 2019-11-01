@@ -11,10 +11,10 @@ export default class HiSmellBlueToothManager extends LBlueToothManager {
         //     hiServiceUUID: '6E400001-B5A3-F393-E0A9-E50E24DCCA9F',
         //     hiDeviceName:'PB1-'
         // });
-        this.setUUIDs({
+        super.setFilter({
             services: ['00006666-0000-1000-8000-00805F9B34FB'],
-            hiServiceUUID: '00006666-0000-1000-8000-00805F9B34FB',
-            hiDeviceName:'Hi+aNiceSleep'
+            targetServiceUUID: '00006666-0000-1000-8000-00805F9B34FB',
+            targetDeviceName: 'Hi+aNiceSleep'
         });//设置主Services方式如 this.setUUIDs({services: ['xxxx']})  xxxx为UUID全称，可设置多个
     }
 
@@ -31,8 +31,8 @@ export default class HiSmellBlueToothManager extends LBlueToothManager {
                     isShowDialog = true;
                     const systemInfo = wx.getSystemInfoSync();
                     if (systemInfo) {
-                        const {locationAuthorized, locationEnabled, system,platform} = systemInfo;
-                        if (platform!=='ios') {
+                        const {locationAuthorized, locationEnabled, system, platform} = systemInfo;
+                        if (platform !== 'ios') {
                             if (!locationEnabled) {
                                 WXDialog.showDialog({
                                     title: '小贴士', content: '请开启手机GPS', confirmText: '我知道了', confirmEvent: () => {

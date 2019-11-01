@@ -148,7 +148,7 @@ export default class AbstractBlueTooth {
             }
         });
 
-        return await notifyBLE({deviceId, targetServiceUUID: this._hiServiceUUID});
+        return await notifyBLE({deviceId, targetServiceUUID: this._targetServiceUUID});
     }
 
     /**
@@ -160,13 +160,13 @@ export default class AbstractBlueTooth {
     }
 
     /**
-     * 设置UUID数组
+     * 设置蓝牙扫描和连接时的过滤信息
      * 这会让你在扫描蓝牙设备时，只保留该UUID数组的蓝牙设备，过滤掉其他的所有设备，提高扫描效率
      * @param services
-     * @param hiServiceUUID
+     * @param targetServiceUUID
      */
-    setUUIDs({services, hiServiceUUID}) {
-        this._hiServiceUUID = hiServiceUUID;
+    setFilter({services, targetServiceUUID}) {
+        this._targetServiceUUID = targetServiceUUID;
         if (Array.isArray(services)) {
             this.UUIDs = services;
         } else {

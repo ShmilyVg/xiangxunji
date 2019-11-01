@@ -51,7 +51,7 @@ export default class BaseBlueTooth extends AbstractBlueTooth {
 
     set latestConnectState(value) {
         if (this._latestConnectState !== value) {
-            console.warn('更新蓝牙连接状态', value);
+            console.warn('蓝牙连接状态更新', value);
             this._onConnectStateChanged({connectState: value});
             this._latestConnectState = value;
         }
@@ -70,7 +70,7 @@ export default class BaseBlueTooth extends AbstractBlueTooth {
                 for (let [key, item] of entries(latestValue)) {
                     if (item !== value[key]) {
                         this._onReceiveData({protocolState, value});
-                        break;
+                        return;
                     }
                 }
             } else {

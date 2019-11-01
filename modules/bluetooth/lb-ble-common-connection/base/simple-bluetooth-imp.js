@@ -4,10 +4,9 @@ export default class SimpleBlueToothImp {
     constructor() {
         this.bluetoothManager = new BaseBlueToothImp();
         this.bluetoothManager.dealReceiveData = this.dealReceiveData.bind(this);
-    }
-
-    overwrite() {
-
+        if (this.overwriteFindTargetDeviceNeedConnected) {
+            this.bluetoothManager.findTargetDeviceNeedConnected = this.overwriteFindTargetDeviceNeedConnected;
+        }
     }
 
     setBLEListener({listener}) {

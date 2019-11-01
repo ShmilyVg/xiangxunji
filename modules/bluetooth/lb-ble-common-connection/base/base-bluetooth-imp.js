@@ -52,7 +52,6 @@ export default class BaseBlueToothImp extends BaseBlueTooth {
         });
     }
 
-
     findTargetDeviceNeedConnected({devices}) {
         const hiDeviceName = this._hiDeviceName, tempFilterArray = [];
         for (let device of devices) {

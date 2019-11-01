@@ -6,8 +6,8 @@ export default class SimpleBlueToothImp {
         this.bluetoothManager.dealReceiveData = this.dealReceiveData.bind(this);
     }
 
-    init() {
-        this.bluetoothManager.init();
+    overwrite() {
+
     }
 
     setBLEListener({listener}) {

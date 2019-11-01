@@ -8,7 +8,6 @@ App({
         this.globalData.systemInfo = wx.getSystemInfoSync();
         this.globalData.navHeight = this.globalData.systemInfo.statusBarHeight + 46;
         this.bLEManager = new HiSmellBlueToothManager();
-        this.bLEManager.init();
         this.bLEManager.setBLEListener({
             onConnectStateChanged: (res) => {
                 const {connectState} = res;

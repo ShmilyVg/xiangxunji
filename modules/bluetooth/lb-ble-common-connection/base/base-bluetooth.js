@@ -17,14 +17,13 @@ export default class BaseBlueTooth extends AbstractBlueTooth {
         this._characteristicId = '';
         this._latestConnectState = '';
         this._latestProtocolObj = {protocolState: '', value: {}};
-    }
-
-    init() {
-        this._deviceId = this.getConnectedDeviceId();
-        const {model} = wx.getSystemInfoSync();
-        setTimeout(() => {
-            this.isBugPhone = model.indexOf('iPhone 6') !== -1 || model.indexOf('iPhone 7') !== -1;
-        });
+        {
+            this._deviceId = this.getConnectedDeviceId();
+            const {model} = wx.getSystemInfoSync();
+            setTimeout(() => {
+                this.isBugPhone = model.indexOf('iPhone 6') !== -1 || model.indexOf('iPhone 7') !== -1;
+            });
+        }
     }
 
     async openAdapter() {

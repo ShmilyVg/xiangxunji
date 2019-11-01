@@ -1,9 +1,9 @@
 import {CommonConnectState} from "heheda-bluetooth-state";
 import BaseBlueTooth from "./base-bluetooth";
-
-function getHexStr(dataView, index) {
-    return ('0' + dataView.getUint8(index).toString(16)).slice(-2).toUpperCase();
-}
+//
+// function getHexStr(dataView, index) {
+//     return ('0' + dataView.getUint8(index).toString(16)).slice(-2).toUpperCase();
+// }
 
 /**
  * 蓝牙核心业务的封装
@@ -40,31 +40,36 @@ export default class BaseBlueToothImp extends BaseBlueTooth {
             }
         });
         wx.onBluetoothDeviceFound(async (res) => {
-            await this.baseDeviceFindAction(res);
+            console.log('开始扫描周边设备', res);
+            if (!this._isConnectBindDevice) {
+                const {devices} = res, {targetDevice} = this.findTargetDeviceNeedConnected({devices});
+                if (targetDevice) {
+                    const {deviceId} = targetDevice;
+                    console.log('baseDeviceFindAction 扫描到目标设备，并开始连接', deviceId, targetDevice);
+                    await this._updateBLEConnectFinalState({promise: super.createBLEConnection({deviceId})});
+                }
+            }
         });
     }
 
 
-    async baseDeviceFindAction(res) {
-        console.log('开始扫描', res);
-        const {devices} = res, tempFilterArray = [];
-
-        if (!this._isConnectBindDevice) {
-            const hiDeviceName = this._hiDeviceName;
-            for (let device of devices) {
-                if (device.localName && device.localName.includes(hiDeviceName)) {
-                    this._isConnectBindDevice = true;
-                    tempFilterArray.push(device);
-                }
+    findTargetDeviceNeedConnected({devices}) {
+        const hiDeviceName = this._hiDeviceName, tempFilterArray = [];
+        for (let device of devices) {
+            if (device.localName && device.localName.includes(hiDeviceName)) {
+                this._isConnectBindDevice = true;
+                tempFilterArray.push(device);
             }
+        }
+        if (tempFilterArray.length) {
             const device = tempFilterArray.reduce((pre, cur) => {
                 return pre.RSSI > cur.RSSI ? pre : cur;
             });
-            const {deviceId} = device;
-            console.log('baseDeviceFindAction 扫描到目标设备，并开始连接', deviceId, device);
-            await this._updateBLEConnectFinalState({promise: super.createBLEConnection({deviceId})});
+            return {targetDevice: device};
         }
+        return {targetDevice: null};
     }
+
 
     setUUIDs({services, hiServiceUUID, hiDeviceName}) {
         this._hiDeviceName = hiDeviceName;

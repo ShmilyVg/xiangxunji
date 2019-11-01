@@ -1,4 +1,5 @@
 import AbstractBlueTooth from "./abstract-bluetooth";
+import {getStorageSync, removeStorageSync, setStorageSync} from "./apis";
 
 
 function* entries(obj) {
@@ -138,17 +139,17 @@ export default class BaseBlueTooth extends AbstractBlueTooth {
      */
     getConnectedDeviceId() {
         if (!this._deviceId) {
-            this._deviceId = wx.getStorageSync('deviceId') || '';
+            this._deviceId = getStorageSync('deviceId') || '';
         }
         return this._deviceId;
     }
 
     setDeviceId({deviceId}) {
         try {
-            wx.setStorageSync('deviceId', this._deviceId = deviceId);
+            setStorageSync('deviceId', this._deviceId = deviceId);
         } catch (e) {
             console.log('setDeviceMacAddress()出现错误 deviceId=', this._deviceId);
-            wx.setStorageSync('deviceId', this._deviceId = deviceId);
+            setStorageSync('deviceId', this._deviceId = deviceId);
             console.log('setDeviceMacAddress()重新存储成功');
         }
     }
@@ -160,7 +161,7 @@ export default class BaseBlueTooth extends AbstractBlueTooth {
      */
     async clearConnectedBLE() {
         await super.closeAdapter();
-        wx.removeStorageSync('deviceId');
+        removeStorageSync('deviceId');
         this._deviceId = '';
         this._serviceId = '';
         this._characteristicId = '';

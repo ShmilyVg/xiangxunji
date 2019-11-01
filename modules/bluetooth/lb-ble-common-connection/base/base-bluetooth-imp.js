@@ -1,5 +1,6 @@
 import {CommonConnectState} from "heheda-bluetooth-state";
 import BaseBlueTooth from "./base-bluetooth";
+import {onBLEConnectionStateChange, onBluetoothAdapterStateChange, onBluetoothDeviceFound} from "./apis";
 //
 // function getHexStr(dataView, index) {
 //     return ('0' + dataView.getUint8(index).toString(16)).slice(-2).toUpperCase();
@@ -13,7 +14,7 @@ export default class BaseBlueToothImp extends BaseBlueTooth {
     constructor() {
         super();
         this._targetDeviceName = '';
-        wx.onBluetoothAdapterStateChange((function () {
+        onBluetoothAdapterStateChange((function () {
             let available = true;
             return async (res) => {
                 console.log('适配器状态changed, now is', res);
@@ -29,7 +30,7 @@ export default class BaseBlueToothImp extends BaseBlueTooth {
             }
         }).call(this));
 
-        wx.onBLEConnectionStateChange(async (res) => {
+        onBLEConnectionStateChange(async (res) => {
             // 该方法回调中可以用于处理连接意外断开等异常情况
             const {deviceId, connected} = res;
             console.log(`device ${deviceId} state has changed, connected: ${connected}`);
@@ -39,7 +40,8 @@ export default class BaseBlueToothImp extends BaseBlueTooth {
                 //     this.openAdapterAndConnectLatestBLE();
             }
         });
-        wx.onBluetoothDeviceFound(async (res) => {
+
+        onBluetoothDeviceFound(async (res) => {
             console.log('开始扫描周边设备', res);
             if (!this._isConnectBindDevice) {
                 const {devices} = res, {targetDevice} = this.findTargetDeviceNeedConnected({devices});

@@ -129,6 +129,31 @@ export async function notifyBLE({deviceId, targetServiceUUID}) {
     return {serviceId, characteristicId};
 }
 
+
+export function setStorageSync(key, data) {
+    wx.setStorageSync(key, data);
+}
+
+export function getStorageSync(key) {
+    return wx.getStorageSync(key);
+}
+
+export function removeStorageSync(key) {
+    return wx.removeStorageSync(key);
+}
+
+export function onBluetoothAdapterStateChange(cb) {
+    wx.onBluetoothAdapterStateChange(cb);
+}
+
+export function onBLEConnectionStateChange(cb) {
+    wx.onBLEConnectionStateChange(cb);
+}
+
+export function onBluetoothDeviceFound(cb) {
+    wx.onBluetoothDeviceFound(cb);
+}
+
 async function findTargetServiceByUUID({deviceId, targetServiceUUID}) {
     const {services} = await getBLEDeviceServices({deviceId});
     for (let i = 0, length = services.length; i < length; i++) {
@@ -140,3 +165,4 @@ async function findTargetServiceByUUID({deviceId, targetServiceUUID}) {
         }
     }
 }
+

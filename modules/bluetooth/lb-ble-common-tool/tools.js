@@ -42,4 +42,16 @@ export class HexTools {
         array.forEach((item, index) => count += item << (divideNum - index) * 8);
         return count;
     }
+
+    /**
+     * 获取数据的低八位
+     * @param data
+     * @returns {{lowLength: number, others: Array}}
+     */
+    static getDataLowLength({data}) {
+        const dataPart = [];
+        data.map(item => HexTools.numToHexArray(item)).forEach(item => dataPart.push(...item));
+        const lowLength = HexTools.hexToNum((dataPart.length + 1).toString(16));
+        return {lowLength, others: dataPart};
+    }
 }

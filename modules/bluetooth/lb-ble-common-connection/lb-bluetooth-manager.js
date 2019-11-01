@@ -2,16 +2,11 @@ import SimpleBlueToothImp from "./base/simple-bluetooth-imp";
 import {CommonConnectState, CommonProtocolState} from "heheda-bluetooth-state";
 
 const MAX_WRITE_NUM = 5;
-export default class HiBlueToothManager extends SimpleBlueToothImp {
+export default class LBlueToothManager extends SimpleBlueToothImp {
 
-    constructor() {
+    constructor({debug = true} = {}) {
         super();
-        this.latestState = {
-            state: {
-                connectState: CommonConnectState.UNBIND,
-                protocolState: CommonProtocolState.UNKNOWN
-            }
-        };
+        this.debug = debug;
         this._BLEPush = [];
         this.reWriteIndex = 0;
         wx.onAppShow(() => {
@@ -29,7 +24,7 @@ export default class HiBlueToothManager extends SimpleBlueToothImp {
         if (this._BLEPush && this._BLEPush.length) {
             let item;
             while (!!(item = this._BLEPush.shift())) {
-                console.warn('回到前台，重新发送蓝牙协议', item);
+                this.debug && console.warn('回到前台，重新发送蓝牙协议', item);
                 await this._sendData(item);
             }
         }
@@ -57,7 +52,7 @@ export default class HiBlueToothManager extends SimpleBlueToothImp {
                 await this._sendData({buffer, resolve, reject});
             } else {
                 this._BLEPush.push({buffer, resolve, reject});
-                console.warn('程序进入后台，停止发送蓝牙数据，数据放入队列', this._BLEPush);
+                this.debug && console.warn('程序进入后台，停止发送蓝牙数据，数据放入队列', this._BLEPush);
             }
         });
     }
@@ -65,16 +60,17 @@ export default class HiBlueToothManager extends SimpleBlueToothImp {
     async _sendData({buffer, resolve, reject}) {
         try {
             const result = await super.sendData({buffer});
-            console.log('writeBLECharacteristicValue success成功', result.errMsg);
-            const dataView = new DataView(buffer, 0);
-            const byteLength = buffer.byteLength;
-            for (let i = 0; i < byteLength; i++) {
-                console.log(dataView.getUint8(i));
+            if (this.debug) {
+                console.log('writeBLECharacteristicValue success成功', result.errMsg);
+                const dataView = new DataView(buffer, 0);
+                const byteLength = buffer.byteLength;
+                for (let i = 0; i < byteLength; i++) {
+                    console.log(dataView.getUint8(i));
+                }
             }
-
             resolve();
         } catch (e) {
-            console.log('写入失败', e);
+            this.debug && console.log('写入失败', e);
             if (e.errCode === 10008 && this.reWriteIndex <= MAX_WRITE_NUM) {
                 await this._sendData({buffer, resolve, reject});
             } else {
@@ -121,8 +117,7 @@ export default class HiBlueToothManager extends SimpleBlueToothImp {
         if (CommonProtocolState.UNKNOWN === protocolState) {
             return {filter: true};
         }
-        this.latestState.protocolState = protocolState;
-        HiBlueToothManager.logReceiveData({receiveBuffer});
+        this.logReceiveData({receiveBuffer});
         return {value: dataAfterProtocol, protocolState};
     }
 
@@ -130,11 +125,13 @@ export default class HiBlueToothManager extends SimpleBlueToothImp {
      * 打印接收到的数据
      * @param receiveBuffer
      */
-    static logReceiveData({receiveBuffer}) {
-        const byteLength = receiveBuffer.byteLength;
-        const dataView = new DataView(receiveBuffer, 0);
-        for (let k = 0; k < byteLength; k++) {
-            console.log(`接收到的数据索引：${k} 值：${dataView.getUint8(k)}`);
+    logReceiveData({receiveBuffer}) {
+        if (this.debug) {
+            const byteLength = receiveBuffer.byteLength;
+            const dataView = new DataView(receiveBuffer, 0);
+            for (let k = 0; k < byteLength; k++) {
+                console.log(`接收到的数据索引：${k} 值：${dataView.getUint8(k)}`);
+            }
         }
     }
 };

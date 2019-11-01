@@ -1,8 +1,8 @@
 import HiSmellBlueToothProtocol from "./hi-smell-bluetooth-protocol";
-import HiBlueToothManager from "./heheda-bluetooth/hi-bluetooth-manager";
+import {LBlueToothManager} from "./lb-ble-common-connection/index";
 import {WXDialog} from "heheda-common-view";
 
-export default class HiSmellBlueToothManager extends HiBlueToothManager {
+export default class HiSmellBlueToothManager extends LBlueToothManager {
     constructor() {
         super();
         this.bluetoothProtocol = new HiSmellBlueToothProtocol(this);

@@ -16,7 +16,6 @@ export default class HiSmellBlueToothProtocol extends LBlueToothProtocolOperator
             },
             '0x62': ({dataArray}) => {
                 console.log('接收到的0x62的数据 从byte2开始', dataArray);
-
             },
             '0x63': ({dataArray}) => {
                 console.log('接收到的0x63的数据 从byte2开始', dataArray);

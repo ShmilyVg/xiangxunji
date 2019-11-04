@@ -1,0 +1,9 @@
+<!--pages/bk-test/bk-test.wxml-->
+
+
+
+<view class="flex-column fill-width">
+    <button bindtap="send0x56" style="margin-top: 200rpx;margin-bottom:550rpx;background-color: white;color: #000;" class="fill-width" hover-class="press-btn-class">点击发送0x56</button>
+    <text style="background-color: white;padding: 30rpx 0;" class="fill-width">测试版版本号：{{version}}</text>
+</view>
+

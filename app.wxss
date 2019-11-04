@@ -3,6 +3,12 @@ page{
   --primaryColor:#7265E3;
 
 }
+
+.press-btn-class {
+  opacity: 0.6;
+
+}
+
 .flex-row{
   display: flex;
   flex-direction: row;

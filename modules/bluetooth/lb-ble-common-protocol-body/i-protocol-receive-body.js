@@ -21,19 +21,16 @@ export default class IBLEProtocolReceiveBody {
         const receiveArray = [...new Uint8Array(receiveBuffer.slice(0, 20))];
         let command = receiveArray[this.commandIndex];
         let commandHex = `0x${HexTools.numToHex(command)}`;
-        console.log('IBLEProtocolReceiveBody receive command:', commandHex);
-        let effectiveReceiveDataLength = this.getEffectiveReceiveDataLength({receiveArray});
-        let dataArray;
-        if (effectiveReceiveDataLength > 0) {
-            const endIndex = this.dataStartIndex + effectiveReceiveDataLength;
-            dataArray = receiveArray.slice(this.dataStartIndex, endIndex);
-        }
+        console.log('[IBLEProtocolReceiveBody] the receive data command is:', commandHex);
+
+        const {dataArray} = this.getEffectiveReceiveData({receiveArray});
+
         const doAction = action[commandHex];
         if (doAction) {
             const actionTemp = doAction({dataArray});
             if (actionTemp && actionTemp.protocolState) {
-                const {protocolState, dataAfterProtocol} = actionTemp;
-                return {protocolState, dataAfterProtocol};
+                const {protocolState, effectiveData} = actionTemp;
+                return {protocolState, effectiveData};
             } else {
                 console.log('协议处理完成，并且返回无状态事件');
                 return {protocolState: CommonProtocolState.UNKNOWN};
@@ -44,6 +41,19 @@ export default class IBLEProtocolReceiveBody {
         }
     }
 
+    /**
+     * 在接收到的数据中，按你指定的规则获取有价值的数据
+     * @param receiveArray 接收到的所有数据
+     * @returns {{dataArray: Array}}
+     */
+    getEffectiveReceiveData({receiveArray}) {
+        let effectiveReceiveDataLength = this.getEffectiveReceiveDataLength({receiveArray}), dataArray = [];
+        if (effectiveReceiveDataLength > 0) {
+            const endIndex = this.dataStartIndex + effectiveReceiveDataLength;
+            dataArray = receiveArray.slice(this.dataStartIndex, endIndex);
+        }
+        return {dataArray};
+    }
 
     /**
      * 获取有效数据的字节长度

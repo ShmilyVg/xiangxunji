@@ -3,7 +3,7 @@ import {Protocol} from "../../network/network/index";
 import {CommonConnectState, CommonProtocolState} from "heheda-bluetooth-state";
 
 export default class CommonProtocolAction {
-    constructor({context}) {
+    constructor({lBlueToothProtocolOperatorContext:context}) {
         this.context = context;
         this._protocolQueue = [];
         context.requireDeviceBind = () => {

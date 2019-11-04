@@ -97,15 +97,6 @@ export default class LBlueToothManager extends SimpleBlueToothImp {
         return super.closeAll();
     }
 
-    startProtocol() {
-        // console.log('startProtocol');
-        // this.bluetoothProtocol.openWater({open: true, duration: 100});
-    }
-
-    sendQueryDataRequiredProtocol() {
-        this.bluetoothProtocol.sendQueryDataRequiredProtocol();
-    }
-
     /**
      * 处理从蓝牙设备接收到的数据的具体实现
      * 这里会将处理后的数据，作为参数传递给setBLEListener的receiveDataListener监听函数。
@@ -113,12 +104,12 @@ export default class LBlueToothManager extends SimpleBlueToothImp {
      * @returns {*}
      */
     dealReceiveData({receiveBuffer}) {
-        const {dataAfterProtocol, protocolState} = this.bluetoothProtocol.receive({receiveBuffer});
+        const {effectiveData, protocolState} = this.bluetoothProtocol.receive({receiveBuffer});
         if (CommonProtocolState.UNKNOWN === protocolState) {
             return {filter: true};
         }
         this.logReceiveData({receiveBuffer});
-        return {value: dataAfterProtocol, protocolState};
+        return {value: effectiveData, protocolState};
     }
 
     /**

@@ -1,6 +1,6 @@
 import {CommonConnectState} from "heheda-bluetooth-state";
 import BaseBlueTooth from "./base-bluetooth";
-import {onBLEConnectionStateChange, onBluetoothAdapterStateChange, onBluetoothDeviceFound} from "./apis";
+import {onBLEConnectionStateChange, onBluetoothAdapterStateChange, onBluetoothDeviceFound} from "./wx/apis";
 //
 // function getHexStr(dataView, index) {
 //     return ('0' + dataView.getUint8(index).toString(16)).slice(-2).toUpperCase();
@@ -119,13 +119,7 @@ export default class BaseBlueToothImp extends BaseBlueTooth {
         try {
             return super.startBlueToothDevicesDiscovery();
         } catch (e) {
-            switch (e.errCode) {
-                case 10000:
-                case 10001:
-                    this.dealBLEUnavailableScene();
-                    break;
-
-            }
+            return Promise.reject(e);
         }
     }
 
@@ -145,13 +139,6 @@ export default class BaseBlueToothImp extends BaseBlueTooth {
             return result;
         } catch (e) {
             console.warn('_updateBLEConnectFinalState 蓝牙连接出现问题', e);
-            switch (e.errCode) {
-                case 10000:
-                case 10001:
-                    this.dealBLEUnavailableScene();
-                    break;
-
-            }
             return Promise.reject(e);
         }
     }

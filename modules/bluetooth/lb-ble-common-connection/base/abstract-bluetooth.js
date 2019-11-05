@@ -15,7 +15,7 @@ import {
     startBlueToothDevicesDiscovery,
     stopBlueToothDevicesDiscovery,
     writeBLECharacteristicValue
-} from "./apis";
+} from "./wx/apis";
 import IBLEOperator from "./inter/i-ble-operator";
 
 

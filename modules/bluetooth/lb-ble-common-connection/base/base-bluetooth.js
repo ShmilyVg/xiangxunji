@@ -1,5 +1,6 @@
 import AbstractBlueTooth from "./abstract-bluetooth";
-import {getStorageSync, removeStorageSync, setStorageSync} from "./apis";
+import {getStorageSync, removeStorageSync, setStorageSync} from "./wx/apis";
+import {CommonConnectState} from "heheda-bluetooth-state";
 
 
 function* entries(obj) {
@@ -13,30 +14,11 @@ export default class BaseBlueTooth extends AbstractBlueTooth {
         super();
         this._onConnectStateChanged = null;
         this._onReceiveData = null;
-        this._deviceId = '';
+        this._deviceId = this.getConnectedDeviceId();
         this._serviceId = '';
         this._characteristicId = '';
         this._latestConnectState = '';
         this._latestProtocolObj = {protocolState: '', value: {}};
-        {
-            this._deviceId = this.getConnectedDeviceId();
-            const {model} = wx.getSystemInfoSync();
-            setTimeout(() => {
-                this.isBugPhone = model.indexOf('iPhone 6') !== -1 || model.indexOf('iPhone 7') !== -1;
-            });
-        }
-    }
-
-    async openAdapter() {
-        if (!this.isBugPhone) {
-            return super.openAdapter();
-        } else {
-            return new Promise(resolve => {
-                setTimeout(async () => {
-                    resolve(await super.openAdapter());
-                }, 150);
-            });
-        }
     }
 
     /**
@@ -95,18 +77,20 @@ export default class BaseBlueTooth extends AbstractBlueTooth {
                 console.error('连接完成后，停止扫描周围设备失败', e);
             }
             return {isConnected: true};
-        } catch (e) {
-            switch (e.errCode) {
+        } catch (error) {
+            switch (error.errCode) {
                 case -1:
                     console.log('已连接上，无需重新连接');
                     await super.stopBlueToothDevicesDiscovery();
                     return {isConnected: true};
                 case 10000:
                 case 10001:
-                    return Promise.reject(e);
+                    this.latestConnectState = CommonConnectState.UNAVAILABLE;
+                    super.resetAllBLEFlag();
+                    return Promise.reject(error);
                 case 10003:
                 case 10012:
-                    console.warn('连接不上', e);
+                    console.warn('连接不上', error);
                     // console.log('现重启蓝牙适配器');
                     // await super.closeAdapter();
                     // await super.openAdapter();
@@ -117,10 +101,9 @@ export default class BaseBlueTooth extends AbstractBlueTooth {
                     await super.closeBLEConnection({deviceId});
                     return await this.createBLEConnection({deviceId});
                 default:
-                    console.warn('连接失败，重新连接', e);
+                    console.warn('连接失败，重新连接', error);
                     return await this.createBLEConnection({deviceId});
             }
-
         }
     }
 

@@ -63,7 +63,26 @@ export function stopBlueToothDevicesDiscovery() {
 }
 
 export function openBlueToothAdapter() {
-    return new Promise((resolve, reject) => wx.openBluetoothAdapter({success: resolve, fail: reject}));
+    let isBugPhone = false;
+    try {
+        const {model} = wx.getSystemInfoSync();
+        isBugPhone = model.indexOf('iPhone 6') !== -1 || model.indexOf('iPhone 7') !== -1;
+    } catch (e) {
+        console.error('wx.getSystemInfoSync() error', e);
+    }
+    return (openBlueToothAdapter = function () {
+        return new Promise((resolve, reject) => {
+            if (!isBugPhone) {
+                wx.openBluetoothAdapter({success: resolve, fail: reject});
+            } else {
+                setTimeout(() => {
+                    wx.openBluetoothAdapter({success: resolve, fail: reject});
+                }, 150);
+            }
+        });
+    })();
+
+
 }
 
 export function closeBlueToothAdapter() {

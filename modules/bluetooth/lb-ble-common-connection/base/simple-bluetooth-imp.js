@@ -27,10 +27,9 @@ export default class SimpleBlueToothImp {
 
     /**
      * 连接蓝牙
-     * @returns {*}
      */
     connect() {
-        return this.bluetoothManager.openAdapterAndConnectLatestBLE();
+        this.bluetoothManager.openAdapterAndConnectLatestBLE();
     }
 
 

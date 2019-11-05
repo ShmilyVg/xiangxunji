@@ -78,6 +78,10 @@ export function getConnectedBlueToothDevices({services}) {
     }));
 }
 
+export function onBLECharacteristicValueChange(cb) {
+    wx.onBLECharacteristicValueChange(cb);
+}
+
 /**
  * 获取在蓝牙模块生效期间所有已发现的蓝牙设备。包括已经和本机处于连接状态的设备
  * @returns {Promise<any>}

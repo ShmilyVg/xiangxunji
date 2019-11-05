@@ -54,6 +54,12 @@ export default class BaseBlueToothImp extends BaseBlueTooth {
         });
     }
 
+    /**
+     * 找到需要连接的蓝牙设备
+     * 该接口可被子类重写
+     * @param devices 一个周期内扫描到的蓝牙设备，周期时长是wx.startBlueToothDevicesDiscovery接口中指定的interval时长
+     * @returns {{targetDevice: null}|{targetDevice: *}}
+     */
     findTargetDeviceNeedConnected({devices}) {
         const targetDeviceName = this._targetDeviceName, tempFilterArray = [];
         for (let device of devices) {

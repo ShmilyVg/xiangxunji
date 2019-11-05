@@ -94,13 +94,13 @@ export default class BaseBlueTooth extends AbstractBlueTooth {
             } catch (e) {
                 console.error('连接完成后，停止扫描周围设备失败', e);
             }
-            return Promise.resolve({isConnected: true});
+            return {isConnected: true};
         } catch (e) {
             switch (e.errCode) {
                 case -1:
                     console.log('已连接上，无需重新连接');
                     await super.stopBlueToothDevicesDiscovery();
-                    return Promise.resolve({isConnected: true});
+                    return {isConnected: true};
                 case 10000:
                 case 10001:
                     return Promise.reject(e);
@@ -112,7 +112,7 @@ export default class BaseBlueTooth extends AbstractBlueTooth {
                     // await super.openAdapter();
                     console.warn('准备开始重新扫描连接');
                     await this.startBlueToothDevicesDiscovery();//这里调用的是子类的startBlueToothDevicesDiscovery，因为子类有实现
-                    return Promise.resolve({isConnected: false, filter: true});//这种是需要重新执行一遍扫描连接流程的，filter是否过滤掉本次事件
+                    return {isConnected: false, filter: true};//这种是需要重新执行一遍扫描连接流程的，filter是否过滤掉本次事件
                 case 10004:
                     await super.closeBLEConnection({deviceId});
                     return await this.createBLEConnection({deviceId});
@@ -139,17 +139,17 @@ export default class BaseBlueTooth extends AbstractBlueTooth {
      */
     getConnectedDeviceId() {
         if (!this._deviceId) {
-            this._deviceId = getStorageSync('deviceId') || '';
+            this._deviceId = getStorageSync('lb_ble_$deviceId') || '';
         }
         return this._deviceId;
     }
 
     setDeviceId({deviceId}) {
         try {
-            setStorageSync('deviceId', this._deviceId = deviceId);
+            setStorageSync('lb_ble_$deviceId', this._deviceId = deviceId);
         } catch (e) {
             console.log('setDeviceMacAddress()出现错误 deviceId=', this._deviceId);
-            setStorageSync('deviceId', this._deviceId = deviceId);
+            setStorageSync('lb_ble_$deviceId', this._deviceId = deviceId);
             console.log('setDeviceMacAddress()重新存储成功');
         }
     }
@@ -161,7 +161,7 @@ export default class BaseBlueTooth extends AbstractBlueTooth {
      */
     async clearConnectedBLE() {
         await super.closeAdapter();
-        removeStorageSync('deviceId');
+        removeStorageSync('lb_ble_$deviceId');
         this._deviceId = '';
         this._serviceId = '';
         this._characteristicId = '';

@@ -10,13 +10,13 @@ import {
     closeBlueToothAdapter,
     createBLEConnection,
     getConnectedBlueToothDevices,
-    notifyBLE,
+    notifyBLE, onBLECharacteristicValueChange,
     openBlueToothAdapter,
     startBlueToothDevicesDiscovery,
     stopBlueToothDevicesDiscovery,
     writeBLECharacteristicValue
 } from "./apis";
-import IBLEOperator from "./i-ble-operator";
+import IBLEOperator from "./inter/i-ble-operator";
 
 
 // function dontNeedOperation({errMsg}) {
@@ -95,10 +95,6 @@ export default class AbstractBlueTooth extends IBLEOperator{
         super();
     }
 
-    dealReceiveData({receiveBuffer}) {
-
-    }
-
     async openAdapter() {
         return await openBlueToothAdapter();
     }
@@ -116,13 +112,12 @@ export default class AbstractBlueTooth extends IBLEOperator{
     async createBLEConnection({deviceId, valueChangeListener}) {
         // 操作之前先监听，保证第一时间获取数据
         await createBLEConnection({deviceId, timeout: 7000});
-        wx.onBLECharacteristicValueChange((res) => {
+        onBLECharacteristicValueChange((res) => {
             if (!!valueChangeListener) {
                 const {value, protocolState, filter} = this.dealReceiveData({receiveBuffer: res.value});
                 !filter && valueChangeListener({protocolState, value});
             }
         });
-
         return await notifyBLE({deviceId, targetServiceUUID: this._targetServiceUUID});
     }
 

@@ -1,7 +1,7 @@
 {
   "pages": [
-    "pages/bk-test/bk-test",
     "pages/index/index",
+    "pages/bk-test/bk-test",
     "pages/play/play",
     "pages/setting/setting",
     "pages/user-center/user-center",

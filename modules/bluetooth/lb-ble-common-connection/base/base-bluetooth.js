@@ -17,7 +17,7 @@ export default class BaseBlueTooth extends AbstractBlueTooth {
         this._deviceId = this.getConnectedDeviceId();
         this._serviceId = '';
         this._characteristicId = '';
-        this._latestConnectState = '';
+        this._latestConnectState = CommonConnectState.UNAVAILABLE;
         this._latestProtocolObj = {protocolState: '', value: {}};
     }
 

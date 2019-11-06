@@ -8,6 +8,7 @@ export default class HiSmellBlueToothManager extends LBlueToothManager {
         this.bluetoothProtocol = new HiSmellBlueToothProtocol(this);
         super.setFilter({
             services: ['00006666-0000-1000-8000-00805F9B34FB'],
+            // services: ['00006666-0000-1000-8000-00805F9B34FB'],
             targetServiceUUID: '00006666-0000-1000-8000-00805F9B34FB',
             targetDeviceName: 'Hi+aNiceSleep'
         });

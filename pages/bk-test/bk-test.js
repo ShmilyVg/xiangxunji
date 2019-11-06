@@ -17,7 +17,17 @@ Page({
     onLoad(options) {
 
     },
+    onSubmitEvent(e) {
+        const {detail: {value: {sendDataValue}}} = e;
+        const array = sendDataValue.split(',').filter(item => !!item).map(item => parseInt(item));
+        console.log('输入的内容', array);
+        const bleManager = app.getBLEManager();
+        if (bleManager.getBLELatestConnectState() === ConnectState.CONNECTED) {
+            bleManager.getProtocol().sendDataWithInput({array});
+        }
 
+
+    },
     send0x56() {
         const bleManager = app.getBLEManager();
         if (bleManager.getBLELatestConnectState() === ConnectState.CONNECTED) {

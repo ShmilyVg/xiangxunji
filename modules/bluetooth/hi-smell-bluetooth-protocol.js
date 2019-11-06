@@ -1,5 +1,6 @@
 import {LBlueToothProtocolOperator} from "./lb-ble-common-protocol-operator/index";
 import {ReceiveBody, SendBody} from "./lb-ble-xiangxunji-protocol-body/index";
+import {HexTools} from "./lb-ble-common-tool/index";
 
 export default class HiSmellBlueToothProtocol extends LBlueToothProtocolOperator {
     constructor(blueToothManager) {
@@ -29,6 +30,11 @@ export default class HiSmellBlueToothProtocol extends LBlueToothProtocolOperator
             },
 
         };
+    }
+
+    sendDataWithInput({array}) {
+        const [command, ...data] = array;
+        this.sendData({command: HexTools.numToHex(command), data});
     }
 
     getDeviceAllStatus() {

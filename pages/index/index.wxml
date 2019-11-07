@@ -4,8 +4,8 @@
     <connect-state></connect-state>
     <view class="flex-row align-items-center space-between box-sizing-border-box user-layout">
         <view class="flex-column">
-            <view class="index-title">晚上好</view>
-            <view class="index-subtitle">多为人间琐碎事，不解疑团迷红尘。</view>
+            <view class="index-title">{{welcomeObj.title}}</view>
+            <view class="index-subtitle">{{welcomeObj.content}}</view>
         </view>
         <image src="" class="index-user-head"></image>
     </view>

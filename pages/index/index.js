@@ -1,10 +1,17 @@
-import {getMindPractiseList, getWhiteNoiseList} from "./data-manager";
+import {
+    getMindPractiseList,
+    getWelcomeContent,
+    getWelcomeString,
+    getWelcomeTime,
+    getWhiteNoiseList
+} from "./data-manager";
 import HiNavigator from "../../navigator/hi-navigator";
 
 const app = getApp();
 
 Page({
     data: {
+        welcomeObj: {title: '', content: getWelcomeContent()},
         habits: [],
         minds: getMindPractiseList(),
         whiteNoiseList: getWhiteNoiseList()
@@ -48,6 +55,9 @@ Page({
 
     onShow() {
         console.log('开始执行index.js中的onShow()', this);
+        this.setData({
+            'welcomeObj.title': getWelcomeTime()
+        });
     },
     toReconnectEvent() {
         app.getBLEManager().connect();

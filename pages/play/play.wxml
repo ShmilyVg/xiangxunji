@@ -3,7 +3,8 @@
     <navbar title="" background-color="transparent"></navbar>
 
     <view class="fill-width flex-row align-items-center space-between box-sizing-border-box" style="padding: 48rpx 65rpx 0;">
-        <env-choose env-voices="{{envVoices}}" bind:onChooseEnvVoiceItem="onChooseEnvVoiceItem"></env-choose>
+        <env-choose wx:if="{{envVoices.length}}" env-voices="{{envVoices}}" bind:onChooseEnvVoiceItem="onChooseEnvVoiceItem"></env-choose>
+        <view wx:else></view>
         <play-setting></play-setting>
     </view>
 

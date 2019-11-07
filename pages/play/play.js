@@ -9,7 +9,7 @@ Page({
     data: {
         startAnimation: false,
         targetVoice: {},
-        envVoices: getWhiteNoiseList()
+        envVoices: []
     },
     onChooseEnvVoiceItem(e) {
         console.log(e);
@@ -19,7 +19,12 @@ Page({
         const voiceId = parseInt(options.id);
         const targetVoice = getAllVoiceList().find(item => item.id === voiceId);
         if (targetVoice) {
-            this.setData({targetVoice});
+            const whiteNoiseList = getWhiteNoiseList();
+
+            this.setData({
+                targetVoice,
+                envVoices: !whiteNoiseList.find(item => item.id === voiceId) ? whiteNoiseList : []
+            });
         }
     },
 

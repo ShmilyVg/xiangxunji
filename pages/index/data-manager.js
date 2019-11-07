@@ -15,3 +15,8 @@ export function getWhiteNoiseList() {
         {id: 101, iconName: 'hong_ni_xiao_lu', title: '红泥小炉'},
     ];
 }
+
+
+export function getAllVoiceList() {
+    return getMindPractiseList().concat(getWhiteNoiseList());
+}

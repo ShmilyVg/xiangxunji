@@ -1,4 +1,6 @@
 // pages/play/play.js
+import {getAllVoiceList, getWhiteNoiseList} from "../index/data-manager";
+
 Page({
 
     /**
@@ -6,18 +8,19 @@ Page({
      */
     data: {
         startAnimation: false,
-        envVoices:[{},{},{},{}]
+        targetVoice: {},
+        envVoices: getWhiteNoiseList()
     },
     onChooseEnvVoiceItem(e) {
         console.log(e);
         const {detail: {item}} = e;
-
     },
-    /**
-     * 生命周期函数--监听页面加载
-     */
     onLoad(options) {
-
+        const voiceId = parseInt(options.id);
+        const targetVoice = getAllVoiceList().find(item => item.id === voiceId);
+        if (targetVoice) {
+            this.setData({targetVoice});
+        }
     },
 
     /**
@@ -31,7 +34,7 @@ Page({
      * 生命周期函数--监听页面显示
      */
     onShow() {
-        setTimeout(()=>{
+        setTimeout(() => {
             this.setData({startAnimation: true}, 1000);
         })
     },

@@ -8,7 +8,7 @@
 
     <view class="play-music-center-super-layout">
         <view class="flex-column align-items-center justify-center play-music-center-layout">
-            <view class="play-music-name">入睡催眠</view>
+            <view class="play-music-name">{{targetVoice.title}}</view>
             <view class="flex-row align-items-center">
                 <image src="../../images/play/time.png" class="play-music-duration-icon"></image>
                 <view class="play-music-duration-time">09:54</view>

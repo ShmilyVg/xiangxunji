@@ -5,8 +5,8 @@
         <view class="play-bottom-dialog-title">场景音</view>
         <view class="fill-width flex-row align-items-center box-sizing-border-box" style="justify-content: space-around;padding: 0 10rpx;">
             <view bindtap="_onChooseEnvVoiceItem" data-item="{{item}}" wx:for="{{envVoices}}" wx:key="index" class="flex-column align-items-center">
-                <image src="../../images/play/" class="play-bottom-dialog-item-icon"></image>
-                <view class="play-bottom-dialog-item-content">雨打芭蕉</view>
+                <image src="../../images/index/icon/selected/{{item.iconName}}.png" class="play-bottom-dialog-item-icon"></image>
+                <view class="play-bottom-dialog-item-content">{{item.title}}</view>
             </view>
         </view>
     </view>

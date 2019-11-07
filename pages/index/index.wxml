@@ -38,7 +38,7 @@
 
 
     <view class="flex-row box-sizing-border-box index-content-super-layout">
-        <view wx:for="{{minds}}" wx:key="index" class="flex-column index-content-layout">
+        <view wx:for="{{minds}}" wx:key="index" class="flex-column index-content-layout" bindtap="onMindPracticeClickEvent" data-id="{{item.id}}">
             <image src="../../images/index/icon/small/{{item.iconName}}.png" class="index-content-img"></image>
             <view class="index-content-title">{{item.title}}</view>
 <!--            <view class="index-content-subtitle">92人在这里</view>-->
@@ -53,7 +53,7 @@
 
 
     <view class="flex-row box-sizing-border-box index-content-super-layout">
-        <view wx:for="{{whiteNoiseList}}" wx:key="index" class="flex-column index-content-layout">
+        <view wx:for="{{whiteNoiseList}}" wx:key="index" class="flex-column index-content-layout" bindtap="onWhiteNoiseClickEvent" data-id="{{item.id}}">
             <image src="../../images/index/icon/small/{{item.iconName}}.png" class="index-content-img"></image>
             <view class="index-content-title">{{item.title}}</view>
 <!--            <view class="index-content-subtitle">92人在这里</view>-->

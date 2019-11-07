@@ -1,4 +1,5 @@
 import {getMindPractiseList, getWhiteNoiseList} from "./data-manager";
+import HiNavigator from "../../navigator/hi-navigator";
 
 const app = getApp();
 
@@ -8,6 +9,13 @@ Page({
         minds: getMindPractiseList(),
         whiteNoiseList: getWhiteNoiseList()
     },
+    onMindPracticeClickEvent({currentTarget: {dataset: {id}}}) {
+        HiNavigator.navigateToPlayPage({id});
+    },
+    onWhiteNoiseClickEvent({currentTarget: {dataset: {id}}}) {
+        HiNavigator.navigateToPlayPage({id});
+    },
+
     //事件处理函数
     bindViewTap() {
         wx.chooseMessageFile({

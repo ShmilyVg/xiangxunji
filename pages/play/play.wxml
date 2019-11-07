@@ -1,5 +1,6 @@
+<image class="fill-width fill-height absolute play-music-bg" src="../../images/play/bg/{{targetVoice.iconName}}.jpg"></image>
 <view class="fill-width flex-column align-items-center">
-    <navbar title=""></navbar>
+    <navbar title="" background-color="transparent"></navbar>
 
     <view class="fill-width flex-row align-items-center space-between box-sizing-border-box" style="padding: 48rpx 65rpx 0;">
         <env-choose env-voices="{{envVoices}}" bind:onChooseEnvVoiceItem="onChooseEnvVoiceItem"></env-choose>

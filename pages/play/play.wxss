@@ -1,3 +1,8 @@
+.play-music-bg {
+    z-index: -1;
+
+
+}
 .play-music-center-super-layout{
     width:430rpx;
     height:430rpx;

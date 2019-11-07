@@ -1,5 +1,5 @@
 <!--components/navbar/index.wxml-->
-<view class="navbar" style='height:{{navH}}px'>
+<view class="navbar" style="height:{{navH}}px;background-color: {{backgroundColor}};">
     <view class="navbar" style="position: fixed;height:{{navH}}px;">
         <view class='navbar-title common-position'>{{title||''}}</view>
 

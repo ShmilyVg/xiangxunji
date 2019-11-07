@@ -13,6 +13,10 @@ Component({
             type: String,
             value: ''
         },
+        backgroundColor: {
+            type: String,
+            value: '#24213A'
+        }
     },
 
     /**

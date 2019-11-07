@@ -12,49 +12,51 @@
 
     <image src="../../images/index/wave.png" class="index-bg-line"></image>
 
-
-    <view class="flex-row box-sizing-border-box space-between align-items-center index-part-title-layout">
-        <view class="index-part-title">我的助眠习惯</view>
-        <view class="index-part-subtitle" bindtap="">查看更多</view>
-    </view>
-
-    <scroll-view scroll-x enable-flex class="fill-width flex-row index-habit-layout box-sizing-border-box">
-        <view wx:for="{{habits}}" wx:key="index" style="display: inline-block;">
-            <view class="flex-row align-items-center index-habit-item-layout box-sizing-border-box">
-                <image src="" class="index-habit-item-img"></image>
-                <view class="index-habit-item-title">喜欢的模式</view>
-                <view class="index-habit-item-line"></view>
-                <image class="index-habit-item-heart"></image>
-            </view>
+    <block wx:if="{{habits.length}}">
+        <view class="flex-row box-sizing-border-box space-between align-items-center index-part-title-layout">
+            <view class="index-part-title">我的助眠习惯</view>
+            <view class="index-part-subtitle" bindtap="">查看更多</view>
         </view>
-    </scroll-view>
+
+        <scroll-view scroll-x enable-flex class="fill-width flex-row index-habit-layout box-sizing-border-box">
+            <view wx:for="{{habits}}" wx:key="index" style="display: inline-block;">
+                <view class="flex-row align-items-center index-habit-item-layout box-sizing-border-box">
+                    <image src="" class="index-habit-item-img"></image>
+                    <view class="index-habit-item-title">喜欢的模式</view>
+                    <view class="index-habit-item-line"></view>
+                    <image class="index-habit-item-heart"></image>
+                </view>
+            </view>
+        </scroll-view>
+    </block>
+
 
     <view class="flex-row box-sizing-border-box space-between align-items-center index-part-title-layout">
         <view class="index-part-title">冥想练习</view>
-        <view class="index-part-subtitle" bindtap="">查看更多</view>
+        <view wx:if="{{minds.length>4}}" class="index-part-subtitle" bindtap="">查看更多</view>
     </view>
 
 
     <view class="flex-row box-sizing-border-box index-content-super-layout">
         <view wx:for="{{minds}}" wx:key="index" class="flex-column index-content-layout">
-            <image src="" class="index-content-img"></image>
-            <view class="index-content-title">入睡催眠</view>
-            <view class="index-content-subtitle">92人在这里</view>
+            <image src="../../images/index/icon/small/{{item.iconName}}.png" class="index-content-img"></image>
+            <view class="index-content-title">{{item.title}}</view>
+<!--            <view class="index-content-subtitle">92人在这里</view>-->
         </view>
     </view>
 
 
     <view class="flex-row box-sizing-border-box space-between align-items-center index-part-title-layout">
         <view class="index-part-title">白噪音</view>
-        <view class="index-part-subtitle" bindtap="">查看更多</view>
+        <view wx:if="{{whiteNoiseList.length>4}}" class="index-part-subtitle" bindtap="">查看更多</view>
     </view>
 
 
     <view class="flex-row box-sizing-border-box index-content-super-layout">
-        <view wx:for="{{minds}}" wx:key="index" class="flex-column index-content-layout">
-            <image src="" class="index-content-img"></image>
-            <view class="index-content-title">雨打芭蕉</view>
-            <view class="index-content-subtitle">92人在这里</view>
+        <view wx:for="{{whiteNoiseList}}" wx:key="index" class="flex-column index-content-layout">
+            <image src="../../images/index/icon/small/{{item.iconName}}.png" class="index-content-img"></image>
+            <view class="index-content-title">{{item.title}}</view>
+<!--            <view class="index-content-subtitle">92人在这里</view>-->
         </view>
     </view>
 

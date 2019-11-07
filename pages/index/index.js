@@ -1,12 +1,12 @@
-//index.js
-//获取应用实例
+import {getMindPractiseList, getWhiteNoiseList} from "./data-manager";
 
 const app = getApp();
 
 Page({
     data: {
-        habits: [{}, {}, {}],
-        minds: [{}, {}, {},]
+        habits: [],
+        minds: getMindPractiseList(),
+        whiteNoiseList: getWhiteNoiseList()
     },
     //事件处理函数
     bindViewTap() {

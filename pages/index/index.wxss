@@ -9,7 +9,6 @@
     color:rgba(184,175,214,1);
     line-height:28rpx;
     margin-bottom: 26rpx;
-    margin-bottom: 26rpx;
 }
 
 .index-subtitle {

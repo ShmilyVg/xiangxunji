@@ -1,10 +1,4 @@
-import {
-    getMindPractiseList,
-    getWelcomeContent,
-    getWelcomeString,
-    getWelcomeTime,
-    getWhiteNoiseList
-} from "./data-manager";
+import {getMindPractiseList, getWelcomeContent, getWelcomeTime, getWhiteNoiseList} from "./data-manager";
 import HiNavigator from "../../navigator/hi-navigator";
 
 const app = getApp();

@@ -34,7 +34,6 @@ export function getWelcomeContent() {
         {content: '对见解的执著，是精神之道上的最大障碍'},
         {content: '我们娴熟于为生活作准备，却并不擅长于生活'},
     ];
-    return '我们娴熟于为生活作准备，却并不擅长于生活'
     return contents[Math.floor(Math.random() * contents.length)].content;
 }
 
@@ -51,9 +50,9 @@ export function getMindPractiseList() {
 export function getWhiteNoiseList() {
     return [
         {id: 101, iconName: 'yu_da_ba_jiao', title: '雨打芭蕉'},
-        {id: 101, iconName: 'hai_bian_man_bu', title: '海边漫步'},
-        {id: 101, iconName: 'lin_jian_niao_yu', title: '林间鸟语'},
-        {id: 101, iconName: 'hong_ni_xiao_lu', title: '红泥小炉'},
+        {id: 102, iconName: 'hai_bian_man_bu', title: '海边漫步'},
+        {id: 103, iconName: 'lin_jian_niao_yu', title: '林间鸟语'},
+        {id: 104, iconName: 'hong_ni_xiao_lu', title: '红泥小炉'},
     ];
 }
 

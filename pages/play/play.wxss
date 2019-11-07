@@ -1,3 +1,6 @@
+page{
+    background-color: #24213A;
+}
 .play-music-bg {
     z-index: -1;
 

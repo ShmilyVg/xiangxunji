@@ -1,0 +1,1 @@
+<image bindtap="_onSwitchEvent" data-open="{{!open}}" data-tag="{{tag}}" src="./images/switch_{{open?'open':'close'}}.png" class="play-setting-dialog-switch"></image>

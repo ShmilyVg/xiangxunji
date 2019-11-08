@@ -33,7 +33,7 @@ Component({
      */
     methods: {
         _clickOpenSwitch(e) {
-            const {currentTarget: {dataset: {type, open}}} = e;
+            const {detail: {tag: type, open}} = e;
             if (type === 'light') {
                 this.setData({isLightOpen: open}, async () => {
                     await Storage.setLightOpen({open});

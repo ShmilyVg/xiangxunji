@@ -1,0 +1,4 @@
+.play-setting-dialog-switch{
+    width: 86rpx;
+    height: 46rpx;
+}

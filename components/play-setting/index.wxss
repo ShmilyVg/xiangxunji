@@ -30,10 +30,6 @@
     line-height:28rpx;
 }
 
-.play-setting-dialog-switch{
-    width: 86rpx;
-    height: 46rpx;
-}
 
 .play-setting-dialog-line{
     width:100%;

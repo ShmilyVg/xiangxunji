@@ -5,11 +5,38 @@
     background-position: right top;
 }
 
+.index-retry-icon{
+    width: 32rpx;
+    height: 26rpx;
+    margin-right: 10rpx;
+    animation: circleAnim 1s ease-out;
+}
+
+@keyframes circleAnim {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(180deg);
+    }
+}
+
 .user-center-head{
     width: 100rpx;
     height: 100rpx;
     border: 15rpx solid rgba(51,42,80,1);
     border-radius: 50%;
+}
+
+.user-center-reconnect {
+    font-size:28rpx;
+    font-family:PingFang SC;
+    font-weight:500;
+    color:rgba(247,135,158,1);
+    line-height:28rpx;
+    margin-left: 4rpx;
+    margin-right: 40rpx;
 }
 
 .user-center-name{

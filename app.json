@@ -5,6 +5,7 @@
     "pages/play/play",
     "pages/setting/setting",
     "pages/user-center/user-center",
+    "pages/feedback/feedback",
     "pages/connect-device/connect-device"
   ],
   "window": {

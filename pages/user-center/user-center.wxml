@@ -44,19 +44,19 @@
             <image class="user-center-my-device-icon" src="../../images/user-center/my_device.png"></image>
             <view class="flex-column">
                 <view class="user-center-my-device-name">HiPee香薰助眠仪</view>
-                <view class="user-center-my-device-connect-status">蓝牙已连接</view>
+                <view class="user-center-my-device-connect-status">{{connectState==='connected'?'蓝牙已连接':'蓝牙未连接'}}</view>
             </view>
         </view>
-        <view class="user-center-my-device-setting-layout">
+        <view bindtap="reconnectEvent" wx:if="{{connectState!=='connected'}}" class="flex-row align-items-center">
+            <image src="../../images/index/retry.png" style="animation-iteration-count:{{connectState==='connecting'?'infinite':'0'}}" class="index-retry-icon"></image>
+            <view class="user-center-reconnect">重新连接</view>
+        </view>
+        <view wx:else class="user-center-my-device-setting-layout">
             <image src="../../images/user-center/setting.png" class="user-center-my-device-setting-img"></image>
         </view>
     </view>
 
-    <view bindtap="addDeviceEvent" class="flex-column align-items-center justify-center box-sizing-border-box user-center-add-device-layout">
-        <image src="../../images/user-center/add_device.png" class="user-center-add-device-icon"></image>
-        <view class="user-center-add-device-content">添加智能设备</view>
-    </view>
-    <view class="fill-width flex-row align-items-center space-between" style="align-self: flex-start;padding: 30rpx 0;margin-top: 44rpx;">
+    <view bindtap="toFeedbackPage" class="fill-width flex-row align-items-center space-between" style="align-self: flex-start;padding: 30rpx 0;margin-top: 44rpx;">
         <view class="flex-row align-items-center">
             <image src="../../images/user-center/feedback.png" class="user-center-icon"></image>
             <view class="user-center-icon-text">意见反馈</view>

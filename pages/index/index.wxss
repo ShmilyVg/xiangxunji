@@ -11,6 +11,19 @@
     margin-bottom: 26rpx;
 }
 
+.index-remind-layout {
+    font-size:26rpx;
+    font-family:PingFang SC;
+    font-weight:500;
+    color:rgba(255,255,255,1);
+    line-height:28rpx;
+    background:rgba(216,107,117,0.8);
+    border-radius:10rpx;
+    padding: 20rpx;
+    right: 30rpx;
+    bottom: -30rpx;
+}
+
 .index-subtitle {
     max-width: 430rpx;
     font-size:28rpx;

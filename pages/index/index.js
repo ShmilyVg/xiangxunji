@@ -1,21 +1,35 @@
 import {getMindPractiseList, getWelcomeContent, getWelcomeTime, getWhiteNoiseList} from "./data-manager";
 import HiNavigator from "../../navigator/hi-navigator";
+import Storage from "../../utils/storage";
 
 const app = getApp();
-
+const haveShowRemindDialog = Storage.getIndexPageRemindHaveShow();
 Page({
     data: {
         welcomeObj: {title: '', content: getWelcomeContent()},
         habits: [],
         minds: getMindPractiseList(),
-        whiteNoiseList: getWhiteNoiseList()
+        whiteNoiseList: getWhiteNoiseList(),
+        showRemindDialogObj: {
+            'userCenter': !haveShowRemindDialog,
+            'play': !haveShowRemindDialog
+        }
     },
-    onMindPracticeClickEvent({currentTarget: {dataset: {id}}}) {
+    async onVoiceItemClickEvent({currentTarget: {dataset: {id}}}) {
+        if (this.data.showRemindDialogObj.play) {
+            this.setData({
+                'showRemindDialogObj.play': false
+            });
+        }
         HiNavigator.navigateToPlayPage({id});
     },
-    onWhiteNoiseClickEvent({currentTarget: {dataset: {id}}}) {
-        HiNavigator.navigateToPlayPage({id});
+
+    async remindDismissEvent({currentTarget: {dataset: {type}}}) {
+        const obj = {};
+        obj[`showRemindDialogObj.${type}`] = false;
+        this.setData(obj);
     },
+
 
     //事件处理函数
     bindViewTap() {
@@ -48,7 +62,6 @@ Page({
     },
 
     onShow() {
-        console.log('开始执行index.js中的onShow()', this);
         this.setData({
             'welcomeObj.title': getWelcomeTime()
         });
@@ -56,8 +69,8 @@ Page({
     toReconnectEvent() {
         app.getBLEManager().connect();
     },
-    onLoad() {
-        console.log('开始执行index.js中的onLoad()', this);
+    async onLoad() {
+        await Storage.setIndexPageRemind();
         this.backgroundAudioManager = app.getBackgroundAudioManager();
 
         this.backgroundAudioManager.onError(err => {

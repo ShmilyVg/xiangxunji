@@ -45,5 +45,13 @@ export default class Storage extends BaseStorage {
     static async getWaterOpen() {
         return (await this.get('water_open_setting')).data;
     }
+
+    static async setIndexPageRemind() {
+        return await this.set({key: 'index_page_remind_have_show', data: true});
+    }
+
+    static getIndexPageRemindHaveShow() {
+        return this.getSync('index_page_remind_have_show');
+    }
 }
 

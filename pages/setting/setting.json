@@ -1,5 +1,8 @@
 {
+  "backgroundColorTop": "#24213A",
+  "backgroundColorBottom": "#24213A",
   "usingComponents": {
-    "navbar": "/components/navbar/index"
+    "navbar": "/components/navbar/index",
+    "my-switch": "/components/switch/index"
   }
 }

@@ -16,8 +16,7 @@ Page({
             {color: 'rgb(140,102,169)'},
 
         ],
-        config: {color: '', brightness: 50}
-
+        config: {color: '', brightness: 50, autoLight: false, lightOpen: false, waterOpen: true}
 
 
     },
@@ -33,6 +32,14 @@ Page({
     },
     onLightChanged(e) {
         const {detail: {value}} = e;
+        this.setData({
+            'config.brightness': value
+        });
+    },
+
+    onSwitchChangeEvent({detail: {open, tag}}) {
+        console.log(open, tag);
+
     },
     /**
      * 生命周期函数--监听页面加载

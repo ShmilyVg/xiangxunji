@@ -1,15 +1,18 @@
 <view class="fill-width flex-column">
     <navbar title="自定义设置"></navbar>
 
-    <view class="fill-width flex-column align-items-center box-sizing-border-box setting-part-layout" style="margin-top: 40rpx; ">
+    <view class="fill-width flex-column align-items-center box-sizing-border-box setting-part-layout"
+          style="margin-top: 40rpx;">
         <view class="setting-title">灯光颜色</view>
-        <view class="fill-width flex-row">
-            <view bindtap="onSelectedColorItemEvent" data-color="{{item.color}}" wx:for="{{colorList}}" wx:key="color" class="flex-row align-items-center justify-center setting-color-item" style="background-color: {{item.color}};opacity: {{item.color===config.color?1:0.4}}">
-                <image wx:if="{{item.color===config.color}}" src="../../images/setting/color_selected.png" class="setting-selected"></image>
+        <view class="fill-width flex-row space-between">
+            <view bindtap="onSelectedColorItemEvent" data-color="{{item.color}}" wx:for="{{colorList}}" wx:key="color"
+                  class="flex-row align-items-center justify-center setting-color-item"
+                  style="background-color: {{item.color}};opacity: {{item.color===config.color?1:0.4}}">
+                <image wx:if="{{item.color===config.color}}" src="../../images/setting/color_selected.png"
+                       class="setting-selected"></image>
             </view>
 
         </view>
-
 
         <view class="flex-row align-items-center">
             <image src="../../images/setting/dark.png" class="setting-light-icon"></image>
@@ -18,6 +21,67 @@
             <image src="../../images/setting/light.png" class="setting-light-icon"></image>
         </view>
 
-        <view ></view>
+        <view class="fill-width flex-row align-items-center space-between setting-item-layout">
+            <view class="setting-item-title">七彩模式</view>
+            <my-switch bind:onSwitchClickEvent="onSwitchChangeEvent" open="{{config.autoLight}}"
+                       tag="autoLight"></my-switch>
+        </view>
+        <view class="setting-divide-line"></view>
+        <view class="fill-width flex-row align-items-center space-between setting-item-layout">
+            <view class="setting-item-title">灯光开关</view>
+            <my-switch bind:onSwitchClickEvent="onSwitchChangeEvent" open="{{config.lightOpen}}"
+                       tag="lightOpen"></my-switch>
+        </view>
+    </view>
+    <view class="setting-divide-line" style="border-width: 20rpx;width: 100%;"></view>
+
+    <view class="fill-width flex-column align-items-center box-sizing-border-box setting-part-layout">
+        <view class="setting-title">雾量</view>
+        <picker class="fill-width" bindchange="bindPickerChange" value="{{index}}" range="{{['低','中','快']}}">
+
+            <view class="fill-width flex-row space-between setting-item-layout-02"
+                  style="padding-top: 20rpx;">
+                <view class="flex-column">
+                    <view class="setting-item-title">喷雾时间</view>
+                    <view class="setting-item-subtitle">*时长必须是间隔的时间3倍以上</view>
+                </view>
+                <view class="flex-row align-items-center">
+                    <view class="setting-water-duration">1小时30分</view>
+                    <image src="../../images/user-center/arrow.png" class="setting-item-arrow"></image>
+                </view>
+            </view>
+        </picker>
+
+        <view class="setting-divide-line"></view>
+        <picker class="fill-width" bindchange="bindPickerChange" value="{{index}}" range="{{['低','中','快']}}">
+            <view class="fill-width flex-row align-items-center space-between setting-item-layout-02">
+                <view class="setting-item-title">喷雾时间间隔</view>
+                <view class="flex-row align-items-center">
+                    <view class="setting-water-duration">每隔5分钟</view>
+                    <image src="../../images/user-center/arrow.png" class="setting-item-arrow"></image>
+                </view>
+            </view>
+        </picker>
+
+        <view class="setting-divide-line"></view>
+        <picker class="fill-width" bindchange="bindPickerChange" value="{{index}}" range="{{['低','中','快']}}">
+            <view class="fill-width flex-row align-items-center space-between setting-item-layout-02">
+                <view class="setting-item-title">喷雾速度</view>
+                <view class="flex-row align-items-center">
+                    <view class="setting-water-duration">快</view>
+                    <image src="../../images/user-center/arrow.png" class="setting-item-arrow"></image>
+                </view>
+            </view>
+        </picker>
+
+        <view class="setting-divide-line"></view>
+        <view class="fill-width flex-row align-items-center space-between setting-item-layout-02">
+            <view class="setting-item-title">喷雾开关</view>
+            <my-switch bind:onSwitchClickEvent="onSwitchChangeEvent" open="{{config.waterOpen}}"
+                       tag="waterOpen"></my-switch>
+        </view>
+        <view class="setting-divide-line"></view>
+
+        <view class="setting-reset-btn setting-item-layout-02" hover-class="press-btn-class" hover-stay-time="100">恢复默认设置</view>
     </view>
 </view>

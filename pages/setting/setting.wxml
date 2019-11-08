@@ -3,12 +3,17 @@
 
     <view class="fill-width flex-column align-items-center box-sizing-border-box setting-part-layout" style="margin-top: 40rpx; ">
         <view class="setting-title">灯光颜色</view>
-        <view class=""></view>
+        <view class="fill-width flex-row">
+            <view bindtap="onSelectedColorItemEvent" data-color="{{item.color}}" wx:for="{{colorList}}" wx:key="color" class="flex-row align-items-center justify-center setting-color-item" style="background-color: {{item.color}};opacity: {{item.color===config.color?1:0.4}}">
+                <image wx:if="{{item.color===config.color}}" src="../../images/setting/color_selected.png" class="setting-selected"></image>
+            </view>
+
+        </view>
 
 
         <view class="flex-row align-items-center">
             <image src="../../images/setting/dark.png" class="setting-light-icon"></image>
-            <slider activeColor="#9485FF" backgroundColor="#403B5F" block-size="12"
+            <slider value="{{config.brightness}}" activeColor="#9485FF" backgroundColor="#403B5F" block-size="12"
                     block-color="#9485FF" bindchange="onLightChanged" class="setting-light-slider"></slider>
             <image src="../../images/setting/light.png" class="setting-light-icon"></image>
         </view>

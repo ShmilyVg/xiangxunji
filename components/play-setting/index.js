@@ -1,4 +1,4 @@
-import HiNavigator from "../navigator/hi-navigator";
+import HiNavigator from "../../navigator/hi-navigator";
 import Storage from "../../utils/storage";
 
 const App = getApp();

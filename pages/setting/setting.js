@@ -4,7 +4,33 @@ Page({
     /**
      * 页面的初始数据
      */
-    data: {},
+    data: {
+        colorList: [
+            {color: 'rgb(243,243,243)'},
+            {color: 'rgb(168,62,56)'},
+            {color: 'rgb(194,94,71)'},
+            {color: 'rgb(200,160,60)'},
+            {color: 'rgb(110,168,109)'},
+            {color: 'rgb(167,205,226)'},
+            {color: 'rgb(118,146,197)'},
+            {color: 'rgb(140,102,169)'},
+
+        ],
+        config: {color: '', brightness: 50}
+
+
+
+    },
+
+
+    onSelectedColorItemEvent({currentTarget: {dataset: {color: selectedColor}}}) {
+        if (this.data.config.color !== selectedColor) {
+            this.setData({
+                'config.color': selectedColor
+            });
+        }
+
+    },
     onLightChanged(e) {
         const {detail: {value}} = e;
     },

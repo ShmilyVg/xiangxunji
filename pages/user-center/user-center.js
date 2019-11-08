@@ -1,5 +1,5 @@
 // pages/user-center/user-center.js
-import HiNavigator from "../../components/navigator/hi-navigator";
+import HiNavigator from "../../navigator/hi-navigator";
 
 Page({
 

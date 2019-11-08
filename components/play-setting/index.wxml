@@ -5,7 +5,6 @@
         <view class="flex-row space-between align-items-center play-setting-dialog-item">
             <view class="play-setting-dialog-item-title">灯光开关</view>
             <my-switch bind:onSwitchClickEvent="_clickOpenSwitch" open="{{isLightOpen}}" tag="light"></my-switch>
-<!--            <image bindtap="_clickOpenSwitch" data-open="{{!isLightOpen}}" data-type="light" src="../../images/switch_{{isLightOpen?'open':'close'}}.png" class="play-setting-dialog-switch"></image>-->
         </view>
         <view class="play-setting-dialog-line"></view>
 
@@ -13,7 +12,6 @@
         <view class="flex-row space-between align-items-center play-setting-dialog-item">
             <view class="play-setting-dialog-item-title">喷雾开关</view>
             <my-switch bind:onSwitchClickEvent="_clickOpenSwitch" open="{{isWaterOpen}}" tag="water"></my-switch>
-<!--            <image bindtap="_clickOpenSwitch" data-open="{{!isWaterOpen}}" data-type="water" src="../../images/switch_{{isWaterOpen?'open':'close'}}.png" class="play-setting-dialog-switch"></image>-->
         </view>
         <view class="play-setting-dialog-line"></view>
 

@@ -1,15 +1,31 @@
-<view>
-    <view class="main">
-        <view class="main-header">
-            <image src="../../images/feedback/hipee.png" class="main-header-pic" alt=""/>
+<!--<view>-->
+<!--    <view class="main">-->
+<!--        <view class="main-header">-->
+
+<!--        </view>-->
+<!--        <image class="code" src="../../images/feedback/code.png" alt=""/>-->
+<!--        <view class="main-footer">-->
+<!--            <view class="main-footer-p">保存客服微信二维码到相册</view>-->
+<!--            <view class="main-footer-p">或搜索客服微信号：hipee_kf</view>-->
+<!--        </view>-->
+<!--    </view>-->
+<!--    <button class="savebtn" bind:tap="savePic">保 存</button>-->
+<!--</view>-->
+
+
+<view class="fill-width flex-column align-items-center box-sizing-border-box">
+    <navbar title="反馈"></navbar>
+    <view class="flex-column box-sizing-border-box feedback-layout" >
+        <view class="flex-row">
+            <image src="../../images/feedback/hipee.png" class="main-header-pic"></image>
             <view class="main-header-name">hipee健康管家</view>
         </view>
-        <image class="code" src="../../images/feedback/code.png" alt=""/>
-        <view class="main-footer">
-            <view class="main-footer-p">保存客服微信二维码到相册</view>
-            <view class="main-footer-p">或搜索客服微信号：hipee_kf</view>
-        </view>
-    </view>
-    <button class="savebtn" bind:tap="savePic">保 存</button>
-</view>
 
+        <image class="code" src="../../images/feedback/code.png"></image>
+
+        <view class="main-footer-p">保存客服微信二维码到相册</view>
+        <view class="main-footer-p">或搜索客服微信号：hipee_kf</view>
+    </view>
+    <button class="save-btn" bind:tap="savePic">保 存</button>
+
+</view>

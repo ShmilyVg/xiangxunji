@@ -1,4 +1,7 @@
 {
-  "navigationBarTitleText": "反馈",
-  "backgroundColor": "#f2f2f2"
+  "backgroundColorTop": "#24213A",
+  "backgroundColorBottom": "#24213A",
+  "usingComponents": {
+    "navbar": "/components/navbar/index"
+  }
 }

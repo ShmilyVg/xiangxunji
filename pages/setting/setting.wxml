@@ -80,8 +80,33 @@
             <my-switch bind:onSwitchClickEvent="onSwitchChangeEvent" open="{{config.waterOpen}}"
                        tag="waterOpen"></my-switch>
         </view>
-        <view class="setting-divide-line"></view>
 
-        <view class="setting-reset-btn setting-item-layout-02" hover-class="press-btn-class" hover-stay-time="100">恢复默认设置</view>
+
+
+    </view>
+    <view class="setting-divide-line" style="border-width: 20rpx;width: 100%;"></view>
+
+    <view class="fill-width flex-column align-items-center box-sizing-border-box setting-part-layout">
+        <view class="setting-title">定时开机</view>
+        <picker class="fill-width" bindchange="bindPickerChange" value="{{index}}" range="{{['低','中','快']}}">
+            <view class="fill-width flex-row space-between setting-item-layout-02"
+                  style="padding-top: 20rpx;">
+                <view class="setting-item-title">设定开机时间</view>
+                <view class="flex-row align-items-center">
+                    <view class="setting-water-duration">未设置</view>
+                    <image src="../../images/user-center/arrow.png" class="setting-item-arrow"></image>
+                </view>
+            </view>
+        </picker>
+        <view class="setting-divide-line"></view>
+        <view class="fill-width flex-row align-items-center space-between setting-item-layout-02">
+            <view class="setting-item-title">每天重复</view>
+            <my-switch bind:onSwitchClickEvent="onSwitchChangeEvent" open="{{config.deviceOpen}}"
+                       tag="deviceOpen"></my-switch>
+        </view>
+        <view class="setting-divide-line"></view>
+        <view class="setting-reset-btn setting-item-layout-02" hover-class="press-btn-class" hover-stay-time="100">
+            恢复默认设置
+        </view>
     </view>
 </view>

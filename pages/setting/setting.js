@@ -16,7 +16,7 @@ Page({
             {color: 'rgb(140,102,169)'},
 
         ],
-        config: {color: '', brightness: 50, autoLight: false, lightOpen: false, waterOpen: true}
+        config: {color: '', brightness: 50, autoLight: false, lightOpen: false, waterOpen: true, deviceOpen: false}
 
 
     },

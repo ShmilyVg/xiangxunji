@@ -41,6 +41,15 @@ Page({
         console.log(open, tag);
 
     },
+
+    reset() {
+        this.setData({
+            config: {
+                color: '', brightness: 50, autoLight: false,
+                lightOpen: false, waterOpen: true, deviceOpen: false
+            }
+        });
+    },
     /**
      * 生命周期函数--监听页面加载
      */

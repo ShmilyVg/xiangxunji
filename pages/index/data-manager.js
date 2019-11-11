@@ -53,6 +53,7 @@ export function getWhiteNoiseList() {
         {id: 102, iconName: 'hai_bian_man_bu', title: '海边漫步'},
         {id: 103, iconName: 'lin_jian_niao_yu', title: '林间鸟语'},
         {id: 104, iconName: 'hong_ni_xiao_lu', title: '红泥小炉'},
+        {id: 100, iconName: 'zhi_ting_ren_sheng', title: '只听人声'},
     ];
 }
 

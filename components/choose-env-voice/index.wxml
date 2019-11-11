@@ -3,11 +3,17 @@
 <view wx:if="{{show}}" class="fill-width fill-height flex-row play-bottom-dialog-layout" bindtap="_hideFun">
     <view class="fill-width flex-column align-items-center play-bottom-dialog box-sizing-border-box" catchtap="_doNothing">
         <view class="play-bottom-dialog-title">场景音</view>
-        <view class="fill-width flex-row align-items-center box-sizing-border-box" style="justify-content: space-around;padding: 0 10rpx;">
-            <view bindtap="_onChooseEnvVoiceItem" data-item="{{item}}" wx:for="{{envVoices}}" wx:key="index" class="flex-column align-items-center">
-                <image src="../../images/index/icon/selected/{{item.iconName}}.png" class="play-bottom-dialog-item-icon"></image>
-                <view class="play-bottom-dialog-item-content">{{item.title}}</view>
+        <scroll-view scroll-x class="fill-width play-bottom-dialog-item-layout">
+            <view style="display: inline-block;">
+                <view class="fill-width flex-row align-items-center box-sizing-border-box">
+                    <view bindtap="_onChooseEnvVoiceItem" data-item="{{item}}" wx:for="{{envVoices}}" wx:key="index" class="flex-column align-items-center play-bottom-dialog-item-margin">
+                        <image src="../../images/index/icon/selected/{{item.iconName}}.png" class="play-bottom-dialog-item-icon"></image>
+                        <view class="play-bottom-dialog-item-content">{{item.title}}</view>
+                    </view>
+                </view>
             </view>
-        </view>
+        </scroll-view>
+
+
     </view>
 </view>

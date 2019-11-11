@@ -30,7 +30,17 @@ Component({
      */
     methods: {
         _onChooseEnvVoiceItem(e) {
-            const {currentTarget: {dataset: {index}}} = e;
+            const {currentTarget: {dataset: {item: currentClickItem}}} = e;
+            const obj = {}, currentItemId = currentClickItem.id,
+                frontSelectedItem = this.data.envVoices.find(item => item.selected);
+            if (frontSelectedItem && frontSelectedItem.id === currentItemId) {
+                this._hideFun();
+                return;
+            }
+            for (let [index, item] of this.data.envVoices.entries()) {
+                obj[`envVoices[${index}].selected`] = item.id === currentItemId;
+            }
+            this.setData(obj);
             this.triggerEvent('onChooseEnvVoiceItem', {item: {}});
             this._hideFun();
         },

@@ -7,8 +7,8 @@
             <view style="display: inline-block;">
                 <view class="fill-width flex-row align-items-center box-sizing-border-box">
                     <view bindtap="_onChooseEnvVoiceItem" data-item="{{item}}" wx:for="{{envVoices}}" wx:key="index" class="flex-column align-items-center play-bottom-dialog-item-margin">
-                        <image src="../../images/index/icon/selected/{{item.iconName}}.png" class="play-bottom-dialog-item-icon"></image>
-                        <view class="play-bottom-dialog-item-content">{{item.title}}</view>
+                        <image src="../../images/index/icon/selected/{{item.iconName}}.png" class="play-bottom-dialog-item-icon" style="border-color: {{item.selected?'rgba(148,133,255,1)':'transparent'}}"></image>
+                        <view class="play-bottom-dialog-item-content" style="color: {{item.selected?'rgba(221,221,221,1)':'rgba(153,153,153,1)'}}">{{item.title}}</view>
                     </view>
                 </view>
             </view>

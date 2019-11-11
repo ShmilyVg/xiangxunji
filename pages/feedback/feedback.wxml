@@ -20,8 +20,10 @@
             <image src="../../images/feedback/hipee.png" class="main-header-pic"></image>
             <view class="main-header-name">hipee健康管家</view>
         </view>
+        <view class="flex-row align-items-center justify-center box-sizing-border-box feedback-code">
+            <image class="code" src="../../images/feedback/code.png"></image>
 
-        <image class="code" src="../../images/feedback/code.png"></image>
+        </view>
 
         <view class="main-footer-p">保存客服微信二维码到相册</view>
         <view class="main-footer-p">或搜索客服微信号：hipee_kf</view>

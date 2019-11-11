@@ -19,11 +19,18 @@
   line-height:28rpx;
   margin: 30rpx 0 0 28rpx;
 }
-.code{
-  display: block;
-  width: 490rpx;
-  height: 490rpx;
+
+.feedback-code {
+  width: 530rpx;
+  height: 530rpx;
+  background-color: white;
+  border-radius: 10rpx;
   margin: 36rpx auto 27rpx;
+  padding: 30rpx;
+}
+.code{
+  width: 100%;
+  height: 100%;
 }
 .main-footer{
   margin: 40rpx 0 60rpx;

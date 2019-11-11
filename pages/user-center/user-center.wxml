@@ -66,6 +66,6 @@
 
 
     <view class="flex-row flex-sub">
-        <view class="user-center-software-version">版本号 v0.1.0</view>
+        <view class="user-center-software-version">版本号 {{SoftwareVersion}}</view>
     </view>
 </view>

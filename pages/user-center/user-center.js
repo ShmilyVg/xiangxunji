@@ -1,6 +1,7 @@
 // pages/user-center/user-center.js
 import {ConnectState} from "../../modules/bluetooth/bluetooth-state";
 import HiNavigator from "../../navigator/hi-navigator";
+import {SoftwareVersion} from "../../utils/config";
 
 const app = getApp();
 Page({
@@ -9,6 +10,7 @@ Page({
      * 页面的初始数据
      */
     data: {
+        SoftwareVersion,
         connectState: ''
     },
 

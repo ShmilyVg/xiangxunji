@@ -3,6 +3,7 @@
     "navbar": "/components/navbar/index",
     "env-choose": "/components/choose-env-voice/index",
     "play-setting": "/components/play-setting/index",
+    "play-action": "/components/play-action/index",
     "wave": "/components/wave/index"
   }
 }

@@ -1,0 +1,3 @@
+<view class="flex-row align-items-center" style="margin-top: 120rpx;">
+    <image bindtap="_onActionClickListener" data-action-name="{{item.nextState}}" data-current-state="{{action.state}}" wx:for="{{action.actions}}" wx:key="iconName" class="play-action-common-icon" src="./images/{{item.iconName}}.png"></image>
+</view>

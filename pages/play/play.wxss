@@ -78,10 +78,5 @@ page{
     margin: 0 10rpx;
 }
 
-.play-pause-icon{
-    width: 120rpx;
-    height: 120rpx;
-}
-
 
 

@@ -1,0 +1,44 @@
+.play-float-dialog-layout {
+    position: fixed;
+    left: 0;
+    bottom: 100rpx;
+    padding: 0 30rpx;
+}
+
+.play-float-layout{
+    background:rgba(48,44,73,0.96);
+    box-shadow:0 0 40rpx 0 rgba(0, 0, 0, 0.3);
+    border-radius:40rpx;
+    padding: 38rpx 30rpx;
+}
+
+.play-float-voice-pic {
+    width:94rpx;
+    height:94rpx;
+    background:rgba(0,0,0,0.3);
+    border:7rpx solid rgba(148,133,255,1);
+    border-radius:50%;
+}
+
+.play-float-voice-title {
+    font-size:34rpx;
+    font-family:PingFang SC;
+    font-weight:500;
+    color:rgba(215,211,228,1);
+    line-height:28rpx;
+
+}
+
+.play-float-voice-duration {
+    font-size:24rpx;
+    font-family:PingFang SC;
+    font-weight:400;
+    color:rgba(114,111,127,1);
+    line-height:28rpx;
+    margin-top: 16rpx;
+}
+
+.play-float-x-btn{
+    width: 38rpx;
+    height: 38rpx;
+}

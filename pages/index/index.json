@@ -2,6 +2,7 @@
   "backgroundColor": "rgb(23,53,105)",
   "usingComponents": {
     "navbar": "/components/navbar/index",
-    "connect-state": "/components/connect-state/index"
+    "connect-state": "/components/connect-state/index",
+    "play-float": "/components/play-float/index"
   }
 }

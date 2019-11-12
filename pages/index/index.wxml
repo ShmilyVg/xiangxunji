@@ -64,6 +64,7 @@
 <!--            <view class="index-content-subtitle">92人在这里</view>-->
         </view>
     </view>
+    <play-float></play-float>
 
     <view class="index-bottom-text">— 享受当下的宁静 —</view>
 </view>

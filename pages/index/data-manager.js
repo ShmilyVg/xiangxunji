@@ -57,6 +57,11 @@ export function getWhiteNoiseList() {
     ];
 }
 
+export function getWhiteNoiseListAtIndexPage() {
+    const list = getWhiteNoiseList();
+    list.pop();
+    return list;
+}
 
 export function getAllVoiceList() {
     return getMindPractiseList().concat(getWhiteNoiseList());

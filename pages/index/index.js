@@ -1,4 +1,4 @@
-import {getMindPractiseList, getWelcomeContent, getWelcomeTime, getWhiteNoiseList} from "./data-manager";
+import {getMindPractiseList, getWelcomeContent, getWelcomeTime, getWhiteNoiseListAtIndexPage} from "./data-manager";
 import HiNavigator from "../../navigator/hi-navigator";
 import Storage from "../../utils/storage";
 
@@ -9,7 +9,7 @@ Page({
         welcomeObj: {title: '', content: getWelcomeContent()},
         habits: [],
         minds: getMindPractiseList(),
-        whiteNoiseList: getWhiteNoiseList(),
+        whiteNoiseList: getWhiteNoiseListAtIndexPage(),
         showRemindDialogObj: {
             'userCenter': !haveShowRemindDialog,
             'play': !haveShowRemindDialog

@@ -13,7 +13,6 @@ function commonAnimationAction({actionName}) {
             resolve();
         });
     });
-
 }
 
 const app = getApp(), config = {

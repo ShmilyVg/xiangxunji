@@ -20,6 +20,12 @@
     border-radius:50%;
 }
 
+.play-float-voice-play-status-icon {
+    width: 22rpx;
+    height: 26rpx;
+    z-index: 10;
+}
+
 .play-float-voice-title {
     font-size:34rpx;
     font-family:PingFang SC;

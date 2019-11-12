@@ -1,9 +1,9 @@
 <view wx:if="{{show}}" class="fill-width flex-row box-sizing-border-box play-float-dialog-layout" catchtap="_doNothing">
     <view class="fill-width flex-row align-items-center space-between play-float-layout">
         <view class="flex-row align-items-center">
-            <view class="relative flex-row align-items-center justify-center">
-                <image class="absolute play-float-voice-pic" src="../../images/index/icon/selected/hai_bian_man_bu.png"></image>
-                <image class="relative play-float-voice-pic"></image>
+            <view bindtap="_onActionClickListener" wx:for="{{action.actions}}" wx:key="state" data-action-name="{{item.nextState}}" data-current-state="{{action.state}}" class="relative flex-row align-items-center justify-center">
+                <image class="relative play-float-voice-pic" src="../../images/index/icon/selected/hai_bian_man_bu.png"></image>
+                <image class="absolute play-float-voice-play-status-icon" src="./images/{{item.iconName}}.png"></image>
             </view>
             <view class="flex-column" style="margin-left: 30rpx;">
                 <view class="play-float-voice-title">雨打芭蕉</view>

@@ -1,19 +1,9 @@
 function commonAnimationAction({actionName}) {
     return new Promise(resolve => {
         this.setData({
-            opacity: 0
-        }, () => {
-            setTimeout(() => {
-                this.setData({action: config[actionName],}, () => {
-                    this.setData({
-                        opacity: 1
-                    });
-                });
-            }, 350);
-            resolve();
-        });
+            action: config[actionName]
+        }, resolve);
     });
-
 }
 
 const app = getApp(), config = {
@@ -31,17 +21,6 @@ const app = getApp(), config = {
     pause: {
         state: 'pause',
         actions: [
-            //     {
-            //     iconName: 'stop',
-            //     nextState: 'stop',
-            //     action({actionName}) {
-            //         this.setData({
-            //             action: config[actionName]
-            //         }, () => {
-            //             this.triggerEvent('onActionClickEvent', {actionName});
-            //         });
-            //     }
-            // },
             {
                 iconName: 'play',
                 nextState: 'playing',
@@ -51,49 +30,24 @@ const app = getApp(), config = {
                 }
             }]
     },
-    stop: {
-        state: 'stop',
-        actions: [{
-            iconName: 'stop',
-            nextState: 'stop',
-            action({actionName}) {
-                this.setData({
-                    action: config[actionName]
-                }, () => {
-                    this.triggerEvent('onActionClickEvent', {actionName});
-                });
-            }
-        },
-            {
-                iconName: 'play',
-                nextState: 'playing',
-                action({actionName}) {
-                    this.setData({
-                        action: config[actionName]
-                    }, () => {
-                        this.triggerEvent('onActionClickEvent', {actionName});
-                    });
-                }
-            }]
-    }
 };
 
 Component({
     options: {
         addGlobalClass: true,
     },
-    /**
-     * 组件的属性列表
-     */
-    properties: {},
 
-    /**
-     * 组件的初始数据
-     */
+    properties: {
+        show: {
+            type: Boolean,
+            value: true
+        }
+    },
+
     data: {
         action: config.pause,
-        show: true
     },
+
     lifetimes: {
         async attached() {
 

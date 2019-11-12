@@ -1,15 +1,30 @@
+function commonAnimationAction({actionName}) {
+    return new Promise(resolve => {
+        this.setData({
+            opacity: 0
+        }, () => {
+            setTimeout(() => {
+                this.setData({action: config[actionName],},()=>{
+                    this.setData({
+                        opacity: 1
+                    });
+                });
+            }, 350);
+            resolve();
+        });
+    });
+
+}
+
 const app = getApp(), config = {
     playing: {
         state: 'playing',
         actions: [{
             iconName: 'pause',
             nextState: 'pause',
-            action({actionName}) {
-                this.setData({
-                    action: config[actionName]
-                }, () => {
-                    this.triggerEvent('onActionClickEvent', {actionName});
-                });
+            async action({actionName}) {
+                await commonAnimationAction.call(this, {actionName});
+                this.triggerEvent('onActionClickEvent', {actionName});
             }
         }]
     },
@@ -30,12 +45,9 @@ const app = getApp(), config = {
             {
                 iconName: 'play',
                 nextState: 'playing',
-                action({actionName}) {
-                    this.setData({
-                        action: config[actionName]
-                    }, () => {
-                        this.triggerEvent('onActionClickEvent', {actionName});
-                    });
+                async action({actionName}) {
+                    await commonAnimationAction.call(this, {actionName});
+                    this.triggerEvent('onActionClickEvent', {actionName});
                 }
             }]
     },
@@ -92,11 +104,9 @@ Component({
      * 组件的方法列表
      */
     methods: {
-        _onActionClickListener({currentTarget: {dataset: {currentState, actionName}}}) {
-
-            console.log(currentState, actionName);
+        async _onActionClickListener({currentTarget: {dataset: {currentState, actionName}}}) {
             const target = config[currentState].actions.find(item => item.nextState === actionName);
-            target && target.action.call(this, {actionName});
+            target && (await target.action.call(this, {actionName}));
 
         },
         _doNothing() {

@@ -55,7 +55,10 @@ class VoiceManager {
     }
 
     pause() {
-
+        const bgAManager = this.backgroundAudioManager;
+        if (!bgAManager.pause) {
+            bgAManager.pause();
+        }
     }
 }
 

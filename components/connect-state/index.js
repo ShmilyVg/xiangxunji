@@ -29,35 +29,52 @@ Component({
      * 组件的属性列表
      */
     properties: {
-        state: {
-            type: String,
-            value: ConnectState.CONNECTING
-        }
+        // state: {
+        //     type: String,
+        //     value: ConnectState.CONNECTING
+        // }
     },
-    observers: {
-        'state'(newConnectState) {
-            // 在 numberA 或者 numberB 被设置时，执行这个函数
-            console.log('设置stateObj', newConnectState);
-            this.setData({
-                stateObj: stateOptions[newConnectState || ConnectState.DISCONNECT]
-            })
-        }
-    },
+    // observers: {
+    //     'state'(newConnectState) {
+    //         // 在 numberA 或者 numberB 被设置时，执行这个函数
+    //         console.log('设置stateObj', newConnectState);
+    //         if (!newConnectState) {
+    //             return;
+    //         }
+    //         const connectState = newConnectState || ConnectState.DISCONNECT;
+    //         this.setData({
+    //             stateObj: stateOptions[connectState]
+    //         });
+    //     }
+    // },
     /**
      * 组件的初始数据
      */
     data: {
         stateObj: stateOptions.connecting
     },
+    pageLifetimes: {
+        show() {
+            const bleManager = app.getBLEManager();
+            // this._updateConnectState({connectState: bleManager.getBLELatestConnectState()});
+            bleManager.setBLEListener({
+                onConnectStateChanged: ({connectState}) => {
+                    this._updateConnectState({connectState});
+                }
+            });
+        },
+        hide() {
+
+        }
+    },
     lifetimes: {
         created() {
         },
         attached() {
-            setTimeout(() => {
-                this.setData({
-                    stateObj: stateOptions['connected']
-                });
-            }, 3000)
+
+            // setTimeout(() => {
+            //     this._updateConnectState({connectState: ConnectState.DISCONNECT});
+            // }, 3000);
         },
 
     },
@@ -65,6 +82,11 @@ Component({
      * 组件的方法列表
      */
     methods: {
+        _updateConnectState({connectState}) {
+            this.setData({stateObj: stateOptions[connectState]}, () => {
+                this.triggerEvent('onConnectStateChangedEvent', {connectState});
+            });
+        },
         _toReconnectEvent() {
             app.getBLEManager().connect();
         },

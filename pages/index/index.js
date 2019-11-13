@@ -30,16 +30,19 @@ Page({
         this.setData(obj);
     },
 
+    onConnectStateChanged({detail: {connectState}}) {
+        console.log('index.js [onConnectStateChanged] new connectState is:', connectState);
+    },
+
     onShow() {
         this.setData({
             'welcomeObj.title': getWelcomeTime()
         });
     },
-    toReconnectEvent() {
-        app.getBLEManager().connect();
-    },
+
     async onLoad() {
         await Storage.setIndexPageRemind();
+
     },
 
 });

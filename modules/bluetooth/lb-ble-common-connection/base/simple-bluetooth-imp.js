@@ -9,7 +9,7 @@ export default class SimpleBlueToothImp {
         }
     }
 
-    setBLEListener({listener}) {
+    setBLEListener({onConnectStateChanged, onReceiveData}) {
         this.bluetoothManager.setBLEListener(arguments[0]);
     }
 

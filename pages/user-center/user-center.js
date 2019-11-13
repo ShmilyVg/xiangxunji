@@ -15,28 +15,30 @@ Page({
     },
 
     reconnectEvent() {
-        const connectState = app.getBLEManager().getBLELatestConnectState();
-        if (connectState === ConnectState.CONNECTING || connectState === ConnectState.CONNECTED) {
-            return;
-        }
         app.getBLEManager().connect();
     },
     /**
      * 生命周期函数--监听页面加载
      */
     onLoad(options) {
-        this.setData({
-            connectState: app.getBLEManager().getBLELatestConnectState()
+        app.getBLEManager().setBLEListener({
+            onConnectStateChanged: ({connectState}) => {
+                this._updateConnectState({connectState});
+            }
         });
     },
     toFeedbackPage() {
         HiNavigator.navigateToFeedbackPage();
     },
+
+    updateConnectStateView({connectState}) {
+        this.setData({connectState});
+    },
     /**
      * 生命周期函数--监听页面显示
      */
     onShow() {
-
+        this.updateConnectStateView({connectState: app.getBLEManager().getBLELatestConnectState()});
     },
 
     /**

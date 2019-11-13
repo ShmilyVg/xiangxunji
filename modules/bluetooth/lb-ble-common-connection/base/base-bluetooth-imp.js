@@ -35,6 +35,7 @@ export default class BaseBlueToothImp extends BaseBlueTooth {
             const {deviceId, connected} = res;
             console.log(`device ${deviceId} state has changed, connected: ${connected}`);
             if (!connected) {
+                this.latestConnectState = {value: CommonConnectState.DISCONNECT, filter: true};
                 await this.openAdapterAndConnectLatestBLE();
                 // this.latestConnectState = CommonConnectState.DISCONNECT;
                 //     this.openAdapterAndConnectLatestBLE();
@@ -95,14 +96,15 @@ export default class BaseBlueToothImp extends BaseBlueTooth {
      * @returns {*}
      */
     async openAdapterAndConnectLatestBLE() {
-        if (this.latestConnectState === CommonConnectState.CONNECTING) {
-            console.warn('openAdapterAndConnectLatestBLE 蓝牙正在连接中，还未返回结果，所以取消本次连接');
+        const {value: latestConnectState} = this.latestConnectState;
+        if (latestConnectState === CommonConnectState.CONNECTING || latestConnectState === CommonConnectState.CONNECTED) {
+            console.warn(`openAdapterAndConnectLatestBLE 尝试蓝牙连接。蓝牙当前的连接状态为:${latestConnectState}，所以取消本次连接`);
             return;
         }
-        console.warn('openAdapterAndConnectLatestBLE 连接前，读取最新的蓝牙状态：', this.latestConnectState || '未初始化');
+        console.warn('openAdapterAndConnectLatestBLE 连接前，读取最新的蓝牙状态：', latestConnectState || '未初始化');
         await this._updateBLEConnectFinalState({promise: super.openAdapter()});
         // await super.openAdapter();
-        this.latestConnectState = CommonConnectState.CONNECTING;
+        this.latestConnectState = {value: CommonConnectState.CONNECTING};
         // const connectedDeviceId = super.getConnectedDeviceId();
         // if (connectedDeviceId) {
         //     console.log(`上次连接过设备${connectedDeviceId}，现在直接连接该设备`);
@@ -117,9 +119,9 @@ export default class BaseBlueToothImp extends BaseBlueTooth {
     async startBlueToothDevicesDiscovery() {
         this._isConnectBindDevice = false;
         try {
-            return super.startBlueToothDevicesDiscovery();
+            return await super.startBlueToothDevicesDiscovery();
         } catch (e) {
-            return Promise.reject(e);
+            return await Promise.reject(e);
         }
     }
 
@@ -134,17 +136,17 @@ export default class BaseBlueToothImp extends BaseBlueTooth {
         try {
             const result = await promise;
             if (result.isConnected && !result.filter) {
-                this.latestConnectState = CommonConnectState.CONNECTED;
+                this.latestConnectState = {value: CommonConnectState.CONNECTED};
             }
             return result;
         } catch (e) {
             console.warn('_updateBLEConnectFinalState 蓝牙连接出现问题', e);
-            return Promise.reject(e);
+            return await Promise.reject(e);
         }
     }
 
     dealBLEUnavailableScene() {
-        this.latestConnectState = CommonConnectState.UNAVAILABLE;
+        this.latestConnectState = {value: CommonConnectState.UNAVAILABLE};
         super.resetAllBLEFlag();
     }
 }

@@ -32,10 +32,10 @@ export default class BaseBlueTooth extends AbstractBlueTooth {
         this._onReceiveData = onReceiveData;
     }
 
-    set latestConnectState(value) {
+    set latestConnectState({value, filter = false}) {
         if (this._latestConnectState !== value) {
             console.warn('蓝牙连接状态更新', value);
-            this._onConnectStateChanged({connectState: value});
+            !filter && this._onConnectStateChanged({connectState: value});
             this._latestConnectState = value;
         }
     }
@@ -85,9 +85,9 @@ export default class BaseBlueTooth extends AbstractBlueTooth {
                     return {isConnected: true};
                 case 10000:
                 case 10001:
-                    this.latestConnectState = CommonConnectState.UNAVAILABLE;
+                    this.latestConnectState = {value: CommonConnectState.UNAVAILABLE};
                     super.resetAllBLEFlag();
-                    return Promise.reject(error);
+                    return await Promise.reject(error);
                 case 10003:
                 case 10012:
                     console.warn('连接不上', error);
@@ -99,10 +99,10 @@ export default class BaseBlueTooth extends AbstractBlueTooth {
                     return {isConnected: false, filter: true};//这种是需要重新执行一遍扫描连接流程的，filter是否过滤掉本次事件
                 case 10004:
                     await super.closeBLEConnection({deviceId});
-                    return await this.createBLEConnection({deviceId});
+                    return this.createBLEConnection({deviceId});
                 default:
                     console.warn('连接失败，重新连接', error);
-                    return await this.createBLEConnection({deviceId});
+                    return this.createBLEConnection({deviceId});
             }
         }
     }

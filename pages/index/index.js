@@ -33,7 +33,9 @@ Page({
     onConnectStateChanged({detail: {connectState}}) {
         console.log('index.js [onConnectStateChanged] new connectState is:', connectState);
     },
-
+    onGetUserInfo(e) {
+        console.log(e);
+    },
     onShow() {
         this.setData({
             'welcomeObj.title': getWelcomeTime()

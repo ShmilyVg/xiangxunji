@@ -50,11 +50,11 @@ export default class SimpleBlueToothImp {
     }
 
     updateBLEConnectState({connectState}) {
-        this.bluetoothManager.latestConnectState = connectState;
+        this.bluetoothManager.latestConnectState = {value: connectState};
     }
 
     getBLELatestConnectState() {
-        return this.bluetoothManager.latestConnectState;
+        return this.bluetoothManager.latestConnectState.value;
     }
 
     executeBLEReceiveDataCallBack({protocolState, value}) {

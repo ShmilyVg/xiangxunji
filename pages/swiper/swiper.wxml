@@ -1,0 +1,3 @@
+<!--pages/swiper/swiper.wxml-->
+<view style="margin-top: 200rpx;"></view>
+<my-swiper ></my-swiper>

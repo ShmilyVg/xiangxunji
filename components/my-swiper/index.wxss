@@ -1,0 +1,5 @@
+
+.my-swiper-content-layout{
+    font-size: 46rpx;
+    transition: transform .6s ease-in-out 0s ,opacity .6s ease-in-out 0s, color .6s ease-in-out 0s;
+}

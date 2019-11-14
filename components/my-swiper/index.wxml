@@ -1,0 +1,3 @@
+<view class="fill-width relative" style="display: block;">
+    <view wx:for="{{list}}" wx:key="content" class="fill-width absolute my-swiper-content-layout" style="text-align: center;transform: translateY({{item.translateYValue}}rpx) scale({{item.scaleValue}});color: {{item.color}};opacity:{{item.opacity}};">{{item.content}}</view>
+</view>

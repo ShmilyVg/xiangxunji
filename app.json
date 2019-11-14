@@ -6,7 +6,8 @@
     "pages/setting/setting",
     "pages/user-center/user-center",
     "pages/feedback/feedback",
-    "pages/connect-device/connect-device"
+    "pages/connect-device/connect-device",
+    "pages/swiper/swiper"
   ],
   "window": {
     "backgroundTextStyle": "light",

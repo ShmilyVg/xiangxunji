@@ -15,13 +15,13 @@ Page({
             'play': !haveShowRemindDialog
         }
     },
-    async onVoiceItemClickEvent({currentTarget: {dataset: {id}}}) {
+    async onVoiceItemClickEvent({currentTarget: {dataset: {mindVoiceId, noiseVoiceId}}}) {
         if (this.data.showRemindDialogObj.play) {
             this.setData({
                 'showRemindDialogObj.play': false
             });
         }
-        HiNavigator.navigateToPlayPage({id});
+        HiNavigator.navigateToPlayPage({mindVoiceId, noiseVoiceId});
     },
 
     async remindDismissEvent({currentTarget: {dataset: {type}}}) {
@@ -44,7 +44,6 @@ Page({
 
     async onLoad() {
         await Storage.setIndexPageRemind();
-
     },
 
 });

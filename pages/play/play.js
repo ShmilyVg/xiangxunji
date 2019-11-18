@@ -1,5 +1,6 @@
 // pages/play/play.js
-import {getAllVoiceList, getWhiteNoiseList} from "../index/data-manager";
+import {getMindPractiseList, getWhiteNoiseList} from "../index/data-manager";
+import {AppVoiceDelegate} from "../../modules/voice-play/voice-delegate";
 
 Page({
 
@@ -16,14 +17,19 @@ Page({
         const {detail: {item}} = e;
     },
     onLoad(options) {
-        const voiceId = parseInt(options.id);
-        const targetVoice = getAllVoiceList().find(item => item.id === voiceId);
-        if (targetVoice) {
+        console.log(options);
+        const mindVoiceId = parseInt(options.mindVoiceId);
+        const noiseVoiceId = parseInt(options.noiseVoiceId);
+        const mindVoiceItem = mindVoiceId && getMindPractiseList().find(item => item.id === mindVoiceId);
+        const noiseVoiceItem = noiseVoiceId && getWhiteNoiseList().find(item => item.id === noiseVoiceId);
+        if (mindVoiceItem || noiseVoiceItem) {
             const whiteNoiseList = getWhiteNoiseList();
 
             this.setData({
-                targetVoice,
-                envVoices: !whiteNoiseList.find(item => item.id === voiceId) ? whiteNoiseList : []
+                targetVoice: mindVoiceItem,
+                envVoices: !!mindVoiceItem ? whiteNoiseList : []
+            }, () => {
+                AppVoiceDelegate.play({mindVoiceId, noiseVoiceId});
             });
         }
     },

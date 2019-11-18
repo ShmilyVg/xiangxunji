@@ -1,9 +1,12 @@
-import {getMindPractiseList, getWhiteNoiseList} from "../pages/index/data-manager";
-import {VoiceUrl} from "./config";
+import {getMindPractiseList, getWhiteNoiseList} from "../../pages/index/data-manager";
+import {VoiceUrl} from "../../utils/config";
+import Protocol from "../network/protocol";
+
+const onlyPersonVoiceId = getWhiteNoiseList().pop().id;
 
 class VoiceManager {
     constructor() {
-        this.backgroundAudioManager = app.getBackgroundAudioManager();
+        this.backgroundAudioManager = wx.getBackgroundAudioManager();
 
         this.backgroundAudioManager.onError(err => {
             console.error('backgroundAudioManager 报错', err);
@@ -30,16 +33,16 @@ class VoiceManager {
         this.backgroundAudioManager.onTimeUpdate(callback);
     }
 
-    play({mindVoiceId = 0, noiseVoiceId = 0}) {
-        return new Promise((resolve, reject) => {
+    play({mindVoiceId = 0, noiseVoiceId = onlyPersonVoiceId}) {
+        return new Promise(async (resolve, reject) => {
             const bgAManager = this.backgroundAudioManager;
             if (!mindVoiceId && !noiseVoiceId) {
                 reject({errCode: 1000, errMsg: '未设置任何音频Id，请至少填写一个'});
             }
             const targetVoiceList = [getMindPractiseList().find(item => item.id === mindVoiceId), getWhiteNoiseList().find(item => item.id === noiseVoiceId)].filter(item => !!item);
             const voiceTitle = targetVoiceList.map(item => item.title).join('-');
-            const voiceIdBackStr = targetVoiceList.map(item => item.title).join('-');
-            this.backgroundAudioSrc = VoiceUrl + voiceIdBackStr;
+            const {result: {url: voiceIdBackStr}} = await Protocol.getVoiceUrl({mindVoiceId, noiseVoiceId});
+            this.backgroundAudioSrc = voiceIdBackStr;
             bgAManager.src = this.backgroundAudioSrc;
             bgAManager.title = voiceTitle;
             bgAManager.play();

@@ -57,6 +57,20 @@ export function getWhiteNoiseList() {
     ];
 }
 
+export function findVoiceTypeObjectById({voiceId}) {
+    const targetMindVoice = getMindPractiseList().find(item => item.id === voiceId);
+    if (targetMindVoice) {
+        return {mindVoiceId: targetMindVoice.id};
+    } else {
+        const targetWhiteNoiseVoice = getWhiteNoiseList().find(item => item.id === voiceId);
+        if (targetWhiteNoiseVoice) {
+            return {noiseVoiceId: targetWhiteNoiseVoice.id};
+        }
+    }
+    return {};
+}
+
+
 export function getWhiteNoiseListAtIndexPage() {
     const list = getWhiteNoiseList();
     list.pop();
@@ -66,3 +80,13 @@ export function getWhiteNoiseListAtIndexPage() {
 export function getAllVoiceList() {
     return getMindPractiseList().concat(getWhiteNoiseList());
 }
+
+
+// export function getPlayVoiceArgumentsById(...voiceIds) {
+//     for (let voiceId of voiceIds) {
+//         const mindItem = getMindPractiseList()
+//     }
+//     getMindPractiseList();
+// }
+//
+// getPlayVoiceArgumentsById(1, 2);

@@ -1,8 +1,8 @@
 import CommonNavigator from "heheda-navigator";
 
 export default class HiNavigator extends CommonNavigator {
-    static navigateToPlayPage({id}) {
-        this.navigateTo({url: '/pages/play/play?id=' + id});
+    static navigateToPlayPage({mindVoiceId = 0, noiseVoiceId = 100}) {
+        this.navigateTo({url: '/pages/play/play?mindVoiceId=' + mindVoiceId + '&noiseVoiceId=' + noiseVoiceId});
     }
 
     static navigateToMoreSetting() {

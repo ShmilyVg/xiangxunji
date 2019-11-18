@@ -51,7 +51,7 @@ export default class BaseVoiceManager {
             bgAManager.src = this.backgroundAudioSrc;
             bgAManager.title = title;
             bgAManager.play();
-            resolve({src, title});
+            resolve();
         });
     }
 

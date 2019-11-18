@@ -20,7 +20,8 @@ class XXJVoiceManager extends BaseVoiceManager {
             Toast.showLoading();
             const {result: {url: src}} = await Protocol.getVoiceUrl({mindVoiceId, noiseVoiceId});
             Toast.hiddenLoading();
-            resolve(await super.play({src, title}));
+            await super.play({src, title});
+            resolve();
         });
     }
 }

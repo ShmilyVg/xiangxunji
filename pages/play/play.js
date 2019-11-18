@@ -26,8 +26,8 @@ Page({
             this.setData({
                 targetVoice: mindVoiceItem || noiseVoiceItem,
                 envVoices: !!mindVoiceItem ? getWhiteNoiseList() : []
-            }, () => {
-                AppVoiceDelegate.play({mindVoiceId, noiseVoiceId});
+            }, async () => {
+                await AppVoiceDelegate.play({mindVoiceId, noiseVoiceId});
             });
         }
     },

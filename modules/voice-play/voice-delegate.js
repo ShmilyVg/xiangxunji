@@ -1,7 +1,7 @@
 import {getVoiceManager} from "./xxj-voice-manager";
 import {getDefaultMindId} from "../../pages/index/data-manager";
 
-export default class VoiceDelegate {
+class VoiceDelegate {
     constructor() {
         this._latestMindVoiceId = getDefaultMindId;
     }

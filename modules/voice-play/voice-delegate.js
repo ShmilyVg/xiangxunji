@@ -10,10 +10,12 @@ class VoiceDelegate {
         getVoiceManager.onTimeUpdate({callback});
     }
 
-    play({mindVoiceId, noiseVoiceId}) {
+    async play({mindVoiceId, noiseVoiceId}) {
         if (this._latestMindVoiceId !== mindVoiceId) {
-            getVoiceManager.play(arguments[0]);
+            await getVoiceManager.play(arguments[0]);
             this._latestMindVoiceId = mindVoiceId;
+        } else {
+        //
         }
     }
 
@@ -25,7 +27,7 @@ class VoiceDelegate {
         getVoiceManager.pause();
     }
 
-};
+}
 
 
 export const AppVoiceDelegate = new VoiceDelegate();

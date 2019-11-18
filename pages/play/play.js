@@ -28,6 +28,16 @@ Page({
                 envVoices: !!mindVoiceItem ? getWhiteNoiseList() : []
             }, () => {
                 AppVoiceDelegate.play({mindVoiceId, noiseVoiceId});
+                setTimeout(() => {
+                    AppVoiceDelegate.pause()
+
+                }, 3000);
+                AppVoiceDelegate.onTimeUpdate({
+                    callback: (e1, e2) => {
+                        console.log(e1, e2);
+                    }
+                })
+
             });
         }
     },

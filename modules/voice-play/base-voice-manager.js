@@ -7,8 +7,8 @@ export default class BaseVoiceManager {
         });
         this.backgroundAudioManager.onEnded(res => {
             console.log('backgroundAudioManager播放结束', res);
-            this.backgroundAudioManager.src = this.backgroundAudioSrc;
-            this.backgroundAudioManager.play();
+            // this.backgroundAudioManager.src = this.backgroundAudioSrc;
+            // this.backgroundAudioManager.play();
         });
 
         // this.audioContext = wx.createInnerAudioContext();
@@ -25,6 +25,10 @@ export default class BaseVoiceManager {
 
     onTimeUpdate({callback}) {
         this.backgroundAudioManager.onTimeUpdate(callback);
+    }
+
+    onPlay({callback}) {
+        this.backgroundAudioManager.onPlay(callback);
     }
 
     play({src, title}) {
@@ -47,7 +51,7 @@ export default class BaseVoiceManager {
 
     pause() {
         const bgAManager = this.backgroundAudioManager;
-        if (!bgAManager.pause) {
+        if (!bgAManager.paused) {
             bgAManager.pause();
         }
     }

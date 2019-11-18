@@ -17,7 +17,6 @@ Page({
         const {detail: {item}} = e;
     },
     onLoad(options) {
-        console.log(options);
         const mindVoiceId = parseInt(options.mindVoiceId) || undefined;
         const noiseVoiceId = parseInt(options.noiseVoiceId) || undefined;
         const mindVoiceItem = mindVoiceId && getMindPractiseList().find(item => item.id === mindVoiceId);
@@ -29,7 +28,6 @@ Page({
                 targetVoice: mindVoiceItem || noiseVoiceItem,
                 envVoices: !!mindVoiceItem ? whiteNoiseList : []
             }, () => {
-                console.log('mindVoiceId, noiseVoiceId', mindVoiceId, noiseVoiceId);
                 AppVoiceDelegate.play({mindVoiceId, noiseVoiceId});
 
             });

@@ -22,14 +22,12 @@ Page({
         const mindVoiceItem = mindVoiceId && getMindPractiseList().find(item => item.id === mindVoiceId);
         const noiseVoiceItem = noiseVoiceId && getWhiteNoiseList().find(item => item.id === noiseVoiceId);
         if (mindVoiceItem || noiseVoiceItem) {
-            const whiteNoiseList = getWhiteNoiseList();
 
             this.setData({
                 targetVoice: mindVoiceItem || noiseVoiceItem,
-                envVoices: !!mindVoiceItem ? whiteNoiseList : []
+                envVoices: !!mindVoiceItem ? getWhiteNoiseList() : []
             }, () => {
                 AppVoiceDelegate.play({mindVoiceId, noiseVoiceId});
-
             });
         }
     },
@@ -38,6 +36,7 @@ Page({
      * 生命周期函数--监听页面初次渲染完成
      */
     onReady() {
+
 
     },
 

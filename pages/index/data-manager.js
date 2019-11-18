@@ -61,6 +61,7 @@ export function getDefaultWhiteNoiseItem() {
     return {id: 100, iconName: 'zhi_ting_ren_sheng', title: '只听人声'}
 }
 
+export const getDefaultMindId = 0;
 export const getDefaultWhiteNoiseId = getDefaultWhiteNoiseItem().id;
 
 export function findVoiceTypeObjectById({voiceId}) {

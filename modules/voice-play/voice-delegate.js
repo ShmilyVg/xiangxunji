@@ -1,8 +1,9 @@
-import {getVoiceManager} from "./voice-manager";
+import {getVoiceManager} from "./xxj-voice-manager";
+import {getDefaultMindId} from "../../pages/index/data-manager";
 
 export default class VoiceDelegate {
     constructor() {
-
+        this._latestMindVoiceId = getDefaultMindId;
     }
 
     onTimeUpdate({callback}) {
@@ -10,7 +11,10 @@ export default class VoiceDelegate {
     }
 
     play({mindVoiceId, noiseVoiceId}) {
-        getVoiceManager.play(arguments[0]);
+        if (this._latestMindVoiceId !== mindVoiceId) {
+            getVoiceManager.play(arguments[0]);
+            this._latestMindVoiceId = mindVoiceId;
+        }
     }
 
     playCurrentVoice() {

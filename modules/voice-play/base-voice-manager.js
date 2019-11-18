@@ -41,6 +41,14 @@ export default class BaseVoiceManager {
         // });
     }
 
+    getCurrentTime() {
+        return  Math.floor(this.backgroundAudioManager.currentTime);
+    }
+
+    getDuration() {
+        return Math.floor(this.backgroundAudioManager.duration);
+    }
+
     setOnPlayListener({listener, context}) {
         let item = this._onPlayListenerArray.find(item => item.context === context);
         if (!item) {

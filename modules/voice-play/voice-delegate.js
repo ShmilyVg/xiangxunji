@@ -23,8 +23,16 @@ class VoiceDelegate {
         if (this._latestMindVoiceId !== mindVoiceId) {
             await getVoiceManager.play(arguments[0]);
             this._latestMindVoiceId = mindVoiceId;
-        } else if (getVoiceManager.backgroundAudioManager.paused) {
-            getVoiceManager.playCurrentVoice();
+        } else  {
+            const {backgroundAudioManager} = getVoiceManager;
+            if (backgroundAudioManager.paused) {
+                getVoiceManager._onTimeUpdateListener({
+                    currentTime: getVoiceManager.getCurrentTime(),
+                    duration: getVoiceManager.getDuration()
+                });
+                // getVoiceManager.playCurrentVoice();
+            }
+
         }
     }
 

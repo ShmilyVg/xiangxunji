@@ -1,6 +1,7 @@
 // pages/play/play.js
 import {getMindPractiseList, getWhiteNoiseList} from "../index/data-manager";
 import {AppVoiceDelegate} from "../../modules/voice-play/voice-delegate";
+import {config} from "../../components/play-action/play-state";
 
 Page({
 
@@ -43,6 +44,11 @@ Page({
                     delayTime: ['0' + Math.floor(delaySecond / 60), '0' + Math.floor(delaySecond % 60)].map(item => item.slice(-2)).join(':')
                 });
             }
+        });
+        AppVoiceDelegate.setOnPlayListener({
+            listener: () => {
+                this.setData({playState: config.playing.state});
+            }, context: this
         });
     },
 

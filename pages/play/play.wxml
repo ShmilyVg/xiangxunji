@@ -24,7 +24,7 @@
         <view class="play-left-swipe">左滑切换场景音</view>
         <image src="../../images/play/left_02.png" class="play-left-icon"></image>
     </view>
-    <play-action></play-action>
+    <play-action play-state="{{playState}}"></play-action>
     <wave></wave>
 
 </view>

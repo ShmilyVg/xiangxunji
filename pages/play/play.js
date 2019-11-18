@@ -18,18 +18,20 @@ Page({
     },
     onLoad(options) {
         console.log(options);
-        const mindVoiceId = parseInt(options.mindVoiceId);
-        const noiseVoiceId = parseInt(options.noiseVoiceId);
+        const mindVoiceId = parseInt(options.mindVoiceId) || undefined;
+        const noiseVoiceId = parseInt(options.noiseVoiceId) || undefined;
         const mindVoiceItem = mindVoiceId && getMindPractiseList().find(item => item.id === mindVoiceId);
         const noiseVoiceItem = noiseVoiceId && getWhiteNoiseList().find(item => item.id === noiseVoiceId);
         if (mindVoiceItem || noiseVoiceItem) {
             const whiteNoiseList = getWhiteNoiseList();
 
             this.setData({
-                targetVoice: mindVoiceItem,
+                targetVoice: mindVoiceItem || noiseVoiceItem,
                 envVoices: !!mindVoiceItem ? whiteNoiseList : []
             }, () => {
+                console.log('mindVoiceId, noiseVoiceId', mindVoiceId, noiseVoiceId);
                 AppVoiceDelegate.play({mindVoiceId, noiseVoiceId});
+
             });
         }
     },

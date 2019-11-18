@@ -9,6 +9,7 @@ export default class BaseNetworkImp {
     }
 
     static request({url, data, requestWithoutLogin = false, showResendDialog}) {
+        console.log('请求协议', url, data);
         return new Promise(function (resolve, reject) {
             const requestObj = {
                 url: NetworkConfig.getPostUrl() + url,

@@ -1,8 +1,6 @@
-import {getMindPractiseList, getWhiteNoiseList} from "../../pages/index/data-manager";
-import {VoiceUrl} from "../../utils/config";
+import {getDefaultWhiteNoiseId, getMindPractiseList, getWhiteNoiseList} from "../../pages/index/data-manager";
 import Protocol from "../network/protocol";
-
-const onlyPersonVoiceId = getWhiteNoiseList().pop().id;
+import {Toast} from "heheda-common-view";
 
 class VoiceManager {
     constructor() {
@@ -33,15 +31,18 @@ class VoiceManager {
         this.backgroundAudioManager.onTimeUpdate(callback);
     }
 
-    play({mindVoiceId = 0, noiseVoiceId = onlyPersonVoiceId}) {
+
+    play({mindVoiceId = 0, noiseVoiceId = getDefaultWhiteNoiseId}) {
         return new Promise(async (resolve, reject) => {
             const bgAManager = this.backgroundAudioManager;
-            if (!mindVoiceId && !noiseVoiceId) {
+            if (!mindVoiceId && noiseVoiceId === getDefaultWhiteNoiseId) {
                 reject({errCode: 1000, errMsg: '未设置任何音频Id，请至少填写一个'});
             }
-            const targetVoiceList = [getMindPractiseList().find(item => item.id === mindVoiceId), getWhiteNoiseList().find(item => item.id === noiseVoiceId)].filter(item => !!item);
-            const voiceTitle = targetVoiceList.map(item => item.title).join('-');
+            const voiceTitle = [getMindPractiseList().find(item => item.id === mindVoiceId), getWhiteNoiseList().find(item => item.id === noiseVoiceId)]
+                .filter(item => !!item).map(item => item.title).join('-');
+            Toast.showLoading();
             const {result: {url: voiceIdBackStr}} = await Protocol.getVoiceUrl({mindVoiceId, noiseVoiceId});
+            Toast.hiddenLoading();
             this.backgroundAudioSrc = voiceIdBackStr;
             bgAManager.src = this.backgroundAudioSrc;
             bgAManager.title = voiceTitle;

@@ -1,3 +1,5 @@
+import {AppVoiceDelegate} from "../../modules/voice-play/voice-delegate";
+
 function commonAnimationAction({actionName}) {
     return new Promise(resolve => {
         this.setData({
@@ -95,7 +97,11 @@ Component({
     },
     lifetimes: {
         async attached() {
-
+            AppVoiceDelegate.setOnPlayListener({
+                listener: () => {
+                    this.setData({action: config.playing});
+                }, context: this
+            });
         },
 
     },

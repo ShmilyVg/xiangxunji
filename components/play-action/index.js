@@ -15,14 +15,10 @@ Component({
     },
     observers: {
         'playState'(newPlayState) {
-            // 在 numberA 或者 numberB 被设置时，执行这个函数
             console.log('接收到newPlayState', newPlayState);
             if (!newPlayState) {
                 return;
             }
-
-            // const target = config[currentState].actions.find(item => item.nextState === actionName);
-            // target && (await target.action.call(this, {actionName}));
             commonAnimationAction.call(this, {actionName: newPlayState});
         }
     },
@@ -43,10 +39,8 @@ Component({
      */
     methods: {
         async _onActionClickListener({currentTarget: {dataset: {currentState, actionName}}}) {
-            console.log(currentState, actionName);
             const target = config[currentState].actions.find(item => item.nextState === actionName);
             target && (await target.action.call(this, {actionName}));
-
         },
         _doNothing() {
 

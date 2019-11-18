@@ -1,10 +1,10 @@
 .wave-common{
-    opacity: 0.8;
-    background-color: #E6DDF9;
+    background-color: white;
     border-radius: 50%;
     width: 200px;
     height: 40px;
     transform: scale(0,0);
+    opacity: 0.3;
 }
 .wave-01{
     animation: wave 20s linear infinite;
@@ -27,7 +27,7 @@
 
     from {
         transform: scale(0,0);
-        opacity: 0.8;
+        opacity: 0.3;
 
     }
     to {

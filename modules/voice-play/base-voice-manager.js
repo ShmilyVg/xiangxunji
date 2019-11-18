@@ -1,7 +1,7 @@
 export default class BaseVoiceManager {
     constructor() {
         this.backgroundAudioManager = wx.getBackgroundAudioManager();
-
+        this._onTimeUpdateListener = null;
         this.backgroundAudioManager.onError(err => {
             console.error('backgroundAudioManager 报错', err);
         });
@@ -10,7 +10,20 @@ export default class BaseVoiceManager {
             // this.backgroundAudioManager.src = this.backgroundAudioSrc;
             // this.backgroundAudioManager.play();
         });
-
+        this.onPlay({
+            callback: () => {
+                const bgAManager = this.backgroundAudioManager, {duration: temDuration} = bgAManager,
+                    duration = Math.floor(temDuration);
+                let latestTime = -1;
+                bgAManager.onTimeUpdate(() => {
+                    const {currentTime: tempTime} = bgAManager, currentTime = Math.floor(tempTime);
+                    if (latestTime < currentTime) {
+                        latestTime = currentTime;
+                        this._onTimeUpdateListener({currentTime, duration});
+                    }
+                });
+            }
+        });
         // this.audioContext = wx.createInnerAudioContext();
         // wx.setInnerAudioOption({mixWithOther: true});
         // this.audioContext.onError(err => {
@@ -23,8 +36,8 @@ export default class BaseVoiceManager {
         // });
     }
 
-    onTimeUpdate({callback}) {
-        this.backgroundAudioManager.onTimeUpdate(callback);
+    setOnTimeUpdateListener({listener}) {
+        this._onTimeUpdateListener = listener;
     }
 
     onPlay({callback}) {
@@ -44,7 +57,7 @@ export default class BaseVoiceManager {
 
     playCurrentVoice() {
         const bgAManager = this.backgroundAudioManager;
-        if (bgAManager.pause) {
+        if (bgAManager.paused) {
             bgAManager.play();
         }
     }

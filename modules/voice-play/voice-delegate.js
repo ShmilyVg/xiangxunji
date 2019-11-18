@@ -6,8 +6,8 @@ class VoiceDelegate {
         this._latestMindVoiceId = getDefaultMindId;
     }
 
-    onTimeUpdate({callback}) {
-        getVoiceManager.onTimeUpdate({callback});
+    setOnTimeUpdateListener({listener}) {
+        getVoiceManager.setOnTimeUpdateListener(arguments[0]);
     }
 
     async play({mindVoiceId, noiseVoiceId}) {
@@ -15,7 +15,7 @@ class VoiceDelegate {
             await getVoiceManager.play(arguments[0]);
             this._latestMindVoiceId = mindVoiceId;
         } else {
-        //
+            //
         }
     }
 

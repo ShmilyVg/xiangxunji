@@ -8,7 +8,7 @@ Page({
      * 页面的初始数据
      */
     data: {
-        startAnimation: false,
+        delayTime: '',
         targetVoice: {},
         envVoices: []
     },
@@ -28,16 +28,6 @@ Page({
                 envVoices: !!mindVoiceItem ? getWhiteNoiseList() : []
             }, () => {
                 AppVoiceDelegate.play({mindVoiceId, noiseVoiceId});
-                setTimeout(() => {
-                    AppVoiceDelegate.pause()
-
-                }, 3000);
-                AppVoiceDelegate.onTimeUpdate({
-                    callback: (e1, e2) => {
-                        console.log(e1, e2);
-                    }
-                })
-
             });
         }
     },
@@ -46,8 +36,14 @@ Page({
      * 生命周期函数--监听页面初次渲染完成
      */
     onReady() {
-
-
+        AppVoiceDelegate.setOnTimeUpdateListener({
+            listener: ({currentTime, duration}) => {
+                const delaySecond = (duration - currentTime);
+                this.setData({
+                    delayTime: ['0' + Math.floor(delaySecond / 60), '0' + Math.floor(delaySecond % 60)].map(item => item.slice(-2)).join(':')
+                });
+            }
+        });
     },
 
     /**

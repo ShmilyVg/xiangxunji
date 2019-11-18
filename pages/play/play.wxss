@@ -38,6 +38,7 @@ page{
 }
 
 .play-music-duration-time{
+    width: 90rpx;
     font-size:28rpx;
     font-family:PingFang SC;
     font-weight:400;

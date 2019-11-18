@@ -5,7 +5,7 @@
         <view class="wave-common absolute wave-02"></view>
         <view class="wave-common absolute wave-03"></view>
         <view class="wave-common absolute wave-04"></view>
-        <!--        <view class="wave-common absolute wave-05"></view>-->
+        <view class="wave-common absolute wave-05"></view>
     </view>
 </view>
 

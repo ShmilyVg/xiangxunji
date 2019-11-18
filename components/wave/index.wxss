@@ -7,19 +7,23 @@
     opacity: 0.3;
 }
 .wave-01{
-    animation: wave 20s linear infinite;
+    animation: wave 25s linear infinite;
 }
 
 .wave-02{
-    animation: wave 20s linear 5s infinite;
+    animation: wave 25s linear 5s infinite;
 }
 
 .wave-03{
-    animation: wave 20s linear 10s infinite;
+    animation: wave 25s linear 10s infinite;
 }
 
 .wave-04{
-    animation: wave 20s linear 15s infinite;
+    animation: wave 25s linear 15s infinite;
+}
+
+.wave-05{
+    animation: wave 25s linear 20s infinite;
 }
 
 

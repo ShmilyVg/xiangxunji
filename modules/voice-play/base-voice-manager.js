@@ -2,15 +2,19 @@ export default class BaseVoiceManager {
     constructor() {
         this.backgroundAudioManager = wx.getBackgroundAudioManager();
         this._onTimeUpdateListener = null;
+        this._onPauseListener = null;
+
         this._onPlayListenerArray = [{
             context: this, listener() {
-                const bgAManager = this.backgroundAudioManager, {duration: temDuration} = bgAManager,
-                    duration = Math.floor(temDuration);
-                let latestTime = -1;
+                const bgAManager = this.backgroundAudioManager, {duration: temDuration} = bgAManager;
+                let latestTime = -1,duration = Math.floor(temDuration);
                 bgAManager.onTimeUpdate(() => {
                     const {currentTime: tempTime} = bgAManager, currentTime = Math.floor(tempTime);
                     if (latestTime < currentTime) {
                         latestTime = currentTime;
+                        if (duration === 0) {
+                            duration = Math.floor(bgAManager.duration);
+                        }
                         this._onTimeUpdateListener({currentTime, duration});
                     }
                 });
@@ -21,6 +25,7 @@ export default class BaseVoiceManager {
         });
         this.backgroundAudioManager.onEnded(() => {
             console.log('backgroundAudioManager播放结束 是否暂停或停止', this.backgroundAudioManager.paused);
+            this._onPauseListener();
             // this.backgroundAudioManager.src = this.backgroundAudioSrc;
             // this.backgroundAudioManager.play();
         });
@@ -29,6 +34,11 @@ export default class BaseVoiceManager {
                 listener.call(context);
             }
         });
+
+        this.backgroundAudioManager.onPause(() => {
+            this._onPauseListener();
+        });
+
         // this.audioContext = wx.createInnerAudioContext();
         // wx.setInnerAudioOption({mixWithOther: true});
         // this.audioContext.onError(err => {
@@ -47,6 +57,10 @@ export default class BaseVoiceManager {
 
     getDuration() {
         return Math.floor(this.backgroundAudioManager.duration);
+    }
+
+    setOnPauseListener({listener}) {
+        this._onPauseListener = listener;
     }
 
     setOnPlayListener({listener, context}) {

@@ -50,6 +50,11 @@ Page({
                 this.setData({playState: config.playing.state});
             }, context: this
         });
+        AppVoiceDelegate.setOnPauseListener({
+            listener: () => {
+                this.setData({playState: config.pause.state});
+            }
+        });
     },
 
     /**

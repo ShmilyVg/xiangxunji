@@ -10,6 +10,10 @@ class VoiceDelegate {
         getVoiceManager.setOnTimeUpdateListener(arguments[0]);
     }
 
+    setOnPauseListener({listener}) {
+        getVoiceManager.setOnPauseListener(arguments[0]);
+    }
+
 
     setOnPlayListener({listener, context}) {
         getVoiceManager.setOnPlayListener(arguments[0]);
@@ -23,18 +27,22 @@ class VoiceDelegate {
         if (this._latestMindVoiceId !== mindVoiceId) {
             await getVoiceManager.play(arguments[0]);
             this._latestMindVoiceId = mindVoiceId;
-        } else  {
+        } else {
             const {backgroundAudioManager} = getVoiceManager;
-            if (backgroundAudioManager.paused) {
+            if (backgroundAudioManager.paused) {//如果进入的是同一个人声音频，并且音频已经暂停或是播放完成
                 getVoiceManager._onTimeUpdateListener({
                     currentTime: getVoiceManager.getCurrentTime(),
                     duration: getVoiceManager.getDuration()
                 });
-                // getVoiceManager.playCurrentVoice();
+                getVoiceManager.playCurrentVoice();
+            } else {
+
             }
 
         }
     }
+
+
 
     playCurrentVoice() {
         getVoiceManager.playCurrentVoice();

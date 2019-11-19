@@ -44,7 +44,7 @@
             <image class="user-center-my-device-icon" src="../../images/user-center/my_device.png"></image>
             <view class="flex-column">
                 <view class="user-center-my-device-name">HiPee香薰助眠仪</view>
-                <view class="user-center-my-device-connect-status">{{connectState==='connected'?'蓝牙已连接':'蓝牙未连接'}}</view>
+                <view class="user-center-my-device-connect-status">{{connectState==='connected'?'蓝牙已连接':(connectState==='connecting'?'正在连接中':'蓝牙未连接')}}</view>
             </view>
         </view>
         <view bindtap="reconnectEvent" wx:if="{{connectState!=='connected'}}" class="flex-row align-items-center">

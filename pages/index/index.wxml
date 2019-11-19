@@ -8,10 +8,14 @@
             <view class="index-subtitle">{{welcomeObj.content}}</view>
         </view>
 
-        <button bindgetuserinfo="onGetUserInfo" open-type="getUserInfo" hover-class="none" bindtap="remindDismissEvent" data-type="userCenter">
-            <image src="" class="index-user-head"></image>
-            <view wx:if="{{showRemindDialogObj.userCenter}}" class="absolute index-remind-layout">进入“个人中心”可查看并控制设备</view>
-        </button>
+        <view>
+            <button bindgetuserinfo="onGetUserInfo" open-type="getUserInfo" hover-class="none"
+                    bindtap="remindDismissEvent" data-type="userCenter">
+                <image src="" class="index-user-head"></image>
+                <view wx:if="{{showRemindDialogObj.userCenter}}" class="absolute index-remind-layout">进入“个人中心”可查看并控制设备</view>
+            </button>
+        </view>
+
     </view>
 
     <image src="../../images/index/wave.png" class="index-bg-line"></image>

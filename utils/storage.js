@@ -59,7 +59,8 @@ export default class Storage extends BaseStorage {
     }
 
     static getIndexPageRemindHaveShow() {
-        return this.getSync('index_page_remind_have_show');
+        return false
+        // return this.getSync('index_page_remind_have_show');
     }
 }
 

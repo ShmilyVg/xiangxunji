@@ -161,4 +161,10 @@ view.index-content-layout:nth-child(odd){
 
 button{
     position: static;
+    width: auto;
+}
+
+button::after{
+    width: auto;
+    height: auto;
 }

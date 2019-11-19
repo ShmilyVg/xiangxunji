@@ -1,5 +1,5 @@
 // pages/play/play.js
-import {getMindPractiseList, getWhiteNoiseList} from "../index/data-manager";
+import {getDefaultMindId, getDefaultWhiteNoiseId, getMindPractiseList, getWhiteNoiseList} from "../index/data-manager";
 import {AppVoiceDelegate} from "../../modules/voice-play/voice-delegate";
 import {config} from "../../components/play-action/play-state";
 
@@ -26,8 +26,8 @@ Page({
      */
     onReady() {
         const options = this.options;
-        const mindVoiceId = parseInt(options.mindVoiceId) || undefined;
-        const noiseVoiceId = parseInt(options.noiseVoiceId) || undefined;
+        const mindVoiceId = parseInt(options.mindVoiceId) || getDefaultMindId;
+        const noiseVoiceId = parseInt(options.noiseVoiceId) || getDefaultWhiteNoiseId;
         const mindVoiceItem = mindVoiceId && getMindPractiseList().find(item => item.id === mindVoiceId);
         const noiseVoiceItem = noiseVoiceId && getWhiteNoiseList().find(item => item.id === noiseVoiceId);
         if (mindVoiceItem || noiseVoiceItem) {

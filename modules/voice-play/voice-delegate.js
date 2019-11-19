@@ -24,6 +24,7 @@ class VoiceDelegate {
     }
 
     async play({mindVoiceId, noiseVoiceId}) {
+        console.log(this._latestMindVoiceId, mindVoiceId, noiseVoiceId);
         if (this._latestMindVoiceId !== mindVoiceId) {
             await getVoiceManager.play(arguments[0]);
             this._latestMindVoiceId = mindVoiceId;
@@ -34,7 +35,7 @@ class VoiceDelegate {
                     currentTime: getVoiceManager.getCurrentTime(),
                     duration: getVoiceManager.getDuration()
                 });
-                getVoiceManager.playCurrentVoice();
+                // getVoiceManager.playCurrentVoice();
             } else {
                 getVoiceManager._onPlayListener();
             }

@@ -35,6 +35,7 @@ Page({
     },
     onGetUserInfo(e) {
         console.log(e);
+        HiNavigator.navigateToUserCenter();
     },
     onShow() {
         this.setData({

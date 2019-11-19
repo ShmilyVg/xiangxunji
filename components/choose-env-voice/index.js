@@ -40,9 +40,10 @@ Component({
             for (let [index, item] of this.data.envVoices.entries()) {
                 obj[`envVoices[${index}].selected`] = item.id === currentItemId;
             }
-            this.setData(obj);
-            this.triggerEvent('onChooseEnvVoiceItem', {item: {}});
-            this._hideFun();
+            this.setData(obj, () => {
+                this.triggerEvent('onChooseEnvVoiceItem', {selectedItemId: currentItemId});
+                this._hideFun();
+            });
         },
         _showFun() {
             this.setData({show: true});

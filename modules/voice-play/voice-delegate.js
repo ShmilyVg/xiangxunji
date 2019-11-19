@@ -7,6 +7,10 @@ class VoiceDelegate {
         this._latestNoiseVoiceId = getDefaultWhiteNoiseId;
     }
 
+    getLatestNoiseVoiceId() {
+        return this._latestNoiseVoiceId;
+    }
+
     setOnTimeUpdateListener({listener}) {
         getVoiceManager.setOnTimeUpdateListener(arguments[0]);
     }

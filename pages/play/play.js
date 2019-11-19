@@ -13,15 +13,15 @@ Page({
         targetVoice: {},
         envVoices: []
     },
-    onChooseEnvVoiceItem(e) {
-        console.log(e);
-        const {detail: {item}} = e;
+    async onChooseEnvVoiceItem(e) {
+        const {detail: {selectedItemId}} = e;
+        await AppVoiceDelegate.play({mindVoiceId: this.data.targetVoice.id, noiseVoiceId: selectedItemId});
     },
     onLoad(options) {
         // this.options = options;
         // const options = this.options;
         const mindVoiceId = parseInt(options.mindVoiceId) || getDefaultMindId;
-        const noiseVoiceId = parseInt(options.noiseVoiceId) || getDefaultWhiteNoiseId;
+        const noiseVoiceId = parseInt(options.noiseVoiceId) || AppVoiceDelegate.getLatestNoiseVoiceId();
         const mindVoiceItem = mindVoiceId && getMindPractiseList().find(item => item.id === mindVoiceId);
         const noiseVoiceItem = noiseVoiceId && getWhiteNoiseList().find(item => item.id === noiseVoiceId);
         if (mindVoiceItem || noiseVoiceItem) {

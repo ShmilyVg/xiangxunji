@@ -1,3 +1,5 @@
+import {AppVoiceDelegate} from "../../modules/voice-play/voice-delegate";
+
 export function getWelcomeTime() {
     const date = new Date();
     const hours = date.getHours();
@@ -48,13 +50,16 @@ export function getMindPractiseList() {
 }
 
 export function getWhiteNoiseList() {
+    const latestNoiseVoiceId = AppVoiceDelegate.getLatestNoiseVoiceId();
     return [
         {id: 101, iconName: 'yu_da_ba_jiao', title: '雨打芭蕉'},
         {id: 102, iconName: 'hai_bian_man_bu', title: '海边漫步'},
         {id: 103, iconName: 'lin_jian_niao_yu', title: '林间鸟语'},
         {id: 104, iconName: 'hong_ni_xiao_lu', title: '红泥小炉'},
         getDefaultWhiteNoiseItem()
-    ];
+    ].map(item => {
+        return {...item, selected: latestNoiseVoiceId === item.id};
+    });
 }
 
 export function getDefaultWhiteNoiseItem() {

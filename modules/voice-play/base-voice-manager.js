@@ -12,6 +12,7 @@ export default class BaseVoiceManager {
             // this.backgroundAudioManager.src = this.backgroundAudioSrc;
             // this.backgroundAudioManager.title = this.backgroundAudioTitle;
             this._onPauseListener();
+            this._onTimeUpdateListener({currentTime: this.getCurrentTime(), duration: this.getDuration()});
         });
         this.backgroundAudioManager.onPlay(() => {
             this._onPlayListener();
@@ -73,7 +74,6 @@ export default class BaseVoiceManager {
             this.backgroundAudioTitle = title;
             bgAManager.src = this.backgroundAudioSrc;
             bgAManager.title = this.backgroundAudioTitle;
-            // bgAManager.play();
             // bgAManager.seek(17);
             resolve();
         });
@@ -81,7 +81,6 @@ export default class BaseVoiceManager {
 
     playCurrentVoice() {
         const bgAManager = this.backgroundAudioManager, {src, paused} = bgAManager;
-        console.log(bgAManager);
         if (paused) {
             if (src) {
                 bgAManager.play();

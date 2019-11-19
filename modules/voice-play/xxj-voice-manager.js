@@ -4,7 +4,6 @@ import {
     getMindPractiseList,
     getWhiteNoiseList
 } from "../../pages/index/data-manager";
-import {Toast} from "heheda-common-view";
 import Protocol from "../network/protocol";
 import BaseVoiceManager from "./base-voice-manager";
 
@@ -17,9 +16,7 @@ class XXJVoiceManager extends BaseVoiceManager {
             }
             const title = [getMindPractiseList().find(item => item.id === mindVoiceId), getWhiteNoiseList().find(item => item.id === noiseVoiceId)]
                 .filter(item => !!item).map(item => item.title).join('-');
-            Toast.showLoading();
             const {result: {url: src}} = await Protocol.getVoiceUrl({mindVoiceId, noiseVoiceId});
-            Toast.hiddenLoading();
             await super.play({src, title});
             resolve();
         });

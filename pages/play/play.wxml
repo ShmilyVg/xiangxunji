@@ -13,7 +13,7 @@
             <view class="play-music-name">{{targetVoice.title}}</view>
             <view class="flex-row align-items-center">
                 <image src="../../images/play/time.png" class="play-music-duration-icon"></image>
-                <view class="play-music-duration-time">{{delayTime}}</view>
+                <view class="play-music-duration-time">{{delayTime||'00:00'}}</view>
             </view>
         </view>
         <view class="play-point absolute"></view>

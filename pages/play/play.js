@@ -18,14 +18,8 @@ Page({
         const {detail: {item}} = e;
     },
     onLoad(options) {
-        this.options = options;
-    },
-
-    /**
-     * 生命周期函数--监听页面初次渲染完成
-     */
-    onReady() {
-        const options = this.options;
+        // this.options = options;
+        // const options = this.options;
         const mindVoiceId = parseInt(options.mindVoiceId) || getDefaultMindId;
         const noiseVoiceId = parseInt(options.noiseVoiceId) || getDefaultWhiteNoiseId;
         const mindVoiceItem = mindVoiceId && getMindPractiseList().find(item => item.id === mindVoiceId);
@@ -40,6 +34,13 @@ Page({
                 await AppVoiceDelegate.play({mindVoiceId, noiseVoiceId});
             });
         }
+    },
+
+    /**
+     * 生命周期函数--监听页面初次渲染完成
+     */
+    onReady() {
+
     },
 
     setAppVoiceListener() {

@@ -19,12 +19,7 @@ Component({
     data: {show: false, isLightOpen: false, isWaterOpen: false},
     lifetimes: {
         async attached() {
-            const lightOpen = Storage.getLightOpen();
-            const waterOpen = Storage.getWaterOpen();
-            this.setData({
-                isWaterOpen: !!(await waterOpen),
-                isLightOpen: !!(await lightOpen),
-            })
+
         },
 
     },
@@ -48,8 +43,14 @@ Component({
             HiNavigator.navigateToMoreSetting();
             this._hideFun();
         },
-        _showFun() {
-            this.setData({show: true});
+        async _showFun() {
+            const lightOpen = Storage.getLightOpen();
+            const waterOpen = Storage.getWaterOpen();
+            this.setData({
+                isWaterOpen: !!(await waterOpen),
+                isLightOpen: !!(await lightOpen),
+                show: true
+            });
         },
         _hideFun() {
             this.setData({show: false});

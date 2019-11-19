@@ -35,7 +35,11 @@ export default class Storage extends BaseStorage {
     }
 
     static async getLightOpen() {
-        return (await this.get('light_open_setting')).data;
+        try {
+            return (await this.get('light_open_setting')).data;
+        } catch (e) {
+            return false;
+        }
     }
 
     static async setWaterOpen({open}) {
@@ -43,7 +47,11 @@ export default class Storage extends BaseStorage {
     }
 
     static async getWaterOpen() {
-        return (await this.get('water_open_setting')).data;
+        try {
+            return (await this.get('water_open_setting')).data;
+        } catch (e) {
+            return false;
+        }
     }
 
     static async setIndexPageRemind() {

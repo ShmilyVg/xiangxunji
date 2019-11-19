@@ -9,9 +9,9 @@ export default class BaseVoiceManager {
         });
         this.backgroundAudioManager.onEnded(() => {
             console.log('backgroundAudioManager播放结束 是否暂停或停止', this.backgroundAudioManager.paused);
-            this._onPauseListener();
             // this.backgroundAudioManager.src = this.backgroundAudioSrc;
-            // this.backgroundAudioManager.play();
+            // this.backgroundAudioManager.title = this.backgroundAudioTitle;
+            this._onPauseListener();
         });
         this.backgroundAudioManager.onPlay(() => {
             this._onPlayListener();
@@ -70,18 +70,25 @@ export default class BaseVoiceManager {
         return new Promise(resolve => {
             const bgAManager = this.backgroundAudioManager;
             this.backgroundAudioSrc = src;
+            this.backgroundAudioTitle = title;
             bgAManager.src = this.backgroundAudioSrc;
-            bgAManager.title = title;
-            bgAManager.play();
+            bgAManager.title = this.backgroundAudioTitle;
+            // bgAManager.play();
+            // bgAManager.seek(17);
             resolve();
         });
     }
 
     playCurrentVoice() {
-        const bgAManager = this.backgroundAudioManager;
-        if (bgAManager.paused) {
-            bgAManager.play();
-            // this._onPlayListener();
+        const bgAManager = this.backgroundAudioManager, {src, paused} = bgAManager;
+        console.log(bgAManager);
+        if (paused) {
+            if (src) {
+                bgAManager.play();
+            } else {
+                bgAManager.title = this.backgroundAudioTitle;
+                bgAManager.src = this.backgroundAudioSrc;
+            }
         }
     }
 

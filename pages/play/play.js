@@ -18,6 +18,14 @@ Page({
         const {detail: {item}} = e;
     },
     onLoad(options) {
+        this.options = options;
+    },
+
+    /**
+     * 生命周期函数--监听页面初次渲染完成
+     */
+    onReady() {
+        const options = this.options;
         const mindVoiceId = parseInt(options.mindVoiceId) || undefined;
         const noiseVoiceId = parseInt(options.noiseVoiceId) || undefined;
         const mindVoiceItem = mindVoiceId && getMindPractiseList().find(item => item.id === mindVoiceId);
@@ -28,15 +36,13 @@ Page({
                 targetVoice: mindVoiceItem || noiseVoiceItem,
                 envVoices: !!mindVoiceItem ? getWhiteNoiseList() : []
             }, async () => {
+                this.setAppVoiceListener();
                 await AppVoiceDelegate.play({mindVoiceId, noiseVoiceId});
             });
         }
     },
 
-    /**
-     * 生命周期函数--监听页面初次渲染完成
-     */
-    onReady() {
+    setAppVoiceListener() {
         AppVoiceDelegate.setOnTimeUpdateListener({
             listener: ({currentTime, duration}) => {
                 const delaySecond = (duration - currentTime);
@@ -48,7 +54,7 @@ Page({
         AppVoiceDelegate.setOnPlayListener({
             listener: () => {
                 this.setData({playState: config.playing.state});
-            }, context: this
+            }
         });
         AppVoiceDelegate.setOnPauseListener({
             listener: () => {

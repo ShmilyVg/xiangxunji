@@ -19,7 +19,13 @@ Component({
             if (!newPlayState) {
                 return;
             }
+            try{
+
             commonAnimationAction.call(this, {actionName: newPlayState});
+            }catch (e) {
+                console.error(e);
+            }
+
         }
     },
     /**

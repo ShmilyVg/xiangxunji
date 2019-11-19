@@ -3,23 +3,7 @@ export default class BaseVoiceManager {
         this.backgroundAudioManager = wx.getBackgroundAudioManager();
         this._onTimeUpdateListener = null;
         this._onPauseListener = null;
-
-        this._onPlayListenerArray = [{
-            context: this, listener() {
-                const bgAManager = this.backgroundAudioManager, {duration: temDuration} = bgAManager;
-                let latestTime = -1,duration = Math.floor(temDuration);
-                bgAManager.onTimeUpdate(() => {
-                    const {currentTime: tempTime} = bgAManager, currentTime = Math.floor(tempTime);
-                    if (latestTime < currentTime) {
-                        latestTime = currentTime;
-                        if (duration === 0) {
-                            duration = Math.floor(bgAManager.duration);
-                        }
-                        this._onTimeUpdateListener({currentTime, duration});
-                    }
-                });
-            }
-        }];
+        this._onPlayListener = null;
         this.backgroundAudioManager.onError(err => {
             console.error('backgroundAudioManager 报错', err);
         });
@@ -30,12 +14,23 @@ export default class BaseVoiceManager {
             // this.backgroundAudioManager.play();
         });
         this.backgroundAudioManager.onPlay(() => {
-            for (const {listener, context} of this._onPlayListenerArray) {
-                listener.call(context);
-            }
+            this._onPlayListener();
+            const bgAManager = this.backgroundAudioManager;
+            let latestTime = -1, duration = this.getDuration();
+            bgAManager.onTimeUpdate(() => {
+                const currentTime = this.getCurrentTime();
+                if (latestTime < currentTime) {
+                    latestTime = currentTime;
+                    !duration && (duration = this.getDuration());
+                    this._onTimeUpdateListener({currentTime, duration});
+                }
+            });
         });
 
         this.backgroundAudioManager.onPause(() => {
+            this._onPauseListener();
+        });
+        this.backgroundAudioManager.onStop(() => {
             this._onPauseListener();
         });
 
@@ -52,7 +47,7 @@ export default class BaseVoiceManager {
     }
 
     getCurrentTime() {
-        return  Math.floor(this.backgroundAudioManager.currentTime);
+        return Math.floor(this.backgroundAudioManager.currentTime);
     }
 
     getDuration() {
@@ -63,18 +58,8 @@ export default class BaseVoiceManager {
         this._onPauseListener = listener;
     }
 
-    setOnPlayListener({listener, context}) {
-        let item = this._onPlayListenerArray.find(item => item.context === context);
-        if (!item) {
-            this._onPlayListenerArray.push({listener, context});
-        } else {
-            item.listener = listener;
-        }
-    }
-
-    removeOnPlayListener({context}) {
-        const index = this._onPlayListenerArray.findIndex(item => item.context === context);
-        index !== -1 && this._onPlayListenerArray.splice(index, 1);
+    setOnPlayListener({listener}) {
+        this._onPlayListener = listener;
     }
 
     setOnTimeUpdateListener({listener}) {
@@ -96,6 +81,7 @@ export default class BaseVoiceManager {
         const bgAManager = this.backgroundAudioManager;
         if (bgAManager.paused) {
             bgAManager.play();
+            // this._onPlayListener();
         }
     }
 

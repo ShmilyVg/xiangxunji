@@ -36,12 +36,11 @@ class VoiceDelegate {
                 });
                 getVoiceManager.playCurrentVoice();
             } else {
-
+                getVoiceManager._onPlayListener();
             }
 
         }
     }
-
 
 
     playCurrentVoice() {

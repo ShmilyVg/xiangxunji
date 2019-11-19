@@ -17,7 +17,7 @@ export default class BaseBlueTooth extends AbstractBlueTooth {
         this._deviceId = this.getConnectedDeviceId();
         this._serviceId = '';
         this._characteristicId = '';
-        this._latestConnectState = CommonConnectState.UNAVAILABLE;
+        this._latestConnectState = {value: CommonConnectState.UNAVAILABLE};
         this._latestProtocolObj = {protocolState: '', value: {}};
     }
 
@@ -33,10 +33,10 @@ export default class BaseBlueTooth extends AbstractBlueTooth {
     }
 
     set latestConnectState({value, filter = false}) {
-        if (this._latestConnectState !== value) {
+        if (this._latestConnectState.value !== value) {
             console.warn('蓝牙连接状态更新', value);
             !filter && this._onConnectStateChanged({connectState: value});
-            this._latestConnectState = value;
+            this._latestConnectState.value = value;
         }
     }
 

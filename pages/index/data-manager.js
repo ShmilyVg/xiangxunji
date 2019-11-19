@@ -36,7 +36,7 @@ export function getWelcomeContent() {
         {content: '对见解的执著，是精神之道上的最大障碍'},
         {content: '我们娴熟于为生活作准备，却并不擅长于生活'},
     ];
-    return '为惜影相伴，通宵不灭灯'|| contents[Math.floor(Math.random() * contents.length)].content;
+    return contents[Math.floor(Math.random() * contents.length)].content;
 }
 
 

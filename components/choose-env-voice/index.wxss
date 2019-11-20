@@ -51,3 +51,9 @@
     line-height:28rpx;
     margin-top: 20rpx;
 }
+
+::-webkit-scrollbar{
+    width: 0;
+    height: 0;
+    color: transparent;
+}

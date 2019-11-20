@@ -16,7 +16,9 @@
                 <view class="play-music-duration-time">{{delayTime||'00:00'}}</view>
             </view>
         </view>
-        <view class="play-point absolute"></view>
+        <view class="play-music-border-layout absolute">
+            <view class="play-point absolute"></view>
+        </view>
     </view>
 
     <view class="flex-row align-items-center">

@@ -1,4 +1,5 @@
 {
+  "disableScroll": true,
   "usingComponents": {
     "navbar": "/components/navbar/index",
     "env-choose": "/components/choose-env-voice/index",

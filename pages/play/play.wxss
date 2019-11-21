@@ -45,7 +45,7 @@ page{
 }
 
 .play-music-duration-time{
-    width: 90rpx;
+    width: 80rpx;
     font-size:28rpx;
     font-weight:400;
     color:rgba(255,255,255,0.5);

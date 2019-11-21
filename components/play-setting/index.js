@@ -1,9 +1,7 @@
 import HiNavigator from "../../navigator/hi-navigator";
 import Storage from "../../utils/storage";
+import {DIALOG_BG_ANIMATION_DURATION} from "../../utils/config";
 
-const App = getApp();
-
-//自定义的NavigationBar
 Component({
     options: {
         addGlobalClass: true,
@@ -16,7 +14,7 @@ Component({
     /**
      * 组件的初始数据
      */
-    data: {show: false, isLightOpen: false, isWaterOpen: false},
+    data: {show: false, isLightOpen: false, isWaterOpen: false, showJoinAnimation: false},
     lifetimes: {
         async attached() {
 
@@ -50,10 +48,20 @@ Component({
                 isWaterOpen: !!(await waterOpen),
                 isLightOpen: !!(await lightOpen),
                 show: true
+            }, () => {
+                this.setData({
+                    showJoinAnimation: true
+                })
             });
         },
         _hideFun() {
-            this.setData({show: false});
+            this.setData({
+                showJoinAnimation: false
+            }, () => {
+                setTimeout(() => {
+                    this.setData({show: false});
+                }, DIALOG_BG_ANIMATION_DURATION);
+            });
         },
         _doNothing() {
 

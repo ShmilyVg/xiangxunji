@@ -1,18 +1,18 @@
 import {NetworkConfig} from "../modules/network/network/index";
 
-const Release = false;
+const Release = false,
+    SoftwareVersion = `${Release ? '' : '香薰机_Stage '}v0.1.0`,
+    PostUrl = `http://backend.${Release ? '' : 'stage.'}hipee.cn/hipee-web-aroma/`,
+    UploadUrl = 'https://backend.hipee.cn/hipee-upload/hibox/mp/upload/image.do',
+    VoiceUrl = 'http://img.hipee.cn/aroma/',
+    DIALOG_BG_ANIMATION_DURATION = 400;
 
-const SoftwareVersion = `${Release ? '' : '香薰机_Stage '}v0.1.0`;
-
-const PostUrl = `http://backend.${Release ? '' : 'stage.'}hipee.cn/hipee-web-aroma/`;
-const UploadUrl = 'https://backend.hipee.cn/hipee-upload/hibox/mp/upload/image.do';
-const VoiceUrl = 'http://img.hipee.cn/aroma/';
 NetworkConfig.setConfig({postUrl: PostUrl});
-
 export {
     PostUrl,
     UploadUrl,
     VoiceUrl,
     SoftwareVersion,
-    Release
+    Release,
+    DIALOG_BG_ANIMATION_DURATION
 };

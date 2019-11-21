@@ -1,6 +1,5 @@
-const App = getApp(), ANIMATION_DURATION = 400;
+import {DIALOG_BG_ANIMATION_DURATION} from "../../utils/config";
 
-//自定义的NavigationBar
 Component({
     options: {
         addGlobalClass: true,
@@ -57,7 +56,7 @@ Component({
             }, () => {
                 setTimeout(() => {
                     this.setData({show: false});
-                }, ANIMATION_DURATION);
+                }, DIALOG_BG_ANIMATION_DURATION);
             });
         },
         _doNothing() {

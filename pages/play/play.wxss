@@ -80,3 +80,9 @@ page{
     opacity:0.6;
     margin: 0 10rpx;
 }
+
+::-webkit-scrollbar{
+    width: 0;
+    height: 0;
+    color: transparent;
+}

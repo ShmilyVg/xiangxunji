@@ -113,6 +113,7 @@ export default class AbstractBlueTooth extends IBLEOperator{
         // 操作之前先监听，保证第一时间获取数据
         await createBLEConnection({deviceId, timeout: 7000});
         onBLECharacteristicValueChange((res) => {
+            console.log('接收到消息', res);
             if (!!valueChangeListener) {
                 const {value, protocolState, filter} = this.dealReceiveData({receiveBuffer: res.value});
                 !filter && valueChangeListener({protocolState, value});

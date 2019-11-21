@@ -9,17 +9,20 @@ App({
         this.globalData.navHeight = this.globalData.systemInfo.statusBarHeight + 46;
         this.bLEManager = new HiXujBluetoothManager();
         this.bLEManager.setBLEListener({
-            onConnectStateChanged: (res) => {
+            onConnectStateChanged: async (res) => {
                 const {connectState} = res;
                 console.log('app.js 蓝牙连接状态更新', res);
                 switch (connectState) {
                     case ConnectState.CONNECTED:
-                        this.bLEManager.getProtocol().getDeviceAllStatus();
+                        setTimeout(async () => {
+                            await this.bLEManager.getProtocol().getDeviceAllStatus();
+                        }, 0);
                         break;
                     default:
 
                         break;
                 }
+                this.onAppBLEConnectStateChangedListener && this.onAppBLEConnectStateChangedListener({connectState});
 
             },
 
@@ -43,11 +46,7 @@ App({
     onHide() {
         this.isAppOnShow = false;
     },
-
-    getBackgroundAudioManager() {
-        return wx.getBackgroundAudioManager();
-    },
-
+    onAppBLEConnectStateChangedListener: null,
     globalData: {
         userInfo: null
     }

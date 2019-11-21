@@ -13,7 +13,7 @@ export default class HiXxjBluetoothProtocol extends LBlueToothProtocolOperator {
              * 读取香薰机状态
              */
             '0x56': () => {
-                this.sendData({command: '0x56', data: [0, 0, 0, 0, 0, 0]});
+                return this.sendData({command: '0x56', data: [0, 0, 0, 0, 0, 0]});
             },
             '0x62': ({dataArray}) => {
                 console.log('接收到的0x62的数据 从byte2开始', dataArray);
@@ -38,7 +38,8 @@ export default class HiXxjBluetoothProtocol extends LBlueToothProtocolOperator {
     }
 
     getDeviceAllStatus() {
-        this.action['0x56']();
+        console.warn('我要发送获取设备状态协议');
+        return this.action['0x56']();
     }
 
 };

@@ -55,13 +55,9 @@ Component({
     },
     pageLifetimes: {
         show() {
-            const bleManager = app.getBLEManager();
-            // this._updateConnectState({connectState: bleManager.getBLELatestConnectState()});
-            bleManager.setBLEListener({
-                onConnectStateChanged: ({connectState}) => {
-                    this._updateConnectState({connectState});
-                }
-            });
+            app.onAppBLEConnectStateChangedListener = ({connectState}) => {
+                this._updateConnectState({connectState});
+            };
         },
         hide() {
 

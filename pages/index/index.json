@@ -1,5 +1,4 @@
 {
-  "disableScroll": true,
   "backgroundColor": "rgb(23,53,105)",
   "usingComponents": {
     "navbar": "/components/navbar/index",

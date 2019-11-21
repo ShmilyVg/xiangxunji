@@ -9,7 +9,8 @@ page{
 .play-music-bg {
     z-index: -1;
     opacity: 0;
-    transition: opacity 1s ease 0.8s;
+    transition: opacity 1s ease;
+    -webkit-transition: opacity 1s ease;
 }
 
 .play-music-center-super-layout{

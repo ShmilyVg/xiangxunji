@@ -30,6 +30,11 @@ Page({
                 targetVoice: mindVoiceItem || noiseVoiceItem,
                 envVoices: !!mindVoiceItem ? getWhiteNoiseList() : []
             }, async () => {
+                setTimeout(() => {
+                    this.setData({
+                        bgOpacity: 1
+                    });
+                }, 800);
                 this.setAppVoiceListener();
                 await AppVoiceDelegate.play({mindVoiceId, noiseVoiceId});
             });

@@ -1,4 +1,4 @@
-<image class="fill-width fill-height absolute play-music-bg" style="opacity: {{targetVoice.iconName?1:0}};" src="../../images/play/bg/{{targetVoice.iconName}}.jpg"></image>
+<image class="fill-width fill-height absolute play-music-bg" style="opacity: {{bgOpacity?1:0}};" src="../../images/play/bg/{{targetVoice.iconName}}.jpg"></image>
 <view class="absolute fill-width fill-height flex-column align-items-center" style="overflow: hidden;">
     <navbar title="" background-color="transparent"></navbar>
 

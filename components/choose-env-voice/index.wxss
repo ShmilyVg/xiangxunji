@@ -1,16 +1,9 @@
-view{
-    --animationDuration: 0.4s;
-}
-
-
 .play-bottom-dialog-layout{
     position: fixed;
     z-index: 100;
     left: 0;
     top: 0;
     align-items: flex-end;
-    transition: background-color ease-in-out var(--animationDuration);
-    -webkit-transition: background-color ease-in-out var(--animationDuration);
 }
 
 .play-bottom-dialog{

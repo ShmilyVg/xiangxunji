@@ -1,7 +1,12 @@
 page{
   background-color: #24213A;
   --primaryColor:#7265E3;
+  --animationDuration: 0.4s;
+}
 
+.common-dialog-bg-transition{
+  transition: background-color ease-in-out var(--animationDuration);
+  -webkit-transition: background-color ease-in-out var(--animationDuration);
 }
 
 .press-btn-class {

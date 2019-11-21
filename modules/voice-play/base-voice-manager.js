@@ -12,7 +12,7 @@ export default class BaseVoiceManager {
             // this.backgroundAudioManager.src = this.backgroundAudioSrc;
             // this.backgroundAudioManager.title = this.backgroundAudioTitle;
             this._onPauseListener();
-            this._onTimeUpdateListener({currentTime: this.getCurrentTime(), duration: this.getDuration()});
+            this._onTimeUpdateListener({currentTime: this.getDuration(), duration: this.getDuration()});
         });
         this.backgroundAudioManager.onPlay(() => {
             this._onPlayListener();

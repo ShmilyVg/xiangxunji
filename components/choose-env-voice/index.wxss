@@ -1,16 +1,24 @@
+view{
+    --animationDuration: 0.4s;
+}
+
+
 .play-bottom-dialog-layout{
     position: fixed;
     z-index: 100;
     left: 0;
     top: 0;
-    background-color: rgba(0,0,0,0.3);
     align-items: flex-end;
+    transition: background-color ease-in-out var(--animationDuration);
+    -webkit-transition: background-color ease-in-out var(--animationDuration);
 }
 
 .play-bottom-dialog{
     background-color: rgba(37,37,37,0.95);
     border-radius: 80rpx 80rpx 0 0;
     padding: 60rpx 0 78rpx;
+    transform: translateY(0%);
+    transition: transform ease-in-out var(--animationDuration);
 }
 
 .play-bottom-dialog-title{

@@ -1,7 +1,7 @@
 <image src="../../images/play/choose_music.png" class="play-top-action" bindtap="_showFun"></image>
 
-<view wx:if="{{show}}" class="fill-width fill-height flex-row play-bottom-dialog-layout" bindtap="_hideFun">
-    <view class="fill-width flex-column align-items-center play-bottom-dialog box-sizing-border-box" catchtap="_doNothing">
+<view wx:if="{{show}}" class="fill-width fill-height flex-row play-bottom-dialog-layout" style="background-color: rgba(0,0,0,{{showJoinAnimation?0.3:0}})" bindtap="_hideFun">
+    <view class="fill-width flex-column align-items-center box-sizing-border-box play-bottom-dialog" style="transform: translateY({{showJoinAnimation?0:100}}%);" catchtap="_doNothing">
         <view class="play-bottom-dialog-title">场景音</view>
         <scroll-view scroll-x class="fill-width play-bottom-dialog-item-layout">
             <view style="display: inline-block;">

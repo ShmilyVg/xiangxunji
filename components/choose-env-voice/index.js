@@ -1,4 +1,4 @@
-const App = getApp();
+const App = getApp(), ANIMATION_DURATION = 400;
 
 //自定义的NavigationBar
 Component({
@@ -18,12 +18,11 @@ Component({
     /**
      * 组件的初始数据
      */
-    data: {show: false},
+    data: {show: false, showJoinAnimation: false},
     lifetimes: {
         attached() {
 
         },
-
     },
     /**
      * 组件的方法列表
@@ -46,10 +45,20 @@ Component({
             });
         },
         _showFun() {
-            this.setData({show: true});
+            this.setData({show: true}, () => {
+                this.setData({
+                    showJoinAnimation: true
+                })
+            });
         },
         _hideFun() {
-            this.setData({show: false});
+            this.setData({
+                showJoinAnimation: false
+            }, () => {
+                setTimeout(() => {
+                    this.setData({show: false});
+                }, ANIMATION_DURATION);
+            });
         },
         _doNothing() {
 

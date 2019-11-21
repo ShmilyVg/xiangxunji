@@ -1,6 +1,6 @@
 <view class="fill-width flex-column align-items-center absolute bottom">
 
-    <view class="fill-width flex-row justify-center align-items-center" style="overflow: hidden;height: 180rpx;">
+    <view wx:if="{{show}}" class="fill-width flex-row justify-center align-items-center" style="overflow: hidden;height: 180rpx;">
         <view class="wave-common absolute wave-01"></view>
         <view class="wave-common absolute wave-02"></view>
         <view class="wave-common absolute wave-03"></view>

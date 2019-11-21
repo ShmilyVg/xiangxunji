@@ -15,12 +15,24 @@ Component({
     /**
      * 组件的初始数据
      */
-    data: {},
+    data: {show: false},
     lifetimes: {
         attached() {
 
         },
 
+    },
+    pageLifetimes: {
+        show() {
+            if (!this.data.show) {
+                setTimeout(() => {
+                    this.setData({show: true});
+                }, 1000);
+            }
+        },
+        hide() {
+
+        }
     },
     /**
      * 组件的方法列表

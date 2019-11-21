@@ -1,13 +1,13 @@
 //app.js
 import Login from "./modules/network/network/libs/login";
-import HiSmellBlueToothManager from "./modules/bluetooth/hi-smell-bluetooth-manager";
+import HiXujBluetoothManager from "./modules/bluetooth/hi-xxj-bluetooth-manager";
 import {ConnectState} from "./modules/bluetooth/bluetooth-state";
 
 App({
     async onLaunch() {
         this.globalData.systemInfo = wx.getSystemInfoSync();
         this.globalData.navHeight = this.globalData.systemInfo.statusBarHeight + 46;
-        this.bLEManager = new HiSmellBlueToothManager();
+        this.bLEManager = new HiXujBluetoothManager();
         this.bLEManager.setBLEListener({
             onConnectStateChanged: (res) => {
                 const {connectState} = res;

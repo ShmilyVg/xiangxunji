@@ -2,7 +2,7 @@ import {LBlueToothProtocolOperator} from "./lb-ble-common-protocol-operator/inde
 import {ReceiveBody, SendBody} from "./lb-ble-xiangxunji-protocol-body/index";
 import {HexTools} from "./lb-ble-common-tool/index";
 
-export default class HiSmellBlueToothProtocol extends LBlueToothProtocolOperator {
+export default class HiXxjBluetoothProtocol extends LBlueToothProtocolOperator {
     constructor(blueToothManager) {
         super({blueToothManager, protocolSendBody: new SendBody(), protocolReceiveBody: new ReceiveBody()});
     }

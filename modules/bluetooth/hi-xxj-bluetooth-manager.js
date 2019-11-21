@@ -1,11 +1,11 @@
-import HiSmellBlueToothProtocol from "./hi-smell-bluetooth-protocol";
+import HiXxjBluetoothProtocol from "./hi-xxj-bluetooth-protocol";
 import {LBlueToothManager} from "./lb-ble-common-connection/index";
 import {WXDialog} from "heheda-common-view";
 
-export default class HiSmellBlueToothManager extends LBlueToothManager {
+export default class HiXxjBluetoothManager extends LBlueToothManager {
     constructor() {
         super();
-        this.bluetoothProtocol = new HiSmellBlueToothProtocol(this);
+        this.bluetoothProtocol = new HiXxjBluetoothProtocol(this);
         super.setFilter({
             services: ['00006666-0000-1000-8000-00805F9B34FB'],
             // services: ['00006666-0000-1000-8000-00805F9B34FB'],

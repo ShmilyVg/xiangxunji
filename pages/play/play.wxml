@@ -1,5 +1,5 @@
-<image class="fill-width fill-height absolute play-music-bg" src="../../images/play/bg/{{targetVoice.iconName}}.jpg"></image>
-<view class="fill-width flex-column align-items-center">
+<image class="fill-width fill-height absolute play-music-bg" style="opacity: {{targetVoice.iconName?1:0}};" src="../../images/play/bg/{{targetVoice.iconName}}.jpg"></image>
+<view class="absolute fill-width fill-height flex-column align-items-center" style="overflow: hidden;">
     <navbar title="" background-color="transparent"></navbar>
 
     <view class="fill-width flex-row align-items-center space-between box-sizing-border-box" style="padding: 48rpx 65rpx 0;">

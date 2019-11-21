@@ -8,9 +8,10 @@ page{
 }
 .play-music-bg {
     z-index: -1;
-
-
+    opacity: 0;
+    transition: opacity 1s ease 0.8s;
 }
+
 .play-music-center-super-layout{
     width: var(--bigCircleWidth);
     height: var(--bigCircleWidth);

@@ -3,7 +3,8 @@ page{
     --bigCircleWidth: 430rpx;
     --pointWidth: 24rpx;
     --borderWidth: 2rpx;
-    --XPointCenter: calc(52.3862rpx);
+    --pointLeftPosition: calc((var(--bigCircleWidth) - var(--pointWidth)) / 2);
+    /*--XPointCenter: calc(52.3862rpx);*/
 }
 .play-music-bg {
     z-index: -1;
@@ -21,17 +22,8 @@ page{
 .play-music-center-layout{
     width: calc(100% - var(--borderWidth) * 2);
     height: calc(100% - var(--borderWidth) * 2);
-}
-
-.play-music-border-layout{
-    width: calc(100% - var(--borderWidth) * 2);
-    height: calc(100% - var(--borderWidth) * 2);
     border: var(--borderWidth) solid rgba(255,255,255,0.8);
     border-radius: 50%;
-    left: 0;
-    top: 0;
-    transform-origin: 50% 50%;
-    animation: play-point 10s linear infinite;
 }
 
 .play-music-name{
@@ -61,12 +53,13 @@ page{
 .play-point{
     width: var(--pointWidth);
     height: var(--pointWidth);
-    left: calc(var(--XPointCenter));
-    top: calc(var(--XPointCenter));
+    left: var(--pointLeftPosition);
+    top: calc(0rpx - var(--pointWidth) / 2);
     background:rgba(255,255,255,1);
     box-shadow:0 0 18rpx 2rpx rgba(255,255,255,1);
     border-radius: 50%;
-
+    transform-origin: calc(var(--pointWidth) / 2) calc(var(--pointLeftPosition) + var(--pointWidth) - var(--borderWidth) / 2);
+    animation: play-point 15s linear 0.25s infinite;
 }
 
 @keyframes play-point {

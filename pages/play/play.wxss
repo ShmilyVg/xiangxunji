@@ -31,23 +31,23 @@ page{
     font-family:PingFang SC;
     font-weight:400;
     color:rgba(255,255,255,1);
-    line-height:28rpx;
-    margin-bottom: 35rpx;
+    line-height:50rpx;
+    margin-bottom: 13rpx;
 }
 
 .play-music-duration-icon{
     width: 18rpx;
     height: 22rpx;
     margin-right: 10rpx;
+    margin-top: 1rpx;
 }
 
 .play-music-duration-time{
     width: 90rpx;
     font-size:28rpx;
     font-weight:400;
-    color:rgba(255,255,255,1);
-    line-height:28rpx;
-    opacity:0.5;
+    color:rgba(255,255,255,0.5);
+    line-height:48rpx;
 }
 
 .play-point{

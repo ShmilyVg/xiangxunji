@@ -12,6 +12,7 @@
     padding: 60rpx 0 78rpx;
     transform: translateY(0%);
     transition: transform ease-in-out var(--animationDuration);
+    -webkit-transition: transform ease-in-out var(--animationDuration);
 }
 
 .play-bottom-dialog-title{

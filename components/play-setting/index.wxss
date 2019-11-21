@@ -16,6 +16,8 @@
     padding-top: 10rpx;
     padding-bottom: 5rpx;
     margin-top: 300rpx;
+    transition: opacity ease-in-out var(--animationDuration);
+    -webkit-transition: opacity ease-in-out var(--animationDuration);
 }
 
 .play-setting-dialog-item{

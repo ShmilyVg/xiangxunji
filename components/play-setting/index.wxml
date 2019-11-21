@@ -1,7 +1,7 @@
 <image src="../../images/play/setting.png" class="play-top-action" bindtap="_showFun"></image>
 
 <view wx:if="{{show}}" class="fill-width fill-height flex-row justify-center play-setting-dialog-fixed-layout common-dialog-bg-transition" style="background-color: rgba(0,0,0,{{showJoinAnimation?0.3:0}})" bindtap="_hideFun">
-    <view class="flex-column box-sizing-border-box play-setting-dialog-layout" catchtap="_doNothing">
+    <view style="opacity: {{showJoinAnimation?1:0}};" class="flex-column box-sizing-border-box play-setting-dialog-layout" catchtap="_doNothing">
         <view class="flex-row space-between align-items-center play-setting-dialog-item">
             <view class="play-setting-dialog-item-title">灯光开关</view>
             <my-switch bind:onSwitchClickEvent="_clickOpenSwitch" open="{{isLightOpen}}" tag="light"></my-switch>

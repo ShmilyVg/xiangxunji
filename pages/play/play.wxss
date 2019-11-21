@@ -60,9 +60,14 @@ page{
     border-radius: 50%;
     transform-origin: calc(var(--pointWidth) / 2) calc(var(--pointLeftPosition) + var(--pointWidth) - var(--borderWidth) / 2);
     animation: play-point 15s linear 0.25s infinite;
+    -webkit-animation: play-point 15s linear 0.25s infinite;
 }
 
 @keyframes play-point {
+    100% {transform:  rotate(360deg)}
+}
+
+@-webkit-keyframes play-point {
     100% {transform:  rotate(360deg)}
 }
 

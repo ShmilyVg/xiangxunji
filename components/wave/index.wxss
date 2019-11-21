@@ -8,27 +8,44 @@
 }
 .wave-01{
     animation: wave 25s linear infinite;
+    -webkit-animation: wave 25s linear infinite;
 }
 
 .wave-02{
     animation: wave 25s linear 5s infinite;
+    -webkit-animation: wave 25s linear 5s infinite;
 }
 
 .wave-03{
     animation: wave 25s linear 10s infinite;
+    -webkit-animation: wave 25s linear 10s infinite;
 }
 
 .wave-04{
     animation: wave 25s linear 15s infinite;
+    -webkit-animation: wave 25s linear 15s infinite;
 }
 
 .wave-05{
     animation: wave 25s linear 20s infinite;
+    -webkit-animation: wave 25s linear 20s infinite;
 }
 
 
 @keyframes wave {
 
+    from {
+        transform: scale(0,0);
+        opacity: 0.3;
+
+    }
+    to {
+        transform: scale(5, 5);
+        opacity: 0
+    }
+}
+
+@-webkit-keyframes wave {
     from {
         transform: scale(0,0);
         opacity: 0.3;

@@ -34,6 +34,38 @@ export default class CommonProtocolAction {
         };
     }
 
+    getCommonSendActionProtocol() {
+        return {
+            //由手机发出的连接请求
+            '0x01': () => {
+                this.context.sendData({command: '0x01'});
+            },
+
+            //App发送绑定成功
+            '0x03': () => {
+                this.context.sendData({command: '0x03'});
+            },
+
+            //设备发出待机状态通知
+            '0x06': () => {
+                this.context.sendData({command: '0x07'});
+                return {protocolState: CommonProtocolState.DORMANT};
+            },
+            //由手机发出的查找设备请求
+            '0x08': () => {
+                this.context.sendData({command: '0x08'});
+            },
+            //设备反馈的查找设备结果，找到了设备
+            '0x09': () => {
+                return {protocolState: CommonProtocolState.FIND_DEVICE};
+            },
+            //App请求同步数据
+            '0x0a': () => {
+                this.context.sendData({command: '0x0a'}).then(() => this.context.blueToothManager.executeBLEReceiveDataCallBack({protocolState: CommonProtocolState.QUERY_DATA_START}));
+            },
+
+        };
+    }
     getCommonReceiveActionProtocol() {
         return {
             //由设备发出的连接反馈 1接受 2不接受 后面的是
@@ -80,38 +112,6 @@ export default class CommonProtocolAction {
                 });
             },
         }
-    }
-    getCommonSendActionProtocol() {
-        return {
-            //由手机发出的连接请求
-            '0x01': () => {
-                this.context.sendData({command: '0x01'});
-            },
-
-            //App发送绑定成功
-            '0x03': () => {
-                this.context.sendData({command: '0x03'});
-            },
-
-            //设备发出待机状态通知
-            '0x06': () => {
-                this.context.sendData({command: '0x07'});
-                return {protocolState: CommonProtocolState.DORMANT};
-            },
-            //由手机发出的查找设备请求
-            '0x08': () => {
-                this.context.sendData({command: '0x08'});
-            },
-            //设备反馈的查找设备结果，找到了设备
-            '0x09': () => {
-                return {protocolState: CommonProtocolState.FIND_DEVICE};
-            },
-            //App请求同步数据
-            '0x0a': () => {
-                this.context.sendData({command: '0x0a'}).then(() => this.context.blueToothManager.executeBLEReceiveDataCallBack({protocolState: CommonProtocolState.QUERY_DATA_START}));
-            },
-
-        };
     }
 
 

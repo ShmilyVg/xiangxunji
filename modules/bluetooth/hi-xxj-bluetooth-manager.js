@@ -25,6 +25,10 @@ export default class HiXxjBluetoothManager extends LBlueToothManager {
         return this.bluetoothProtocol;
     }
 
+    getXXJConfig() {
+        return this.getProtocol().xxjBLEConfig;
+    }
+
     judgeBLEIsConnected() {
         return new Promise((resolve) => {
             if (this.getBLELatestConnectState() === ConnectState.CONNECTED) {

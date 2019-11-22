@@ -8,6 +8,7 @@ App({
         this.globalData.systemInfo = wx.getSystemInfoSync();
         this.globalData.navHeight = this.globalData.systemInfo.statusBarHeight + 46;
         this.bLEManager = new HiXujBluetoothManager();
+        const bleProtocol = this.bLEManager.getProtocol();
         this.bLEManager.setBLEListener({
             onConnectStateChanged: async (res) => {
                 const {connectState} = res;
@@ -15,7 +16,8 @@ App({
                 switch (connectState) {
                     case ConnectState.CONNECTED:
                         setTimeout(async () => {
-                            await this.bLEManager.getProtocol().setLocalTime();
+                            await bleProtocol.setLocalTime();
+                            await bleProtocol.getDeviceAllStatus();
                         }, 1000);
                         break;
                     default:
@@ -29,6 +31,7 @@ App({
             onReceiveData: res => {
                 const {protocolState, value} = res;
                 console.log('app.js 蓝牙协议接收到新的', res);
+                // this.onAppBLEReceiveDataListener && this.onAppBLEReceiveDataListener({protocolState, value});
             }
         });
         await Login.doLogin();
@@ -47,6 +50,7 @@ App({
         this.isAppOnShow = false;
     },
     onAppBLEConnectStateChangedListener: null,
+    onAppBLEReceiveDataListener: null,
     globalData: {
         userInfo: null
     }

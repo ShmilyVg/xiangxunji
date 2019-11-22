@@ -21,7 +21,7 @@ class BaseStorage {
 
 }
 
-export default class Storage extends BaseStorage {
+export class Storage extends BaseStorage {
     static async setSetting({isLightOpen, isWaterOpen}) {
         return await this.set({key: 'custom_setting', data: arguments[0]});
     }
@@ -62,4 +62,8 @@ export default class Storage extends BaseStorage {
         return this.getSync('index_page_remind_have_show');
     }
 }
+
+
+
+
 

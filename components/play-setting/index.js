@@ -1,8 +1,8 @@
 import HiNavigator from "../../navigator/hi-navigator";
 import {Storage} from "../../utils/storage";
 import {DIALOG_BG_ANIMATION_DURATION} from "../../utils/config";
-import {ConnectState} from "../../modules/bluetooth/bluetooth-state";
-import {WXDialog} from "heheda-common-view";
+import {XXJProtocolState} from "../../modules/bluetooth/bluetooth-state";
+import {Toast} from "heheda-common-view";
 
 const App = getApp();
 
@@ -21,24 +21,40 @@ Component({
     data: {show: false, isLightOpen: false, isWaterOpen: false, showJoinAnimation: false},
     lifetimes: {
         async attached() {
-
+            // App.onAppBLEReceiveDataListener = ({protocolState, value}) => {
+            //     switch (protocolState) {
+            //         case XXJProtocolState.CONNECTED_AND_BIND:
+            //
+            //             break;
+            //
+            //     }
+            // }
         },
-
+        detached() {
+            // App.onAppBLEReceiveDataListener = null;
+        }
     },
     /**
      * 组件的方法列表
      */
     methods: {
-        _clickOpenSwitch(e) {
+        async _clickOpenSwitch(e) {
             const {detail: {tag: type, open}} = e;
             if (type === 'light') {
+                // App.getBLEManager().setLight({isSetAllColor, red, green, yellow, hDuration = 255, mDuration = 255});
                 this.setData({isLightOpen: open}, async () => {
                     await Storage.setLightOpen({open});
                 });
             } else if (type === 'water') {
-                this.setData({isWaterOpen: open}, async () => {
-                    await Storage.setWaterOpen({open});
-                });
+                Toast.showLoading();
+                try {
+                    await App.getBLEManager().getProtocol().setWater({openStatus: open ? 1 : 0,});
+                    this.setData({isWaterOpen: open});
+                } catch (e) {
+                    console.error('设置雾化开关失败', e);
+                } finally {
+                    Toast.hiddenLoading();
+                }
             }
         },
         _toMoreSettingPage() {
@@ -46,12 +62,15 @@ Component({
             this._hideFun();
         },
         async _showFun() {
-            await App.getBLEManager().judgeBLEIsConnected();
-            const lightOpen = Storage.getLightOpen();
-            const waterOpen = Storage.getWaterOpen();
+            const bleManager = App.getBLEManager();
+            await bleManager.judgeBLEIsConnected();
+            const xxjConfig = bleManager.getXXJConfig();
+            console.log('xxjConfig', xxjConfig);
+            const waterOpen = xxjConfig.water.openStatus;
+            // const lightOpen = Storage.getWaterOpen();
             this.setData({
-                isWaterOpen: !!(await waterOpen),
-                isLightOpen: !!(await lightOpen),
+                isLightOpen: true,
+                isWaterOpen: !!waterOpen,
                 show: true
             }, () => {
                 this.setData({

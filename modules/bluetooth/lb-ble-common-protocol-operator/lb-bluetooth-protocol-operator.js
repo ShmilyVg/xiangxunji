@@ -9,14 +9,19 @@ export default class LBlueToothProtocolOperator {
             return blueToothManager.sendData({buffer: this.createBuffer({command, data})});
         };
         this.receive = ({receiveBuffer}) => {
-            return protocolReceiveBody.receive({action: this.action, receiveBuffer});
+            return protocolReceiveBody.receive({action: this.receiveAction, receiveBuffer});
         };
 
 
-        this.action = this.getAction();
+        this.receiveAction = this.getReceiveActionProtocol();
+        this.sendAction = this.getSendActionProtocol();
     }
 
-    getAction() {
+    getReceiveActionProtocol() {
+        return {};
+    }
+
+    getSendActionProtocol() {
         return {};
     }
 }

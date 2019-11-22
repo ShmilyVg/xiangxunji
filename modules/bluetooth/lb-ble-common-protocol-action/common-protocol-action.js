@@ -34,12 +34,8 @@ export default class CommonProtocolAction {
         };
     }
 
-    getCommonProtocolAction() {
+    getCommonReceiveActionProtocol() {
         return {
-            //由手机发出的连接请求
-            '0x01': () => {
-                this.context.sendData({command: '0x01'});
-            },
             //由设备发出的连接反馈 1接受 2不接受 后面的是
             '0x02': ({dataArray}) => {
                 const isConnected = HexTools.hexArrayToNum(dataArray.slice(0, 1)) === 1;
@@ -65,10 +61,6 @@ export default class CommonProtocolAction {
                     this.context.blueToothManager.clearConnectedBLE();
                 }
             },
-            //App发送绑定成功
-            '0x03': () => {
-                this.context.sendData({command: '0x03'});
-            },
             //由设备发出的时间戳请求，并隔一段时间发送同步数据
             '0x04': ({dataArray}) => {
                 const battery = HexTools.hexArrayToNum(dataArray.slice(0, 1));
@@ -80,6 +72,27 @@ export default class CommonProtocolAction {
                 });
                 return {protocolState: CommonProtocolState.TIMESTAMP, dataAfterProtocol: {battery, version, deviceId}};
             },
+            //App传给设备同步数据的结果
+            '0x0b': ({isSuccess}) => {
+                this.context.sendData({
+                    command: '0x0b',
+                    data: [isSuccess ? 1 : 2]
+                });
+            },
+        }
+    }
+    getCommonSendActionProtocol() {
+        return {
+            //由手机发出的连接请求
+            '0x01': () => {
+                this.context.sendData({command: '0x01'});
+            },
+
+            //App发送绑定成功
+            '0x03': () => {
+                this.context.sendData({command: '0x03'});
+            },
+
             //设备发出待机状态通知
             '0x06': () => {
                 this.context.sendData({command: '0x07'});
@@ -97,13 +110,7 @@ export default class CommonProtocolAction {
             '0x0a': () => {
                 this.context.sendData({command: '0x0a'}).then(() => this.context.blueToothManager.executeBLEReceiveDataCallBack({protocolState: CommonProtocolState.QUERY_DATA_START}));
             },
-            //App传给设备同步数据的结果
-            '0x0b': ({isSuccess}) => {
-                this.context.sendData({
-                    command: '0x0b',
-                    data: [isSuccess ? 1 : 2]
-                });
-            },
+
         };
     }
 

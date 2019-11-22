@@ -37,7 +37,7 @@
 
     <view class="fill-width flex-column align-items-center box-sizing-border-box setting-part-layout">
         <view class="setting-title">雾量</view>
-        <picker class="fill-width" bindchange="bindPickerChange" value="{{index}}" range="{{['低','中','快']}}">
+        <picker mode="multiSelector" class="fill-width" bindchange="bindPickerChange" data-type="waterDuration" value="{{config.water.waterDurationIndex}}" range-key="content" range="{{config.water.waterDurationArray}}">
 
             <view class="fill-width flex-row space-between setting-item-layout-02"
                   style="padding-top: 20rpx;">
@@ -46,7 +46,7 @@
                     <view class="setting-item-subtitle">*时长必须是间隔的时间3倍以上</view>
                 </view>
                 <view class="flex-row align-items-center">
-                    <view class="setting-water-duration">1小时30分</view>
+                    <view class="setting-water-duration">{{config.water.waterDurationArray[0][config.water.waterDurationIndex[0]].content}}时{{config.water.waterDurationArray[1][config.water.waterDurationIndex[1]].content}}分钟</view>
                     <image src="../../images/user-center/arrow.png" class="setting-item-arrow"></image>
                 </view>
             </view>

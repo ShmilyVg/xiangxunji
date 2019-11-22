@@ -1,4 +1,6 @@
 // pages/setting/setting.js
+import {Toast} from "heheda-common-view";
+
 const App = getApp();
 Page({
 
@@ -17,12 +19,19 @@ Page({
             {color: 'rgb(140,102,169)'},
 
         ],
-        config: {color: '', brightness: 50, autoLight: false, lightOpen: false, waterOpen: false, deviceOpen: false}
+        config: {
+            color: '',
+            brightness: 50,
+            autoLight: false,
+            lightOpen: false,
+            water: {
+                waterOpen: false, waterDurationIndex: [0, 0],
+                waterDurationArray: [new Array(12).fill(0).map((item, index) => ({content: index, value: index})),
+                    new Array(60).fill(0).map((item, index) => ({content: index, value: index}))]
+            },
+            deviceOpen: false
+        },
 
-
-    },
-    bindPickerChange(e) {
-        console.log(e);
     },
 
     onSelectedColorItemEvent({currentTarget: {dataset: {color: selectedColor}}}) {
@@ -57,15 +66,41 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad(options) {
-        const xxjConfig = App.getBLEManager().getXXJConfig();
+        const xxjConfig = App.getBLEManager().getXXJConfig(), water = xxjConfig.water;
 
         this.setData({
-            config: {
-                waterOpen: !!xxjConfig.water.openStatus
-            }
+            'config.water.waterOpen': !!water.openStatus,
+            'config.water.waterDurationIndex': [water.hDuration, water.mDuration]
         })
     },
+    async bindPickerChange(e) {
+        const {currentTarget: {dataset: {type}}, detail: {value}} = e;
+        console.log('type=', type, 'value=', value);
 
+        const bleProtocol = App.getBLEManager().getProtocol();
+        try {
+            Toast.showLoading();
+            switch (type) {
+                case 'waterDuration': {
+                    const [hDurationIndex, mDurationIndex] = value, {water: {waterDurationArray}} = this.data.config;
+                    await bleProtocol.setWater({
+                        hDuration: waterDurationArray[0][hDurationIndex].value,
+                        mDuration: waterDurationArray[1][mDurationIndex].value
+                    });
+                    this.setData({
+                        'config.water.waterDurationIndex': [hDurationIndex, mDurationIndex]
+                    });
+                }
+                    break;
+
+            }
+        } catch (e) {
+            console.log('自定义设置出现错误 bindPickerChange', e);
+        } finally {
+            Toast.hiddenLoading();
+        }
+
+    },
     /**
      * 生命周期函数--监听页面初次渲染完成
      */

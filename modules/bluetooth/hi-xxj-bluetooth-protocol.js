@@ -46,7 +46,7 @@ export default class HiXxjBluetoothProtocol extends LBlueToothProtocolOperator {
              * @param speed 0x00:小雾 0x01:大雾 0xff:不设置
              */
             '0x53':async ({openStatus = 255, hDuration = 255, mDuration = 255, mBetweenDuration = 255, sBetweenDuration = 255, speed = 255}) => {
-                console.log('0x53 arguments', arguments[0]);
+                console.log('0x53 openStatus', openStatus,' hDuration=',hDuration,' mDuration=',mDuration,' mBetweenDuration=',mBetweenDuration,' sBetweenDuration=',sBetweenDuration,' speed=',speed);
                 const result = await this.sendData({
                     command: '0x53',
                     data: [openStatus, hDuration, mDuration, mBetweenDuration, sBetweenDuration, speed]

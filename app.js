@@ -15,8 +15,8 @@ App({
                 switch (connectState) {
                     case ConnectState.CONNECTED:
                         setTimeout(async () => {
-                            await this.bLEManager.getProtocol().getDeviceAllStatus();
-                        }, 0);
+                            await this.bLEManager.getProtocol().setLocalTime();
+                        }, 1000);
                         break;
                     default:
 

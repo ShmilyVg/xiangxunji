@@ -1,6 +1,6 @@
 import {getMindPractiseList, getWelcomeContent, getWelcomeTime, getWhiteNoiseListAtIndexPage} from "./data-manager";
 import HiNavigator from "../../navigator/hi-navigator";
-import Storage from "../../utils/storage";
+import {Storage} from "../../utils/storage";
 
 const app = getApp();
 const haveShowRemindDialog = Storage.getIndexPageRemindHaveShow();

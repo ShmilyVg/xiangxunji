@@ -42,10 +42,10 @@ export function getWelcomeContent() {
 
 export function getMindPractiseList() {
     return [
-        {id: 1, iconName: 'ru_shui_cui_mian', title: '入睡催眠'},
-        {id: 2, iconName: 'zhu_mian_ming_xiang', title: '助眠冥想'},
-        {id: 3, iconName: 'xiao_qi_chong_dian', title: '小憩充电'},
-        {id: 4, iconName: 'jian_ya_jing_xin', title: '减压静心'},
+        {id: 1, iconName: 'ru_shui_cui_mian', title: '入睡催眠', defaultNoiseVoiceId: 101},
+        {id: 2, iconName: 'zhu_mian_ming_xiang', title: '助眠冥想', defaultNoiseVoiceId: 102},
+        {id: 3, iconName: 'xiao_qi_chong_dian', title: '小憩充电', defaultNoiseVoiceId: 103},
+        {id: 4, iconName: 'jian_ya_jing_xin', title: '减压静心', defaultNoiseVoiceId: 104},
     ];
 }
 
@@ -56,49 +56,16 @@ export function getWhiteNoiseList() {
         {id: 102, iconName: 'hai_bian_man_bu', title: '海边漫步'},
         {id: 103, iconName: 'lin_jian_niao_yu', title: '林间鸟语'},
         {id: 104, iconName: 'hong_ni_xiao_lu', title: '红泥小炉'},
-        getDefaultWhiteNoiseItem()
+        {id: 100, iconName: 'zhi_ting_ren_sheng', title: '只听人声'}
     ].map(item => {
         return {...item, selected: latestNoiseVoiceId === item.id};
     });
 }
 
-export function getDefaultWhiteNoiseItem() {
-    return {id: 100, iconName: 'zhi_ting_ren_sheng', title: '只听人声'}
-}
-
 export const getDefaultMindId = 0;
-export const getDefaultWhiteNoiseId = getDefaultWhiteNoiseItem().id;
-
-export function findVoiceTypeObjectById({voiceId}) {
-    const targetMindVoice = getMindPractiseList().find(item => item.id === voiceId);
-    if (targetMindVoice) {
-        return {mindVoiceId: targetMindVoice.id};
-    } else {
-        const targetWhiteNoiseVoice = getWhiteNoiseList().find(item => item.id === voiceId);
-        if (targetWhiteNoiseVoice) {
-            return {noiseVoiceId: targetWhiteNoiseVoice.id};
-        }
-    }
-    return {};
-}
-
 
 export function getWhiteNoiseListAtIndexPage() {
     const list = getWhiteNoiseList();
     list.pop();
     return list;
 }
-
-export function getAllVoiceList() {
-    return getMindPractiseList().concat(getWhiteNoiseList());
-}
-
-
-// export function getPlayVoiceArgumentsById(...voiceIds) {
-//     for (let voiceId of voiceIds) {
-//         const mindItem = getMindPractiseList()
-//     }
-//     getMindPractiseList();
-// }
-//
-// getPlayVoiceArgumentsById(1, 2);

@@ -1,17 +1,12 @@
-import {
-    getDefaultMindId,
-    getDefaultWhiteNoiseId,
-    getMindPractiseList,
-    getWhiteNoiseList
-} from "../../pages/index/data-manager";
+import {getDefaultMindId, getMindPractiseList, getWhiteNoiseList} from "../../pages/index/data-manager";
 import Protocol from "../network/protocol";
 import BaseVoiceManager from "./base-voice-manager";
 
 class XXJVoiceManager extends BaseVoiceManager {
 
-    play({mindVoiceId = getDefaultMindId, noiseVoiceId = getDefaultWhiteNoiseId}) {
+    play({mindVoiceId = getDefaultMindId, noiseVoiceId}) {
         return new Promise(async (resolve, reject) => {
-            if (!mindVoiceId && noiseVoiceId === getDefaultWhiteNoiseId) {
+            if (!mindVoiceId && !noiseVoiceId) {
                 reject({errCode: 1000, errMsg: '未设置任何音频Id，请至少填写一个'});
             }
             const title = [getMindPractiseList().find(item => item.id === mindVoiceId), getWhiteNoiseList().find(item => item.id === noiseVoiceId)]

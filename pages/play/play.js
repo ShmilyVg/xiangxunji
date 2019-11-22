@@ -1,5 +1,5 @@
 // pages/play/play.js
-import {getDefaultMindId, getDefaultWhiteNoiseId, getMindPractiseList, getWhiteNoiseList} from "../index/data-manager";
+import {getDefaultMindId, getMindPractiseList, getWhiteNoiseList} from "../index/data-manager";
 import {AppVoiceDelegate} from "../../modules/voice-play/voice-delegate";
 import {config} from "../../components/play-action/play-state";
 
@@ -20,8 +20,7 @@ Page({
     onLoad(options) {
         // this.options = options;
         // const options = this.options;
-        const mindVoiceId = parseInt(options.mindVoiceId) || getDefaultMindId;
-        const noiseVoiceId = parseInt(options.noiseVoiceId) || AppVoiceDelegate.getLatestNoiseVoiceId();
+        const {mindVoiceId, noiseVoiceId} = this.getAllVoiceId({options});
         const mindVoiceItem = mindVoiceId && getMindPractiseList().find(item => item.id === mindVoiceId);
         const noiseVoiceItem = noiseVoiceId && getWhiteNoiseList().find(item => item.id === noiseVoiceId);
         if (mindVoiceItem || noiseVoiceItem) {
@@ -34,6 +33,19 @@ Page({
                 await AppVoiceDelegate.play({mindVoiceId, noiseVoiceId});
             });
         }
+    },
+
+    getAllVoiceId({options}) {
+        const mindVoiceId = parseInt(options.mindVoiceId) || getDefaultMindId,
+            latestNoiseVoiceId = AppVoiceDelegate.getLatestNoiseVoiceId(),
+            latestMindVoiceId = AppVoiceDelegate.getLatestMindVoiceId();
+        let noiseVoiceId = latestNoiseVoiceId;
+        if (mindVoiceId && latestMindVoiceId === mindVoiceId) {
+            noiseVoiceId = latestNoiseVoiceId || parseInt(options.noiseVoiceId);//播放同一个人声音频，优先读取上一次的白噪音
+        } else {
+            noiseVoiceId = parseInt(options.noiseVoiceId) || latestNoiseVoiceId;//播放不同的人声音频/只播放白噪音，优先读取传入的白噪音
+        }
+        return {mindVoiceId, noiseVoiceId};
     },
 
     /**

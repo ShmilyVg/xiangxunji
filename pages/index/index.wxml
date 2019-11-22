@@ -47,7 +47,7 @@
 
 
     <view class="flex-row box-sizing-border-box index-content-super-layout">
-        <view wx:for="{{minds}}" wx:key="index" class="flex-column index-content-layout" bindtap="onVoiceItemClickEvent" data-mind-voice-id="{{item.id}}">
+        <view wx:for="{{minds}}" wx:key="index" class="flex-column index-content-layout" bindtap="onVoiceItemClickEvent" data-mind-voice-id="{{item.id}}" data-noise-voice-id="{{item.defaultNoiseVoiceId}}">
             <image src="../../images/index/icon/small/{{item.iconName}}.png" class="index-content-img"></image>
             <view class="index-content-title">{{item.title}}</view>
 <!--            <view class="index-content-subtitle">92人在这里</view>-->

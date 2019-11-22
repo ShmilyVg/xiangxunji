@@ -1,14 +1,18 @@
 import {getVoiceManager} from "./xxj-voice-manager";
-import {getDefaultMindId, getDefaultWhiteNoiseId} from "../../pages/index/data-manager";
+import {getDefaultMindId} from "../../pages/index/data-manager";
 
 class VoiceDelegate {
     constructor() {
         this._latestMindVoiceId = getDefaultMindId;
-        this._latestNoiseVoiceId = getDefaultWhiteNoiseId;
+        this._latestNoiseVoiceId = 0;
     }
 
     getLatestNoiseVoiceId() {
         return this._latestNoiseVoiceId;
+    }
+
+    getLatestMindVoiceId() {
+        return this._latestMindVoiceId;
     }
 
     setOnTimeUpdateListener({listener}) {
@@ -34,6 +38,7 @@ class VoiceDelegate {
             await getVoiceManager.play(arguments[0]);
             this._latestMindVoiceId = mindVoiceId;
             this._latestNoiseVoiceId = noiseVoiceId;
+            console.log('[voice-delegate.js] play',this._latestMindVoiceId, this._latestNoiseVoiceId);
         } else {
             const {backgroundAudioManager} = getVoiceManager;
             if (backgroundAudioManager.paused) {//如果进入的是同一个人声音频，并且音频已经暂停或是播放完成，则保持该状态

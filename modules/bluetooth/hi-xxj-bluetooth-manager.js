@@ -1,6 +1,7 @@
 import HiXxjBluetoothProtocol from "./hi-xxj-bluetooth-protocol";
 import {LBlueToothManager} from "./lb-ble-common-connection/index";
 import {WXDialog} from "heheda-common-view";
+import {ConnectState} from "./bluetooth-state";
 
 export default class HiXxjBluetoothManager extends LBlueToothManager {
     constructor() {
@@ -22,6 +23,16 @@ export default class HiXxjBluetoothManager extends LBlueToothManager {
 
     getProtocol() {
         return this.bluetoothProtocol;
+    }
+
+    judgeBLEIsConnected() {
+        return new Promise((resolve) => {
+            if (this.getBLELatestConnectState() === ConnectState.CONNECTED) {
+                resolve();
+            } else {
+                WXDialog.showDialog({content: '您未与香薰机连接，请在连接上后重试'});
+            }
+        });
     }
 
     checkLocationPermission() {

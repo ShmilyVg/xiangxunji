@@ -1,6 +1,10 @@
 import HiNavigator from "../../navigator/hi-navigator";
-import Storage from "../../utils/storage";
+import {Storage} from "../../utils/storage";
 import {DIALOG_BG_ANIMATION_DURATION} from "../../utils/config";
+import {ConnectState} from "../../modules/bluetooth/bluetooth-state";
+import {WXDialog} from "heheda-common-view";
+
+const App = getApp();
 
 Component({
     options: {
@@ -42,6 +46,7 @@ Component({
             this._hideFun();
         },
         async _showFun() {
+            await App.getBLEManager().judgeBLEIsConnected();
             const lightOpen = Storage.getLightOpen();
             const waterOpen = Storage.getWaterOpen();
             this.setData({

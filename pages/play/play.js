@@ -24,13 +24,14 @@ Page({
         const mindVoiceItem = mindVoiceId && getMindPractiseList().find(item => item.id === mindVoiceId);
         const noiseVoiceItem = noiseVoiceId && getWhiteNoiseList().find(item => item.id === noiseVoiceId);
         if (mindVoiceItem || noiseVoiceItem) {
-
             this.setData({
                 targetVoice: mindVoiceItem || noiseVoiceItem,
-                envVoices: !!mindVoiceItem ? getWhiteNoiseList() : []
             }, async () => {
                 this.setAppVoiceListener();
                 await AppVoiceDelegate.play({mindVoiceId, noiseVoiceId});
+                this.setData({
+                    envVoices: !!mindVoiceItem ? getWhiteNoiseList() : []
+                });
             });
         }
     },

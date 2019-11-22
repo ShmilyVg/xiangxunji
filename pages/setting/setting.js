@@ -1,4 +1,5 @@
 // pages/setting/setting.js
+const App = getApp();
 Page({
 
     /**
@@ -16,11 +17,13 @@ Page({
             {color: 'rgb(140,102,169)'},
 
         ],
-        config: {color: '', brightness: 50, autoLight: false, lightOpen: false, waterOpen: true, deviceOpen: false}
+        config: {color: '', brightness: 50, autoLight: false, lightOpen: false, waterOpen: false, deviceOpen: false}
 
 
     },
-
+    bindPickerChange(e) {
+        console.log(e);
+    },
 
     onSelectedColorItemEvent({currentTarget: {dataset: {color: selectedColor}}}) {
         if (this.data.config.color !== selectedColor) {
@@ -54,7 +57,13 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad(options) {
+        const xxjConfig = App.getBLEManager().getXXJConfig();
 
+        this.setData({
+            config: {
+                waterOpen: !!xxjConfig.water.openStatus
+            }
+        })
     },
 
     /**

@@ -68,16 +68,18 @@ Page({
         });
     },
 
-    onSwitchChangeEvent({detail: {open, tag}}) {
+    async onSwitchChangeEvent({detail: {open, tag}}) {
         console.log(open, tag);
         const bleProtocol = App.getBLEManager().getProtocol(), viewObj = {};
+        Toast.showLoading();
         switch (tag) {
             case 'waterOpen': {
                 viewObj['config.water.waterOpen'] = open;
-                bleProtocol.setWater({openStatus: open ? 1 : 0});
+                await bleProtocol.setWater({openStatus: open ? 1 : 0});
             }
                 break;
         }
+        Toast.hiddenLoading();
         this.setData(viewObj);
     },
 

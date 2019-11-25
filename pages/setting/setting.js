@@ -78,19 +78,20 @@ Page({
 
         this.setData({
             'config.water.waterOpen': !!water.openStatus,
-            'config.water.waterDurationIndex': [water.hDuration, water.mDuration]
+            'config.water.waterDurationIndex': [water.hDuration, water.mDuration],
+            'config.water.waterBetweenIndex': water.mBetweenDuration
         })
     },
     async bindPickerChange(e) {
         const {currentTarget: {dataset: {type}}, detail: {value}} = e;
         console.log('type=', type, 'value=', value);
 
-        const bleProtocol = App.getBLEManager().getProtocol(), obj = {};
+        const bleProtocol = App.getBLEManager().getProtocol(), obj = {}, config = this.data.config;
         try {
             Toast.showLoading();
             switch (type) {
                 case 'waterDuration': {
-                    const [hDurationIndex, mDurationIndex] = value, {water: {waterDurationArray}} = this.data.config;
+                    const [hDurationIndex, mDurationIndex] = value, {water: {waterDurationArray}} = config;
                     await bleProtocol.setWater({
                         hDuration: waterDurationArray[0][hDurationIndex].value,
                         mDuration: waterDurationArray[1][mDurationIndex].value
@@ -99,7 +100,9 @@ Page({
                 }
                     break;
                 case 'waterBetween': {
-
+                    const {water: {waterBetweenArray}} = config;
+                    await bleProtocol.setWater({mBetweenDuration: waterBetweenArray[value].value});
+                    obj['config.water.waterBetweenIndex'] = value;
                 }
                     break;
 

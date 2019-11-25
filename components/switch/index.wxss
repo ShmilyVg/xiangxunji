@@ -1,4 +1,8 @@
-.play-setting-dialog-switch{
+.my-switch{
     width: 86rpx;
     height: 46rpx;
+}
+
+.my-switch-padding{
+    padding: 0rpx 0 0rpx 30rpx;
 }

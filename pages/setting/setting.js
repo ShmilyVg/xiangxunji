@@ -44,7 +44,9 @@ Page({
                         content: index + '分钟', value: index
                     }))],
                 waterBetweenIndex: 0,
-                waterBetweenArray: new Array(61).fill(0).map((item, index) => ({content: index + '分钟', value: index}))
+                waterBetweenArray: new Array(61).fill(0).map((item, index) => ({content: index + '分钟', value: index})),
+                waterSpeedIndex: 0,
+                waterSpeedArray: [{content: '快', value: 1}, {content: '慢', value: 0}]
             },
             deviceOpen: false
         },
@@ -83,12 +85,14 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad(options) {
-        const xxjConfig = App.getBLEManager().getXXJConfig(), water = xxjConfig.water;
+        const xxjConfig = App.getBLEManager().getXXJConfig(),
+            water = xxjConfig.water, {water: {waterSpeedArray}} = this.data.config;
 
         this.setData({
             'config.water.waterOpen': !!water.openStatus,
             'config.water.waterDurationIndex': [water.hDuration, water.mDuration],
-            'config.water.waterBetweenIndex': water.mBetweenDuration
+            'config.water.waterBetweenIndex': water.mBetweenDuration,
+            'config.water.waterSpeedIndex': waterSpeedArray.findIndex(item => water.speed === item.value),
         })
     },
     async bindPickerChange(e) {
@@ -125,6 +129,14 @@ Page({
                     viewObj['config.water.waterBetweenIndex'] = value;
                 }
                     break;
+
+                case 'waterSpeed': {
+                    const {water: {waterSpeedArray}} = config, speed = waterSpeedArray[value].value;
+                    bleProtocolArguments = {speed};
+                    viewObj['config.water.waterSpeedIndex'] = waterSpeedArray.findIndex(item => speed === item.value);
+                }
+                    break;
+
             }
             Toast.showLoading();
             await bleProtocol.setWater(bleProtocolArguments);

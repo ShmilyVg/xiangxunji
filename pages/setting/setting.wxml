@@ -64,11 +64,11 @@
         </picker>
 
         <view class="setting-divide-line"></view>
-        <picker class="fill-width" bindchange="bindPickerChange" data-type="waterSpeed" value="{{index}}" range="{{['快','慢']}}">
+        <picker class="fill-width" bindchange="bindPickerChange" data-type="waterSpeed" value="{{config.water.waterSpeedIndex}}" range-key="content" range="{{config.water.waterSpeedArray}}">
             <view class="fill-width flex-row align-items-center space-between setting-item-layout-02">
                 <view class="setting-item-title">喷雾速度</view>
                 <view class="flex-row align-items-center">
-                    <view class="setting-water-duration">快</view>
+                    <view class="setting-water-duration">{{config.water.waterSpeedArray[config.water.waterSpeedIndex].content}}</view>
                     <image src="../../images/user-center/arrow.png" class="setting-item-arrow"></image>
                 </view>
             </view>

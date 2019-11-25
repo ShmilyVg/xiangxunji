@@ -70,7 +70,15 @@ Page({
 
     onSwitchChangeEvent({detail: {open, tag}}) {
         console.log(open, tag);
-
+        const bleProtocol = App.getBLEManager().getProtocol(), viewObj = {};
+        switch (tag) {
+            case 'waterOpen': {
+                viewObj['config.water.waterOpen'] = open;
+                bleProtocol.setWater({openStatus: open ? 1 : 0});
+            }
+                break;
+        }
+        this.setData(viewObj);
     },
 
     reset() {

@@ -25,9 +25,17 @@ Page({
             autoLight: false,
             lightOpen: false,
             water: {
-                waterOpen: false, waterDurationIndex: [0, 0],
-                waterDurationArray: [new Array(12).fill(0).map((item, index) => ({content: index, value: index})),
-                    new Array(60).fill(0).map((item, index) => ({content: index, value: index}))]
+                waterOpen: false,
+                waterDurationIndex: [0, 0],
+                waterDurationArray: [
+                    new Array(12).fill(0).map((item, index) => ({
+                        content: index + '时', value: index
+                    })),
+                    new Array(60).fill(0).map((item, index) => ({
+                        content: index + '分钟', value: index
+                    }))],
+                waterBetweenIndex: 0,
+                waterBetweenArray: new Array(61).fill(0).map((item, index) => ({content: index + '分钟', value: index}))
             },
             deviceOpen: false
         },
@@ -77,7 +85,7 @@ Page({
         const {currentTarget: {dataset: {type}}, detail: {value}} = e;
         console.log('type=', type, 'value=', value);
 
-        const bleProtocol = App.getBLEManager().getProtocol();
+        const bleProtocol = App.getBLEManager().getProtocol(), obj = {};
         try {
             Toast.showLoading();
             switch (type) {
@@ -87,13 +95,17 @@ Page({
                         hDuration: waterDurationArray[0][hDurationIndex].value,
                         mDuration: waterDurationArray[1][mDurationIndex].value
                     });
-                    this.setData({
-                        'config.water.waterDurationIndex': [hDurationIndex, mDurationIndex]
-                    });
+                    obj['config.water.waterDurationIndex'] = [hDurationIndex, mDurationIndex]
+                }
+                    break;
+                case 'waterBetween': {
+
                 }
                     break;
 
+
             }
+            this.setData(obj);
         } catch (e) {
             console.log('自定义设置出现错误 bindPickerChange', e);
         } finally {

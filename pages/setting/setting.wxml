@@ -46,18 +46,18 @@
                     <view class="setting-item-subtitle">*时长必须是间隔的时间3倍以上</view>
                 </view>
                 <view class="flex-row align-items-center">
-                    <view class="setting-water-duration">{{config.water.waterDurationArray[0][config.water.waterDurationIndex[0]].content}}时{{config.water.waterDurationArray[1][config.water.waterDurationIndex[1]].content}}分钟</view>
+                    <view class="setting-water-duration">{{config.water.waterDurationArray[0][config.water.waterDurationIndex[0]].content}}{{config.water.waterDurationArray[1][config.water.waterDurationIndex[1]].content}}</view>
                     <image src="../../images/user-center/arrow.png" class="setting-item-arrow"></image>
                 </view>
             </view>
         </picker>
 
         <view class="setting-divide-line"></view>
-        <picker class="fill-width" bindchange="bindPickerChange" value="{{index}}" range="{{['低','中','快']}}">
+        <picker class="fill-width" bindchange="bindPickerChange" data-type="waterBetween" value="{{config.water.waterBetweenIndex}}" range-key="content" range="{{config.water.waterBetweenArray}}">
             <view class="fill-width flex-row align-items-center space-between setting-item-layout-02">
                 <view class="setting-item-title">喷雾时间间隔</view>
                 <view class="flex-row align-items-center">
-                    <view class="setting-water-duration">每隔5分钟</view>
+                    <view class="setting-water-duration">每隔{{config.water.waterBetweenArray[config.water.waterBetweenIndex].content}}</view>
                     <image src="../../images/user-center/arrow.png" class="setting-item-arrow"></image>
                 </view>
             </view>

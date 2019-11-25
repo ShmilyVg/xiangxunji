@@ -17,22 +17,10 @@ Page({
      * 页面的初始数据
      */
     data: {
-        colorList: [
-            {color: 'rgb(243,243,243)'},
-            {color: 'rgb(168,62,56)'},
-            {color: 'rgb(194,94,71)'},
-            {color: 'rgb(200,160,60)'},
-            {color: 'rgb(110,168,109)'},
-            {color: 'rgb(167,205,226)'},
-            {color: 'rgb(118,146,197)'},
-            {color: 'rgb(140,102,169)'},
 
-        ],
         config: {
-            color: '',
             brightness: 50,
-            autoLight: false,
-            lightOpen: false,
+
             water: {
                 waterOpen: false,
                 waterDurationIndex: [0, 0],
@@ -48,15 +36,35 @@ Page({
                 waterSpeedIndex: 0,
                 waterSpeedArray: [{content: '快', value: 1}, {content: '慢', value: 0}]
             },
+
+            light: {
+                autoLight: false,
+                lightOpen: false,
+                currentColor: '',
+                colorList: [
+                    {color: 'rgb(243,243,243)'},
+                    {color: 'rgb(168,62,56)'},
+                    {color: 'rgb(194,94,71)'},
+                    {color: 'rgb(200,160,60)'},
+                    {color: 'rgb(110,168,109)'},
+                    {color: 'rgb(167,205,226)'},
+                    {color: 'rgb(118,146,197)'},
+                    {color: 'rgb(140,102,169)'},
+
+                ],
+            },
             deviceOpen: false
         },
 
     },
 
     onSelectedColorItemEvent({currentTarget: {dataset: {color: selectedColor}}}) {
-        if (this.data.config.color !== selectedColor) {
+        const [red, green, blue] = selectedColor.slice(4, -1).split(',').map(item => parseInt(item));
+        if (this.data.config.light.currentColor !== selectedColor) {
+            const bleProtocol = App.getBLEManager().getProtocol();
+            bleProtocol.setLight({isAutoLight: false, red, green, blue});
             this.setData({
-                'config.color': selectedColor
+                'config.light.currentColor': selectedColor
             });
         }
 
@@ -96,13 +104,17 @@ Page({
      */
     onLoad(options) {
         const xxjConfig = App.getBLEManager().getXXJConfig(),
-            water = xxjConfig.water, {water: {waterSpeedArray}} = this.data.config;
+            {water, light} = xxjConfig, {water: {waterSpeedArray}} = this.data.config, {colorList} = this.data;
 
         this.setData({
             'config.water.waterOpen': !!water.openStatus,
             'config.water.waterDurationIndex': [water.hDuration, water.mDuration],
             'config.water.waterBetweenIndex': water.mBetweenDuration,
             'config.water.waterSpeedIndex': waterSpeedArray.findIndex(item => water.speed === item.value),
+            'config.light.lightOpen': light.isLightOpen,
+            'config.light.autoLight': light.isAutoLight,
+            // 'config.light.lightOpen': light.isLightOpen,
+
         })
     },
     async bindPickerChange(e) {

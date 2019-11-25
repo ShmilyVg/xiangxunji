@@ -23,18 +23,21 @@ export default class HiXxjBluetoothProtocol extends LBlueToothProtocolOperator {
             },
             /**
              * 灯设置（写）
-             * @param isSetAllColor isSetAllColor? (0x12：七彩渐变) : (0x11：单色灯)
+             * @param isAutoLight isAutoColor? (0x12：七彩渐变) : (0x11：单色灯)
              * @param red 0x00 - 0xff
              * @param green 0x00 - 0xff
-             * @param yellow 0x00 - 0xff
+             * @param blue 0x00 - 0xff
              * @param hDuration 0x00:0h 0x01:1h ... 0x0C:12h 0xff:不设置
              * @param mDuration 0x00:0分钟 0x01:1分钟 ... 0x3B:59分钟 0xff:不设置
              */
-            '0x52': ({isSetAllColor, red, green, yellow, hDuration = 255, mDuration = 255}) => {
-                return this.sendData({
+            '0x52': async ({isAutoLight, red, green, blue, hDuration = 255, mDuration = 255}) => {
+                console.log('0x52 isAutoLight', isAutoLight, ' red=', red, ' green=', green, ' blue=', blue, ' hDuration=', hDuration, ' mDuration=', mDuration);
+                const result = await this.sendData({
                     command: '0x52',
-                    data: [isSetAllColor ? 18 : 17, red, green, yellow, hDuration, mDuration]
+                    data: [isAutoLight ? 18 : 17, red, green, blue, hDuration, mDuration]
                 });
+                this.xxjBLEConfig.setLight({isAutoLight, red, green, blue, hDuration, mDuration});
+                return result;
             },
             /**
              * 雾化设置（写）
@@ -45,7 +48,7 @@ export default class HiXxjBluetoothProtocol extends LBlueToothProtocolOperator {
              * @param sBetweenDuration 0x00:无间断 0x01:1秒钟 0x02：2秒钟 ... 0x3B:59秒钟 0xff:不设置
              * @param speed 0x00:小雾 0x01:大雾 0xff:不设置
              */
-            '0x53':async ({openStatus = 255, hDuration = 255, mDuration = 255, mBetweenDuration = 255, sBetweenDuration = 255, speed = 255}) => {
+            '0x53': async ({openStatus = 255, hDuration = 255, mDuration = 255, mBetweenDuration = 255, sBetweenDuration = 255, speed = 255}) => {
                 console.log('0x53 openStatus', openStatus,' hDuration=',hDuration,' mDuration=',mDuration,' mBetweenDuration=',mBetweenDuration,' sBetweenDuration=',sBetweenDuration,' speed=',speed);
                 const result = await this.sendData({
                     command: '0x53',
@@ -95,7 +98,8 @@ export default class HiXxjBluetoothProtocol extends LBlueToothProtocolOperator {
              */
             '0x62': ({dataArray}) => {
                 console.log('接收到的0x62的数据 从byte2开始', dataArray);
-
+                const [red, green, blue, hDuration, mDuration] = dataArray, isAutoLight = 18;
+                this.xxjBLEConfig.setLight({isAutoLight: isAutoLight === 18, red, green, blue, hDuration, mDuration});
             },
             /**
              * 雾化设置（读）

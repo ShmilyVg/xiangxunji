@@ -43,7 +43,7 @@
                   style="padding-top: 20rpx;">
                 <view class="flex-column">
                     <view class="setting-item-title">喷雾时间</view>
-                    <view class="setting-item-subtitle">*时长必须是间隔的时间3倍以上</view>
+                    <view class="setting-item-subtitle">*时长必须是间隔时间的3倍以上</view>
                 </view>
                 <view class="flex-row align-items-center">
                     <view class="setting-water-duration">{{config.water.waterDurationArray[0][config.water.waterDurationIndex[0]].content}}{{config.water.waterDurationArray[1][config.water.waterDurationIndex[1]].content}}</view>

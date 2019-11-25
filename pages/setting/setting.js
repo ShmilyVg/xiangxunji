@@ -2,6 +2,15 @@
 import {Toast} from "heheda-common-view";
 
 const App = getApp();
+
+function isTreble({waterDuration = 0, betweenDuration = 0}) {
+    if (waterDuration > (betweenDuration * 3)) {
+        return Promise.resolve();
+    }
+    Toast.showText('喷雾时间需≥3倍间隔时间');
+    return Promise.reject('喷雾时间需≥3倍间隔时间');
+}
+
 Page({
 
     /**
@@ -86,29 +95,40 @@ Page({
         const {currentTarget: {dataset: {type}}, detail: {value}} = e;
         console.log('type=', type, 'value=', value);
 
-        const bleProtocol = App.getBLEManager().getProtocol(), obj = {}, config = this.data.config;
+        const bleProtocol = App.getBLEManager().getProtocol(), viewObj = {},
+            config = this.data.config, that = this;
+        let bleProtocolArguments = {};
         try {
-            Toast.showLoading();
             switch (type) {
                 case 'waterDuration': {
-                    const [hDurationIndex, mDurationIndex] = value, {water: {waterDurationArray}} = config;
-                    await bleProtocol.setWater({
+                    const [hDurationIndex, mDurationIndex] = value, {water: {waterDurationArray, waterBetweenArray, waterBetweenIndex}} = config,
+                        mBetweenDuration = waterBetweenArray[waterBetweenIndex].value;
+                    await isTreble({
+                        waterDuration: waterDurationArray[0][hDurationIndex].value * 60 + waterDurationArray[1][mDurationIndex].value,
+                        betweenDuration: mBetweenDuration
+                    });
+                    bleProtocolArguments = {
                         hDuration: waterDurationArray[0][hDurationIndex].value,
                         mDuration: waterDurationArray[1][mDurationIndex].value
-                    });
-                    obj['config.water.waterDurationIndex'] = [hDurationIndex, mDurationIndex]
+                    };
+                    viewObj['config.water.waterDurationIndex'] = [hDurationIndex, mDurationIndex]
                 }
                     break;
                 case 'waterBetween': {
-                    const {water: {waterBetweenArray}} = config;
-                    await bleProtocol.setWater({mBetweenDuration: waterBetweenArray[value].value});
-                    obj['config.water.waterBetweenIndex'] = value;
+                    const {water: {waterBetweenArray, waterDurationArray, waterDurationIndex: [hDurationIndex, mDurationIndex]}} = config,
+                        mBetweenDuration = waterBetweenArray[value].value;
+                    await isTreble({
+                        waterDuration: waterDurationArray[0][hDurationIndex].value * 60 + waterDurationArray[1][mDurationIndex].value,
+                        betweenDuration: mBetweenDuration
+                    });
+                    bleProtocolArguments = {mBetweenDuration};
+                    viewObj['config.water.waterBetweenIndex'] = value;
                 }
                     break;
-
-
             }
-            this.setData(obj);
+            Toast.showLoading();
+            await bleProtocol.setWater(bleProtocolArguments);
+            this.setData(viewObj);
         } catch (e) {
             console.log('自定义设置出现错误 bindPickerChange', e);
         } finally {
@@ -116,6 +136,7 @@ Page({
         }
 
     },
+
     /**
      * 生命周期函数--监听页面初次渲染完成
      */

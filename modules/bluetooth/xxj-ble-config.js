@@ -11,8 +11,11 @@ export default class XXJBLEConfig {
     }
 
 
-    setLight({dataArray}) {
-
+    setLight({isAutoLight, red, green, blue, hDuration, mDuration}) {
+        filterProtocolData(this.light, arguments[0]);
+        const {hDuration: currentHDuration, mDuration: currentMDuration} = this.light;
+        this.light.isLightOpen = (currentHDuration + currentMDuration) !== 0;
+        console.log('设置灯光', this.light);
     }
 
 }

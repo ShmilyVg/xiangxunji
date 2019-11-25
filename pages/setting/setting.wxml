@@ -5,10 +5,10 @@
           style="margin-top: 40rpx;">
         <view class="setting-title">灯光颜色</view>
         <view class="fill-width flex-row space-between">
-            <view bindtap="onSelectedColorItemEvent" data-color="{{item.color}}" wx:for="{{colorList}}" wx:key="color"
+            <view bindtap="onSelectedColorItemEvent" data-color="{{item.color}}" wx:for="{{config.light.colorList}}" wx:key="color"
                   class="flex-row align-items-center justify-center setting-color-item"
-                  style="background-color: {{item.color}};opacity: {{item.color===config.color?1:0.4}}">
-                <image wx:if="{{item.color===config.color}}" src="../../images/setting/color_selected.png"
+                  style="background-color: {{item.color}};opacity: {{item.color===config.light.currentColor?1:0.4}}">
+                <image wx:if="{{item.color===config.light.currentColor}}" src="../../images/setting/color_selected.png"
                        class="setting-selected"></image>
             </view>
 
@@ -23,13 +23,13 @@
 
         <view class="fill-width flex-row align-items-center space-between setting-item-layout">
             <view class="setting-item-title">七彩模式</view>
-            <my-switch bind:onSwitchClickEvent="onSwitchChangeEvent" open="{{config.autoLight}}"
+            <my-switch bind:onSwitchClickEvent="onSwitchChangeEvent" open="{{config.light.autoLight}}"
                        tag="autoLight"></my-switch>
         </view>
         <view class="setting-divide-line"></view>
         <view class="fill-width flex-row align-items-center space-between setting-item-layout">
             <view class="setting-item-title">灯光开关</view>
-            <my-switch bind:onSwitchClickEvent="onSwitchChangeEvent" open="{{config.lightOpen}}"
+            <my-switch bind:onSwitchClickEvent="onSwitchChangeEvent" open="{{config.light.lightOpen}}"
                        tag="lightOpen"></my-switch>
         </view>
     </view>

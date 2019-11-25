@@ -7,7 +7,7 @@
         <view class="fill-width flex-row space-between">
             <view bindtap="onSelectedColorItemEvent" data-color="{{item.color}}" wx:for="{{config.light.colorList}}" wx:key="color"
                   class="flex-row align-items-center justify-center setting-color-item"
-                  style="background-color: {{item.color}};opacity: {{item.color===config.light.currentColor?1:0.4}}">
+                  style="background-color: {{item.color}};opacity: {{(item.color===config.light.currentColor&&!config.light.autoLight)?1:0.4}}">
                 <image wx:if="{{item.color===config.light.currentColor}}" src="../../images/setting/color_selected.png"
                        class="setting-selected"></image>
             </view>

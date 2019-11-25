@@ -87,6 +87,18 @@ Page({
                 await bleProtocol.setWater({openStatus: open ? 1 : 0});
             }
                 break;
+            case 'autoLight': {
+                viewObj['config.water.autoLight'] = open;
+                await bleProtocol.setLight({autoLight: open});
+            }
+                break;
+            case 'lightOpen': {
+                viewObj['config.water.lightOpen'] = open;
+
+                await bleProtocol.setLight({lightOpen: open});
+            }
+                break;
+
         }
         Toast.hiddenLoading();
         this.setData(viewObj);

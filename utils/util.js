@@ -1,19 +1,9 @@
-const formatTime = date => {
-  const year = date.getFullYear()
-  const month = date.getMonth() + 1
-  const day = date.getDate()
-  const hour = date.getHours()
-  const minute = date.getMinutes()
-  const second = date.getSeconds()
+import {Toast} from "heheda-common-view";
 
-  return [year, month, day].map(formatNumber).join('/') + ' ' + [hour, minute, second].map(formatNumber).join(':')
-}
-
-const formatNumber = n => {
-  n = n.toString()
-  return n[1] ? n : '0' + n
-}
-
-module.exports = {
-  formatTime: formatTime
+export function isTreble({waterDuration = 0, betweenDuration = 0}) {
+    if (waterDuration > (betweenDuration * 3)) {
+        return Promise.resolve();
+    }
+    Toast.showText('喷雾时间需≥3倍间隔时间');
+    return Promise.reject('喷雾时间需≥3倍间隔时间');
 }

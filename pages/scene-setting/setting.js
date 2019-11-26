@@ -1,17 +1,9 @@
 // pages/setting/setting.js
 import {Toast} from "heheda-common-view";
 import {getRGBByColor} from "../../modules/bluetooth/xxj-ble-config";
-import {XXJProtocolState} from "../../modules/bluetooth/bluetooth-state";
+import {isTreble} from "../../utils/util";
 
 const App = getApp();
-
-function isTreble({waterDuration = 0, betweenDuration = 0}) {
-    if (waterDuration > (betweenDuration * 3)) {
-        return Promise.resolve();
-    }
-    Toast.showText('喷雾时间需≥3倍间隔时间');
-    return Promise.reject('喷雾时间需≥3倍间隔时间');
-}
 
 Page({
 
@@ -135,7 +127,7 @@ Page({
         console.log('type=', type, 'value=', value);
 
         const bleProtocol = App.getBLEManager().getProtocol(), viewObj = {},
-            config = this.data.config, that = this;
+            config = this.data.config;
         let bleProtocolArguments = {};
         try {
             switch (type) {

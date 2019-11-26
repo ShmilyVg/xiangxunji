@@ -6,7 +6,7 @@ export default class HiNavigator extends CommonNavigator {
     }
 
     static navigateToMoreSetting() {
-        this.navigateTo({url: '/pages/setting/setting'});
+        this.navigateTo({url: '/pages/scene-setting/setting'});
     }
 
     static navigateToDeviceSetting() {

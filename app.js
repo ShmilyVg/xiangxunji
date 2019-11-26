@@ -31,7 +31,7 @@ App({
             onReceiveData: res => {
                 const {protocolState, value} = res;
                 console.log('app.js 蓝牙协议接收到新的', res);
-                // this.onAppBLEReceiveDataListener && this.onAppBLEReceiveDataListener({protocolState, value});
+                this.onAppBLEReceiveDataListener && this.onAppBLEReceiveDataListener({protocolState, value});
             }
         });
         await Login.doLogin();

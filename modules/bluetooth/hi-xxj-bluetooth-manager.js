@@ -1,7 +1,7 @@
 import HiXxjBluetoothProtocol from "./hi-xxj-bluetooth-protocol";
 import {LBlueToothManager} from "./lb-ble-common-connection/index";
 import {WXDialog} from "heheda-common-view";
-import {ConnectState} from "./bluetooth-state";
+import {ConnectState, XXJProtocolState} from "./bluetooth-state";
 
 export default class HiXxjBluetoothManager extends LBlueToothManager {
     constructor() {
@@ -26,7 +26,19 @@ export default class HiXxjBluetoothManager extends LBlueToothManager {
     }
 
     getXXJConfig() {
-        return this.getProtocol().xxjBLEConfig;
+        const {xxjBLEConfig, xxjBLEConfig: {isAllStateReceive}} = this.getProtocol();
+        if (isAllStateReceive) {
+            return Promise.resolve(xxjBLEConfig);
+        } else {
+            return new Promise((resolve) => {
+                App.onAppBLEReceiveDataListener = ({protocolState}) => {
+                    if (protocolState === XXJProtocolState.RECEIVE_ALL_STATE) {
+                        resolve(xxjBLEConfig);
+                    }
+                };
+            });
+        }
+
     }
 
     judgeBLEIsConnected() {

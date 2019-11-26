@@ -1,6 +1,7 @@
 // pages/setting/setting.js
 import {Toast} from "heheda-common-view";
 import {getRGBByColor} from "../../modules/bluetooth/xxj-ble-config";
+import {XXJProtocolState} from "../../modules/bluetooth/bluetooth-state";
 
 const App = getApp();
 
@@ -114,24 +115,20 @@ Page({
             }
         });
     },
-    /**
-     * 生命周期函数--监听页面加载
-     */
-    onLoad(options) {
-        const xxjConfig = App.getBLEManager().getXXJConfig(),
-            {water, light} = xxjConfig, {water: {waterSpeedArray}} = this.data.config, {colorList} = this.data;
+    async onLoad(options) {
+        const xxjConfig = await App.getBLEManager().getXXJConfig(), {water, light} = xxjConfig,
+            {water: {waterSpeedArray}} = this.data.config;
 
         this.setData({
             'config.water.waterOpen': !!water.openStatus,
             'config.water.waterDurationIndex': [water.hDuration, water.mDuration],
             'config.water.waterBetweenIndex': water.mBetweenDuration,
             'config.water.waterSpeedIndex': waterSpeedArray.findIndex(item => water.speed === item.value),
-            'config.light.lightOpen': light.isLightOpen,
-            'config.light.autoLight': light.isAutoLight,
+            'config.light.lightOpen': light.lightOpen,
+            'config.light.autoLight': light.autoLight,
             'config.light.currentColor': light.currentColor,
-            // 'config.light.lightOpen': light.isLightOpen,
+        });
 
-        })
     },
     async bindPickerChange(e) {
         const {currentTarget: {dataset: {type}}, detail: {value}} = e;

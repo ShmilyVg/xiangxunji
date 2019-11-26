@@ -64,7 +64,7 @@ Component({
         async _showFun() {
             const bleManager = App.getBLEManager();
             await bleManager.judgeBLEIsConnected();
-            const xxjConfig = bleManager.getXXJConfig();
+            const xxjConfig = await bleManager.getXXJConfig();
             console.log('xxjConfig', xxjConfig);
             const waterOpen = xxjConfig.water.openStatus;
             // const lightOpen = Storage.getWaterOpen();

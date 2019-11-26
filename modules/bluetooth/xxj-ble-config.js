@@ -3,6 +3,7 @@ export default class XXJBLEConfig {
         this.light = {};
         this.water = {};
         this.waterAlert = {};
+        this.isAllStateReceive = false;
     }
 
     setWater({openStatus, hDuration, mDuration, mBetweenDuration, sBetweenDuration, speed}) {

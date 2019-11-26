@@ -1,5 +1,6 @@
 // pages/setting/setting.js
 import {Toast} from "heheda-common-view";
+import {getRGBByColor} from "../../modules/bluetooth/xxj-ble-config";
 
 const App = getApp();
 
@@ -59,13 +60,14 @@ Page({
     },
 
     onSelectedColorItemEvent({currentTarget: {dataset: {color: selectedColor}}}) {
-        const [red, green, blue] = selectedColor.slice(4, -1).split(',').map(item => parseInt(item));
-        console.log(selectedColor, red, green, blue);
         if (this.data.config.light.currentColor !== selectedColor) {
             const bleProtocol = App.getBLEManager().getProtocol();
+            const [red, green, blue] = getRGBByColor({color: selectedColor});
+            console.log(selectedColor, red, green, blue);
             bleProtocol.setLight({isAutoLight: false, red, green, blue});
             this.setData({
-                'config.light.currentColor': selectedColor
+                'config.light.currentColor': selectedColor,
+                'config.light.autoLight': false
             });
         }
 
@@ -88,7 +90,7 @@ Page({
             }
                 break;
             case 'autoLight': {
-                viewObj['config.water.autoLight'] = open;
+                viewObj['config.light.autoLight'] = open;
                 await bleProtocol.setLight({autoLight: open});
             }
                 break;
@@ -126,6 +128,7 @@ Page({
             'config.water.waterSpeedIndex': waterSpeedArray.findIndex(item => water.speed === item.value),
             'config.light.lightOpen': light.isLightOpen,
             'config.light.autoLight': light.isAutoLight,
+            'config.light.currentColor': light.currentColor,
             // 'config.light.lightOpen': light.isLightOpen,
 
         })

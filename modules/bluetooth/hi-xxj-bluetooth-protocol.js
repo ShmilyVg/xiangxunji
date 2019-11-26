@@ -101,7 +101,7 @@ export default class HiXxjBluetoothProtocol extends LBlueToothProtocolOperator {
              */
             '0x62': ({dataArray}) => {
                 console.log('接收到的0x62的数据 从byte2开始', dataArray);
-                const [red, green, blue, hDuration, mDuration] = dataArray, autoLight = 18;
+                const [autoLight, red, green, blue, hDuration, mDuration] = dataArray;
                 this.xxjBLEConfig.setLight({autoLight: autoLight === 18, red, green, blue, hDuration, mDuration});
             },
             /**

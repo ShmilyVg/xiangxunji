@@ -65,7 +65,7 @@ Page({
             const bleProtocol = App.getBLEManager().getProtocol();
             const [red, green, blue] = getRGBByColor({color: selectedColor});
             console.log(selectedColor, red, green, blue);
-            bleProtocol.setLight({isAutoLight: false, red, green, blue});
+            bleProtocol.setLight({autoLight: false, red, green, blue});
             this.setData({
                 'config.light.currentColor': selectedColor,
                 'config.light.autoLight': false

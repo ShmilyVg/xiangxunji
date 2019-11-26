@@ -1,5 +1,4 @@
 // pages/user-center/user-center.js
-import {ConnectState} from "../../modules/bluetooth/bluetooth-state";
 import HiNavigator from "../../navigator/hi-navigator";
 import {SoftwareVersion} from "../../utils/config";
 
@@ -26,6 +25,9 @@ Page({
                 this._updateConnectState({connectState});
             }
         });
+    },
+    toMyDeviceSettingPage() {
+        HiNavigator.navigateToDeviceSetting();
     },
     toFeedbackPage() {
         HiNavigator.navigateToFeedbackPage();

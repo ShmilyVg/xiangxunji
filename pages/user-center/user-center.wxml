@@ -51,7 +51,7 @@
             <image src="../../images/index/retry.png" style="animation-iteration-count:{{connectState==='connecting'?'infinite':'0'}}" class="index-retry-icon"></image>
             <view class="user-center-reconnect">重新连接</view>
         </view>
-        <view wx:else class="user-center-my-device-setting-layout">
+        <view wx:else class="user-center-my-device-setting-layout" bindtap="toMyDeviceSettingPage">
             <image src="../../images/user-center/setting.png" class="user-center-my-device-setting-img"></image>
         </view>
     </view>

@@ -9,6 +9,10 @@ export default class HiNavigator extends CommonNavigator {
         this.navigateTo({url: '/pages/setting/setting'});
     }
 
+    static navigateToDeviceSetting() {
+        this.navigateTo({url: '/pages/device-setting/setting'});
+    }
+
     static navigateToUserCenter() {
         this.navigateTo({url: '/pages/user-center/user-center'});
     }

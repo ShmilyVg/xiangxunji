@@ -8,9 +8,7 @@ Component({
     /**
      * 组件的属性列表
      */
-    properties: {
-
-    },
+    properties: {},
 
     /**
      * 组件的初始数据
@@ -31,7 +29,9 @@ Component({
             }
         },
         hide() {
-
+            if (this.data.show) {
+                this.setData({show: false});
+            }
         }
     },
     /**

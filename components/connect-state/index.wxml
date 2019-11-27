@@ -1,6 +1,6 @@
 <view bindtap="_toReconnectEvent"  style="margin-top: {{stateObj.show?'0':'-90rpx'}};" class="fill-width flex-row align-items-center justify-center index-connect-device-layout">
     <view class="flex-row align-items-center index-connect-device-text">
-        <image src="../../images/index/retry.png" style="animation-iteration-count:{{stateObj.connecting?'infinite':'0'}}" class="index-retry-icon"></image>
+        <image src="../../images/index/retry.png" style="display: {{stateObj.connecting?'block':'none'}}" class="index-retry-icon"></image>
         {{stateObj.text}}
         <view wx:if="{{stateObj.showRetryBtn}}" style="color: #F7879E;">重连</view></view>
 </view>

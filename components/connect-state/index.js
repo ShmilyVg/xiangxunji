@@ -1,4 +1,5 @@
 import {ConnectState} from "../../modules/bluetooth/bluetooth-state";
+import {CommonConnectState} from "heheda-bluetooth-state";
 
 const App = getApp(),
     stateOptions = {};
@@ -68,6 +69,11 @@ Component({
         created() {
         },
         attached() {
+            // setTimeout(() => {
+            //     this.setData({
+            //         stateObj: stateOptions[CommonConnectState.CONNECTED]
+            //     });
+            // },1000)
         },
 
     },

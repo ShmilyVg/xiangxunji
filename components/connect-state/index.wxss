@@ -12,11 +12,16 @@
     line-height:28rpx;
 }
 
+.index-image-layout {
+    overflow: hidden;
+}
+
 .index-retry-icon{
     width: 32rpx;
     height: 26rpx;
     margin-right: 10rpx;
     animation: circleAnim 1s ease-out;
+    animation-iteration-count: infinite;
 }
 
 @keyframes circleAnim {

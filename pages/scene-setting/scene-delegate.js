@@ -7,13 +7,13 @@ export class LightSettingDelegate {
         switch (tag) {
             case 'autoLight': {
                 viewObj['config.light.autoLight'] = open;
-                await bleProtocol.setLight({autoLight: open});
+                await bleProtocol.setAutoColorLight({autoLight: open});
             }
                 break;
             case 'lightOpen': {
                 viewObj['config.water.lightOpen'] = open;
 
-                await bleProtocol.setLight({lightOpen: open});
+                await bleProtocol.setLightOpen({lightOpen: open});
             }
                 break;
         }
@@ -26,16 +26,22 @@ export class LightSettingDelegate {
             const bleProtocol = getApp().getBLEManager().getProtocol();
             const [red, green, blue] = getRGBByColor({color: selectedColor});
             console.log(selectedColor, red, green, blue);
-            await bleProtocol.setLight({autoLight: false, red, green, blue});
+            await bleProtocol.setSingleColorLight({red, green, blue});
             viewObj['config.light.currentColor'] = selectedColor;
             viewObj['config.light.autoLight'] = false;
         }
         return {viewObj};
     }
 
-    async onLightChanged(e) {
-        const {detail: {value}} = e, viewObj = {};
-        viewObj['config.light.brightness'] = value;
+    async onLightChanged({e, autoLight}) {
+        const bleProtocol = getApp().getBLEManager().getProtocol(), {detail: {value: brightness}} = e, viewObj = {};
+        console.log('onLightChanged value:', brightness);
+        if (autoLight) {
+            await bleProtocol.setAutoColorLight({brightness, autoLight});
+        } else {
+            await bleProtocol.setSingleColorLight({brightness});
+        }
+        viewObj['config.light.brightness'] = brightness;
         return {viewObj};
     }
 

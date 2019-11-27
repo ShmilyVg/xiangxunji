@@ -12,11 +12,10 @@ export default class XXJBLEConfig {
     }
 
 
-    setLight({autoLight, lightOpen, red, green, blue, hDuration, mDuration}) {
+    setLight({autoLight, brightness, lightOpen, red, green, blue, hDuration, mDuration}) {
         filterProtocolData(this.light, arguments[0]);
-        const {hDuration: currentHDuration, mDuration: currentMDuration} = this.light;
-        this.light.currentColor = getColorByRGB({red, green, blue});
-        this.light.lightOpen = (currentHDuration + currentMDuration) !== 0;
+        const {red: myRed, green: myGreen, blue: myBlue} = this.light;
+        this.light.currentColor = getColorByRGB({red:myRed, green: myGreen, blue: myBlue});
         console.log('设置灯光', this.light);
     }
 
@@ -38,7 +37,10 @@ function getColorByRGB({red, green, blue}) {
 function filterProtocolData(target, {...args}) {
     const arg = arguments[1], obj = {};
     for (const key of Object.keys(arg)) {
-        arg[key] !== 255 && (obj[key] = arg[key]);
+        const value = arg[key];
+        if (value !== undefined && value !== 255) {
+            obj[key] = value;
+        }
     }
     Object.assign(target, obj);
 }

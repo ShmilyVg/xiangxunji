@@ -22,9 +22,10 @@ export default class HiXxjBluetoothProtocol extends LBlueToothProtocolOperator {
                     data: [currentHour, currentMinute, currentSecond, 255, 255, 255]
                 });
             },
+
             /**
-             * 灯设置（写）
-             * @param autoLight isAutoColor? (0x12：七彩渐变) : (0x11：单色灯)
+             * 0x11：单色灯设置（写）
+             * @param brightness  灯亮度 0x00 - 0xff
              * @param red 0x00 - 0xff
              * @param green 0x00 - 0xff
              * @param blue 0x00 - 0xff
@@ -32,15 +33,47 @@ export default class HiXxjBluetoothProtocol extends LBlueToothProtocolOperator {
              * @param hDuration 0x00:0h 0x01:1h ... 0x0C:12h 0xff:不设置
              * @param mDuration 0x00:0分钟 0x01:1分钟 ... 0x3B:59分钟 0xff:不设置
              */
-            '0x52': async ({autoLight = this.xxjBLEConfig.light.autoLight, red = this.xxjBLEConfig.light.red, green = this.xxjBLEConfig.light.green, blue = this.xxjBLEConfig.light.blue, lightOpen = this.xxjBLEConfig.light.lightOpen, hDuration = 255, mDuration = 255}) => {
-                console.log('0x52 autoLight', autoLight, ' red=', red, ' green=', green, ' blue=', blue, ' lightOpen=', lightOpen, ' hDuration=', hDuration, ' mDuration=', mDuration);
+            '0x11': async ({brightness = this.xxjBLEConfig.light.brightness, red = this.xxjBLEConfig.light.red, green = this.xxjBLEConfig.light.green, blue = this.xxjBLEConfig.light.blue, lightOpen = this.xxjBLEConfig.light.lightOpen, hDuration = 255, mDuration = 255}) => {
+                console.log('0x11 brightness', brightness, ' red=', red, ' green=', green, ' blue=', blue, ' lightOpen=', lightOpen, ' hDuration=', hDuration, ' mDuration=', mDuration);
+                // await this.setAutoColorLight({brightness, autoLight: false});
                 const result = await this.sendData({
-                    command: '0x52',
-                    data: [autoLight ? 18 : 17, red, green, blue, hDuration, mDuration]
+                    command: '0x11',
+                    data: [17, Math.floor(brightness / 100 * 255), red, green, blue, hDuration, mDuration]
                 });
-                this.xxjBLEConfig.setLight({autoLight, red, green, blue, hDuration, mDuration});
+                this.xxjBLEConfig.setLight({autoLight: false, brightness, red, green, blue, hDuration, mDuration});
                 return result;
             },
+
+            /**
+             * 0x12：七彩灯设置（写）
+             * @param brightness 灯亮度 0~100 含义是0到100%
+             * @param autoLight 七彩灯光开关
+             * @returns {Promise<void>}
+             */
+            '0x12': async ({brightness = this.xxjBLEConfig.light.brightness,autoLight = this.xxjBLEConfig.light.autoLight}) => {
+                console.log('0x12 brightness', brightness);
+                const result = await this.sendData({
+                    command: '0x12',
+                    data: [18, Math.floor(brightness / 100 * 255), autoLight ? 1 : 0]
+                });
+                this.xxjBLEConfig.setLight({autoLight, brightness});
+                return result;
+            },
+            /**
+             * 灯光开关
+             * @param lightOpen Boolean
+             * @returns {Promise<void>}
+             */
+            '0x52': async ({lightOpen = this.xxjBLEConfig.light.lightOpen}) => {
+                console.log('0x52 lightOpen', lightOpen);
+                const result = await this.sendData({
+                    command: '0x52',
+                    data: [lightOpen ? 1 : 0]
+                });
+                this.xxjBLEConfig.setLight({lightOpen});
+                return result;
+            },
+
             /**
              * 雾化设置（写）
              * @param openStatus 0x00:关闭 0x01:开启 0xff:不设置
@@ -57,7 +90,14 @@ export default class HiXxjBluetoothProtocol extends LBlueToothProtocolOperator {
                     command: '0x53',
                     data: [openStatus, hDuration, mDuration, mBetweenDuration, sBetweenDuration, speed]
                 });
-                this.xxjBLEConfig.setWater({openStatus, hDuration, mDuration, mBetweenDuration, sBetweenDuration, speed});
+                this.xxjBLEConfig.setWater({
+                    openStatus,
+                    hDuration,
+                    mDuration,
+                    mBetweenDuration,
+                    sBetweenDuration,
+                    speed
+                });
                 return result;
 
             },
@@ -97,12 +137,29 @@ export default class HiXxjBluetoothProtocol extends LBlueToothProtocolOperator {
     getReceiveActionProtocol() {
         return {
             /**
-             * 灯设置（读）
+             * 灯开关设置（读）
+             */
+            '0x60': ({dataArray}) => {
+                console.log('接收到的0x60的数据 从byte2开始', dataArray);
+                const [lightOpen] = dataArray;
+                this.xxjBLEConfig.setLight({lightOpen});
+            },
+            /**
+             * 单色灯设置（读）
+             */
+            '0x61': ({dataArray}) => {
+                console.log('接收到的0x61的数据 从byte2开始', dataArray);
+                const [brightness, red, green, blue, hDuration, mDuration] = dataArray;
+                this.xxjBLEConfig.setLight({brightness: Math.floor(brightness / 100 * 255), red, green, blue, hDuration, mDuration});
+            },
+            /**
+             * 七彩灯设置
+             * @param dataArray
              */
             '0x62': ({dataArray}) => {
                 console.log('接收到的0x62的数据 从byte2开始', dataArray);
-                const [autoLight, red, green, blue, hDuration, mDuration] = dataArray;
-                this.xxjBLEConfig.setLight({autoLight: autoLight === 18, red, green, blue, hDuration, mDuration});
+                const [brightness, autoLight] = dataArray;
+                this.xxjBLEConfig.setLight({autoLight, brightness: Math.floor(brightness / 100 * 255)});
             },
             /**
              * 雾化设置（读）
@@ -110,7 +167,14 @@ export default class HiXxjBluetoothProtocol extends LBlueToothProtocolOperator {
             '0x63': ({dataArray}) => {
                 console.log('接收到的0x63的数据 从byte2开始', dataArray);
                 const [openStatus, hDuration, mDuration, mBetweenDuration, sBetweenDuration, speed] = dataArray;
-                this.xxjBLEConfig.setWater({openStatus, hDuration, mDuration, mBetweenDuration, sBetweenDuration, speed});
+                this.xxjBLEConfig.setWater({
+                    openStatus,
+                    hDuration,
+                    mDuration,
+                    mBetweenDuration,
+                    sBetweenDuration,
+                    speed
+                });
                 this.xxjBLEConfig.isAllStateReceive = true;
                 return {protocolState: XXJProtocolState.RECEIVE_ALL_STATE};
             },
@@ -138,7 +202,9 @@ export default class HiXxjBluetoothProtocol extends LBlueToothProtocolOperator {
         });
     }
 
-    setLight = this.sendAction['0x52'];
+    setSingleColorLight = this.sendAction['0x11'];
+    setAutoColorLight = this.sendAction['0x12'];
+    setLightOpen = this.sendAction['0x52'];
     setWater = this.sendAction['0x53'];
 
     sendDataWithInput({array}) {

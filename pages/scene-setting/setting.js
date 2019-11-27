@@ -28,7 +28,7 @@ Page({
     },
     async onLightChanged(e) {
         this.setData({
-            ...((await this.lightSettingDelegate.onLightChanged(e)).viewObj)
+            ...((await this.lightSettingDelegate.onLightChanged({e, autoLight: this.data.config.light.autoLight})).viewObj)
         });
     },
 

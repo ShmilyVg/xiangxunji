@@ -29,16 +29,15 @@ export default class BaseBlueToothImp extends BaseBlueTooth {
                 available = nowAvailable;
             }
         }).call(this));
-
-        onBLEConnectionStateChange(async (res) => {
+        onBLEConnectionStateChange((res) => {
             // 该方法回调中可以用于处理连接意外断开等异常情况
             const {deviceId, connected} = res;
             console.log(`device ${deviceId} state has changed, connected: ${connected}`);
-            if (!connected) {
-                this.latestConnectState = {value: CommonConnectState.DISCONNECT, filter: true};
-                await this.openAdapterAndConnectLatestBLE();
-                // this.latestConnectState = CommonConnectState.DISCONNECT;
-                //     this.openAdapterAndConnectLatestBLE();
+            if (this._onBLEConnectionStateChangeListener) {
+                this._onBLEConnectionStateChangeListener({deviceId, connected});
+            } else {
+                console.log('未设置蓝牙连接状态变更事件监听，只有主动断开连接时才会触发该事件，所以本次事件不进行重新连接');
+                this.latestConnectState = {value: CommonConnectState.DISCONNECT};
             }
         });
 
@@ -53,6 +52,20 @@ export default class BaseBlueToothImp extends BaseBlueTooth {
                 }
             }
         });
+    }
+
+    setDefaultOnBLEConnectionStateChangeListener() {
+        if (!this._onBLEConnectionStateChangeListener) {
+            this._onBLEConnectionStateChangeListener = async ({deviceId, connected}) => {
+                console.log('监听到蓝牙连接状态改变', deviceId, connected);
+                if (!connected) {
+                    this.latestConnectState = {value: CommonConnectState.DISCONNECT, filter: true};
+                    await this.openAdapterAndConnectLatestBLE();
+                    // this.latestConnectState = CommonConnectState.DISCONNECT;
+                    //     this.openAdapterAndConnectLatestBLE();
+                }
+            };
+        }
     }
 
     /**

@@ -105,8 +105,6 @@
                        tag="deviceOpen"></my-switch>
         </view>
         <view class="setting-divide-line"></view>
-        <view bindtap="reset" class="setting-reset-btn setting-item-layout-02" hover-class="press-btn-class" hover-stay-time="100">
-            恢复默认设置
-        </view>
+        <view bindtap="disconnectDevice" class="setting-reset-btn setting-item-layout-02" hover-class="press-btn-class" hover-stay-time="100">断开连接</view>
     </view>
 </view>

@@ -2,7 +2,7 @@ import {getMindPractiseList, getWelcomeContent, getWelcomeTime, getWhiteNoiseLis
 import HiNavigator from "../../navigator/hi-navigator";
 import {Storage} from "../../utils/storage";
 
-const app = getApp();
+const App = getApp();
 const haveShowRemindDialog = Storage.getIndexPageRemindHaveShow();
 Page({
     data: {
@@ -30,16 +30,18 @@ Page({
         this.setData(obj);
     },
 
-    onConnectStateChanged({detail: {connectState}}) {
-        console.log('index.js [onConnectStateChanged] new connectState is:', connectState);
-    },
     onGetUserInfo(e) {
         console.log(e);
         HiNavigator.navigateToUserCenter();
     },
     onShow() {
+        App.onAppBLEConnectStateChangedListener = ({connectState}) => {
+            console.log('index.js [onShow] 接收到连接状态', connectState);
+            this.setData({connectState});
+        };
         this.setData({
-            'welcomeObj.title': getWelcomeTime()
+            'welcomeObj.title': getWelcomeTime(),
+            connectState: App.getBLEManager().getBLELatestConnectState()
         });
     },
 

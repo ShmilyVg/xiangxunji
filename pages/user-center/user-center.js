@@ -2,7 +2,7 @@
 import HiNavigator from "../../navigator/hi-navigator";
 import {SoftwareVersion} from "../../utils/config";
 
-const app = getApp();
+const App = getApp();
 Page({
 
     /**
@@ -14,17 +14,15 @@ Page({
     },
 
     reconnectEvent() {
-        app.getBLEManager().connect();
+        App.getBLEManager().connect();
     },
     /**
      * 生命周期函数--监听页面加载
      */
     onLoad(options) {
-        app.getBLEManager().setBLEListener({
-            onConnectStateChanged: ({connectState}) => {
-                this.updateConnectStateView({connectState});
-            }
-        });
+        App.onAppBLEConnectStateChangedListener = ({connectState}) => {
+            this.updateConnectStateView({connectState});
+        };
     },
     toMyDeviceSettingPage() {
         HiNavigator.navigateToDeviceSetting();
@@ -40,7 +38,7 @@ Page({
      * 生命周期函数--监听页面显示
      */
     onShow() {
-        this.updateConnectStateView({connectState: app.getBLEManager().getBLELatestConnectState()});
+        this.updateConnectStateView({connectState: App.getBLEManager().getBLELatestConnectState()});
     },
 
     /**

@@ -1,4 +1,5 @@
 import BaseBlueToothImp from "./base-bluetooth-imp";
+import {CommonConnectState} from "heheda-bluetooth-state";
 
 export default class SimpleBlueToothImp {
     constructor() {
@@ -41,7 +42,8 @@ export default class SimpleBlueToothImp {
      * 关闭蓝牙适配器
      * @returns {Promise<any>}
      */
-    closeAll() {
+    async closeAll() {
+        await this.bluetoothManager.closeCurrentBLEConnection();
         return this.bluetoothManager.closeAdapter();
     }
 

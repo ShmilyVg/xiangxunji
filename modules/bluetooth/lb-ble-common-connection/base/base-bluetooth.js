@@ -1,5 +1,5 @@
 import AbstractBlueTooth from "./abstract-bluetooth";
-import {getStorageSync, removeStorageSync, setStorageSync} from "./wx/apis";
+import {getStorageSync, onBLEConnectionStateChange, removeStorageSync, setStorageSync} from "./wx/apis";
 import {CommonConnectState} from "heheda-bluetooth-state";
 
 
@@ -19,6 +19,7 @@ export default class BaseBlueTooth extends AbstractBlueTooth {
         this._characteristicId = '';
         this._latestConnectState = {value: CommonConnectState.UNAVAILABLE};
         this._latestProtocolObj = {protocolState: '', value: {}};
+        this._onBLEConnectionStateChangeListener = null;
     }
 
     /**
@@ -30,6 +31,13 @@ export default class BaseBlueTooth extends AbstractBlueTooth {
     setBLEListener({onConnectStateChanged, onReceiveData}) {
         this._onConnectStateChanged = onConnectStateChanged;
         this._onReceiveData = onReceiveData;
+    }
+
+    /**
+     * 子类重写，用于监听蓝牙连接状态事件
+     */
+    setDefaultOnBLEConnectionStateChangeListener() {
+
     }
 
     set latestConnectState({value, filter = false}) {
@@ -64,6 +72,7 @@ export default class BaseBlueTooth extends AbstractBlueTooth {
 
     async createBLEConnection({deviceId}) {
         try {
+            this.setDefaultOnBLEConnectionStateChangeListener();
             const {serviceId, characteristicId} = await super.createBLEConnection({
                 deviceId,
                 valueChangeListener: this._onReceiveData
@@ -116,6 +125,19 @@ export default class BaseBlueTooth extends AbstractBlueTooth {
         });
     }
 
+    async closeCurrentBLEConnection() {
+        const {value} = this.latestConnectState;
+        console.log('closeCurrentBLEConnection前，连接状态', value);
+        this._onBLEConnectionStateChangeListener = null;
+        switch (value) {
+            case CommonConnectState.CONNECTED:
+                return super.closeBLEConnection({deviceId: this._deviceId});
+            case CommonConnectState.CONNECTING:
+                return this.stopBlueToothDevicesDiscovery();
+        }
+        return Promise.resolve();
+    }
+
     /**
      * 获取连接过的设备id
      * @returns {string|*}
@@ -143,6 +165,7 @@ export default class BaseBlueTooth extends AbstractBlueTooth {
      * @returns {*|Promise<any>}
      */
     async clearConnectedBLE() {
+        await this.closeCurrentBLEConnection();
         await super.closeAdapter();
         removeStorageSync('lb_ble_$deviceId');
         this._deviceId = '';

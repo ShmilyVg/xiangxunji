@@ -1,7 +1,7 @@
 <view class="fill-width flex-column">
     <navbar title="HiPee香薰助眠仪"></navbar>
 
-    <connect-state bind:onConnectStateChangedEvent="onConnectStateChanged"></connect-state>
+    <connect-state state="{{connectState}}"></connect-state>
     <view class="relative flex-row align-items-center space-between box-sizing-border-box user-layout">
         <view class="flex-column">
             <view class="index-title">{{welcomeObj.title}}</view>

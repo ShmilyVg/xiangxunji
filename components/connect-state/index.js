@@ -1,8 +1,14 @@
 import {ConnectState} from "../../modules/bluetooth/bluetooth-state";
 
-const app = getApp(),
+const App = getApp(),
     stateOptions = {};
 stateOptions[ConnectState.CONNECTING] = {
+    show: true,
+    showRetryBtn: false,
+    connecting: true,
+    text: '正在连接...'
+};
+stateOptions[ConnectState.UNAVAILABLE] = {
     show: true,
     showRetryBtn: false,
     connecting: true,
@@ -29,24 +35,23 @@ Component({
      * 组件的属性列表
      */
     properties: {
-        // state: {
-        //     type: String,
-        //     value: ConnectState.CONNECTING
-        // }
+        state: {
+            type: String,
+            value: ConnectState.CONNECTING
+        }
     },
-    // observers: {
-    //     'state'(newConnectState) {
-    //         // 在 numberA 或者 numberB 被设置时，执行这个函数
-    //         console.log('设置stateObj', newConnectState);
-    //         if (!newConnectState) {
-    //             return;
-    //         }
-    //         const connectState = newConnectState || ConnectState.DISCONNECT;
-    //         this.setData({
-    //             stateObj: stateOptions[connectState]
-    //         });
-    //     }
-    // },
+    observers: {
+        'state'(newConnectState) {
+            // 在 numberA 或者 numberB 被设置时，执行这个函数
+            console.log('设置stateObj', newConnectState);
+            if (!newConnectState) {
+                return;
+            }
+            this.setData({
+                stateObj: stateOptions[newConnectState]
+            });
+        }
+    },
     /**
      * 组件的初始数据
      */
@@ -55,22 +60,14 @@ Component({
     },
     pageLifetimes: {
         show() {
-            app.onAppBLEConnectStateChangedListener = ({connectState}) => {
-                this._updateConnectState({connectState});
-            };
         },
         hide() {
-
         }
     },
     lifetimes: {
         created() {
         },
         attached() {
-
-            // setTimeout(() => {
-            //     this._updateConnectState({connectState: ConnectState.DISCONNECT});
-            // }, 3000);
         },
 
     },
@@ -78,13 +75,8 @@ Component({
      * 组件的方法列表
      */
     methods: {
-        _updateConnectState({connectState}) {
-            this.setData({stateObj: stateOptions[connectState]}, () => {
-                this.triggerEvent('onConnectStateChangedEvent', {connectState});
-            });
-        },
         _toReconnectEvent() {
-            app.getBLEManager().connect();
+            App.getBLEManager().connect();
         },
     }
 });

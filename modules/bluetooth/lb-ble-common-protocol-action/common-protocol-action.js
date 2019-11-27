@@ -5,7 +5,7 @@ import {CommonConnectState, CommonProtocolState} from "heheda-bluetooth-state";
 export default class CommonProtocolAction {
     constructor({lBlueToothProtocolOperatorContext:context}) {
         this.context = context;
-        this._protocolQueue = [];
+
         context.requireDeviceBind = () => {
             console.log('发送绑定消息');
             this.context.action['0x01']();
@@ -15,7 +15,7 @@ export default class CommonProtocolAction {
             const queryDataTimeoutIndex = setTimeout(() => {
                 this.context.action['0x0a']();
             }, 200);
-            this._protocolQueue.push(queryDataTimeoutIndex);
+            context._protocolQueue.push(queryDataTimeoutIndex);
         };
 
         context.sendQueryDataSuccessProtocol = ({isSuccess}) => {
@@ -24,13 +24,6 @@ export default class CommonProtocolAction {
 
         context.startCommunication = () => {
             this.context.action['0x03']();
-        };
-
-        context.clearSendProtocol = () => {
-            let temp;
-            while ((temp = this._protocolQueue.pop())) {
-                clearTimeout(temp);
-            }
         };
     }
 

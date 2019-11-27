@@ -6,8 +6,8 @@ Page({
 
     data: {
         config: {
-          ...WaterSettingDelegate.pageDataConfig(),
-          ...LightSettingDelegate.pageDataConfig(),
+            ...WaterSettingDelegate.pageDataConfig(),
+            ...LightSettingDelegate.pageDataConfig(),
         }
     },
 
@@ -58,5 +58,7 @@ Page({
         }
 
     },
-
+    async disconnectDevice() {
+        await getApp().getBLEManager().closeAll();
+    }
 });

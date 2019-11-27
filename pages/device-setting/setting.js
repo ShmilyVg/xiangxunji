@@ -1,66 +1,62 @@
-// pages/device-setting/setting.js
+import {LightSettingDelegate, WaterSettingDelegate} from "../scene-setting/scene-delegate";
+import {Toast} from "heheda-common-view";
+
 Page({
 
-  /**
-   * 页面的初始数据
-   */
-  data: {
 
-  },
+    data: {
+        config: {
+          ...WaterSettingDelegate.pageDataConfig(),
+          ...LightSettingDelegate.pageDataConfig(),
+        }
+    },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad: function (options) {
+    async onSelectedColorItemEvent({currentTarget: {dataset: {color: selectedColor}}}) {
+        Toast.showLoading();
+        const {viewObj: colorViewObj} = await this.lightSettingDelegate.onSelectedColorItemEvent({
+            currentColor: this.data.config.light.currentColor,
+            selectedColor
+        });
+        Toast.hiddenLoading();
+        this.setData({...colorViewObj});
+    },
+    async onLightChanged(e) {
+        this.setData({
+            ...((await this.lightSettingDelegate.onLightChanged(e)).viewObj)
+        });
+    },
 
-  },
+    async onSwitchChangeEvent({detail: {open, tag}}) {
+        console.log(open, tag);
+        Toast.showLoading();
+        const {viewObj: waterViewObj} = await this.waterSettingDelegate.onSwitchChangeEvent({tag, open});
+        const {viewObj: lightViewObj} = await this.lightSettingDelegate.onSwitchChangeEvent({tag, open});
+        Toast.hiddenLoading();
+        this.setData({...waterViewObj, ...lightViewObj});
+    },
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
+    async onLoad(options) {
+        this.waterSettingDelegate = new WaterSettingDelegate();
+        this.lightSettingDelegate = new LightSettingDelegate();
+        this.setData({
+            ...await this.waterSettingDelegate.getLatestData(),
+            ...await this.lightSettingDelegate.getLatestData(),
+        });
 
-  },
+    },
+    async bindPickerChange(e) {
+        const {currentTarget: {dataset: {type}}, detail: {value}} = e;
+        console.log('type=', type, 'value=', value);
+        try {
+            Toast.showLoading();
+            const {viewObj: waterViewObj} = await this.waterSettingDelegate.bindPickerChange({type, value});
+            this.setData({...waterViewObj});
+        } catch (e) {
+            console.log('自定义设置出现错误 bindPickerChange', e);
+        } finally {
+            Toast.hiddenLoading();
+        }
 
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
+    },
 
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
-  }
-})
+});

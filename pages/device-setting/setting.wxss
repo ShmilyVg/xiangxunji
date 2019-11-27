@@ -1,1 +1,1 @@
-/* pages/device-setting/setting.wxss */
+@import "../scene-setting/setting.wxss";

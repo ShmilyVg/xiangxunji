@@ -21,8 +21,27 @@
     border-radius:10rpx;
     padding: 20rpx;
     right: 30rpx;
-    bottom: -30rpx;
+    bottom: -10rpx;
 }
+
+.index-remind-layout-arrow {
+    position: absolute;
+    width: 21rpx;
+    height: 21rpx;
+}
+
+.index-remind-layout-top-arrow {
+    bottom: -20rpx;
+    right: 60rpx;
+    transform: rotateX(180deg);
+}
+
+
+.index-remind-layout-bottom-arrow {
+    top: -20rpx;
+    right: 60rpx;
+}
+
 
 .index-subtitle {
     max-width: 430rpx;

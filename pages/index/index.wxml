@@ -12,7 +12,10 @@
             <button bindgetuserinfo="onGetUserInfo" open-type="getUserInfo" hover-class="none"
                     bindtap="remindDismissEvent" data-type="userCenter">
                 <image src="" class="index-user-head"></image>
-                <view wx:if="{{showRemindDialogObj.userCenter}}" class="absolute index-remind-layout">进入“个人中心”可查看并控制设备</view>
+                <view wx:if="{{showRemindDialogObj.userCenter}}" class="absolute index-remind-layout">
+                    进入“个人中心”可查看并控制设备
+                    <image src="../../images/index/remind_arrow.png" class="index-remind-layout-arrow index-remind-layout-top-arrow"></image>
+                </view>
             </button>
         </view>
 
@@ -42,7 +45,10 @@
     <view class="relative flex-row box-sizing-border-box space-between align-items-center index-part-title-layout">
         <view class="index-part-title">冥想练习</view>
         <view wx:if="{{minds.length>4}}" class="index-part-subtitle" bindtap="">查看更多</view>
-        <view wx:if="{{showRemindDialogObj.play}}" bindtap="remindDismissEvent" data-type="play" class="absolute index-remind-layout" style="right: 128rpx;">点击任一音频即可同步播放</view>
+        <view wx:if="{{showRemindDialogObj.play}}" bindtap="remindDismissEvent" data-type="play" class="absolute index-remind-layout" style="right: 128rpx;">
+            点击任一音频即可同步播放
+            <image src="../../images/index/remind_arrow.png" class="index-remind-layout-arrow index-remind-layout-top-arrow"></image>
+        </view>
     </view>
 
 

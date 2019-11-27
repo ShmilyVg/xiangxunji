@@ -1,5 +1,6 @@
 import {LightSettingDelegate, WaterSettingDelegate} from "../scene-setting/scene-delegate";
 import {Toast} from "heheda-common-view";
+import HiNavigator from "../../navigator/hi-navigator";
 
 Page({
 
@@ -59,6 +60,9 @@ Page({
 
     },
     async disconnectDevice() {
+        Toast.showLoading();
         await getApp().getBLEManager().closeAll();
+        Toast.hiddenLoading();
+        HiNavigator.navigateBack({delta: 1});
     }
 });

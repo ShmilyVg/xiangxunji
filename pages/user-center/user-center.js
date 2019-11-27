@@ -22,7 +22,7 @@ Page({
     onLoad(options) {
         app.getBLEManager().setBLEListener({
             onConnectStateChanged: ({connectState}) => {
-                this._updateConnectState({connectState});
+                this.updateConnectStateView({connectState});
             }
         });
     },

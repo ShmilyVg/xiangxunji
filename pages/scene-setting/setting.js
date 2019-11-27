@@ -1,8 +1,6 @@
 // pages/setting/setting.js
 import {Toast} from "heheda-common-view";
-import {getRGBByColor} from "../../modules/bluetooth/xxj-ble-config";
 import {LightSettingDelegate, WaterSettingDelegate} from "./scene-delegate";
-
 
 
 Page({
@@ -13,11 +11,8 @@ Page({
     data: {
 
         config: {
-            brightness: 50,
-
             ...WaterSettingDelegate.pageDataConfig(),
             ...LightSettingDelegate.pageDataConfig(),
-            deviceOpen: false
         },
 
     },
@@ -31,10 +26,9 @@ Page({
         Toast.hiddenLoading();
         this.setData({...colorViewObj});
     },
-    onLightChanged(e) {
-        const {detail: {value}} = e;
+    async onLightChanged(e) {
         this.setData({
-            'config.brightness': value
+            ...((await this.lightSettingDelegate.onLightChanged(e)).viewObj)
         });
     },
 
@@ -48,12 +42,12 @@ Page({
     },
 
     reset() {
-        this.setData({
-            config: {
-                color: '', brightness: 50, autoLight: false,
-                lightOpen: false, waterOpen: true, deviceOpen: false
-            }
-        });
+        // this.setData({
+        //     config: {
+        //         color: '', brightness: 50, autoLight: false,
+        //         lightOpen: false, waterOpen: true, deviceOpen: false
+        //     }
+        // });
     },
     async onLoad(options) {
         this.waterSettingDelegate = new WaterSettingDelegate();

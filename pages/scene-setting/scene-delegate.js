@@ -33,6 +33,12 @@ export class LightSettingDelegate {
         return {viewObj};
     }
 
+    async onLightChanged(e) {
+        const {detail: {value}} = e, viewObj = {};
+        viewObj['config.light.brightness'] = value;
+        return {viewObj};
+    }
+
     async getLatestData() {
         const xxjConfig = await getApp().getBLEManager().getXXJConfig(), {light} = xxjConfig;
         return {
@@ -48,6 +54,7 @@ export class LightSettingDelegate {
             light: {
                 autoLight: false,
                 lightOpen: false,
+                brightness: 50,
                 currentColor: '',
                 colorList: [
                     {color: 'rgb(243,243,243)'},

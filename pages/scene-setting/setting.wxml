@@ -16,7 +16,7 @@
 
         <view class="flex-row align-items-center">
             <image src="../../images/setting/dark.png" class="setting-light-icon"></image>
-            <slider value="{{config.brightness}}" activeColor="#9485FF" backgroundColor="#403B5F" block-size="12"
+            <slider value="{{config.light.brightness}}" activeColor="#9485FF" backgroundColor="#403B5F" block-size="12"
                     block-color="#9485FF" bindchange="onLightChanged" class="setting-light-slider"></slider>
             <image src="../../images/setting/light.png" class="setting-light-icon"></image>
         </view>

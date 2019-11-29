@@ -3,6 +3,7 @@ export default class XXJBLEConfig {
         this.light = {};
         this.water = {};
         this.waterAlert = {};
+        this.musicAlert = {};
         this.isAllStateReceive = false;
     }
 
@@ -15,8 +16,16 @@ export default class XXJBLEConfig {
     setLight({autoLight, brightness, lightOpen, red, green, blue, hDuration, mDuration}) {
         filterProtocolData(this.light, arguments[0]);
         const {red: myRed, green: myGreen, blue: myBlue} = this.light;
-        this.light.currentColor = getColorByRGB({red:myRed, green: myGreen, blue: myBlue});
+        this.light.currentColor = getColorByRGB({red: myRed, green: myGreen, blue: myBlue});
         console.log('设置灯光', this.light);
+    }
+
+    setWaterAlert({open, repeatEveryDay, hStartTime, mStartTime}) {
+        filterProtocolData(this.waterAlert, arguments[0]);
+    }
+
+    setMusicAlert({open, openMusicId, repeatEveryDayMusicId, repeatCount, hStartTime, mStartTime, volume}) {
+        filterProtocolData(this.musicAlert, arguments[0]);
     }
 
     getLightRGB() {
@@ -38,7 +47,7 @@ function filterProtocolData(target, {...args}) {
     const arg = arguments[1], obj = {};
     for (const key of Object.keys(arg)) {
         const value = arg[key];
-        if (value !== undefined && value !== 255) {
+        if (typeof value !== "undefined" && value !== 255) {
             obj[key] = value;
         }
     }

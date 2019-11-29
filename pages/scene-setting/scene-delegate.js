@@ -175,4 +175,89 @@ export class WaterSettingDelegate {
  */
 export class TimeSettingDelegate {
 
+    async getLatestData() {
+        const xxjConfig = await getApp().getBLEManager().getXXJConfig(), {time} = xxjConfig, {time: {startTimeArray, wakeUpToneArray}} = TimeSettingDelegate.pageDataConfig();
+        return {
+            // 'config.time.waterOpenWhenOpenDevice': !!time.openStatus,
+            // 'config.time.waterDurationIndex': [time.hDuration, time.mDuration],
+            // 'config.time.waterBetweenIndex': time.mBetweenDuration,
+            // 'config.time.waterSpeedIndex': startTimeArray.findIndex(item => water.speed === item.value),
+        };
+    }
+
+    async onSwitchChangeEvent({tag, open}) {
+        const bleProtocol = getApp().getBLEManager().getProtocol(), viewObj = {};
+        switch (tag) {
+            case 'waterOpenWhenOpenDevice': {
+                viewObj['config.time.waterOpenWhenOpenDevice'] = open;
+                await bleProtocol.setWaterAlert({open});
+            }
+                break;
+
+            case 'wakeUpToneOpenWhenOpenDevice': {
+                viewObj['config.time.wakeUpToneOpenWhenOpenDevice'] = open;
+                // await bleProtocol.setMusicAlert({open});
+            }
+                break;
+
+            case 'timeRepeatEveryDay': {
+                viewObj['config.time.timeRepeatEveryDay'] = open;
+                // await bleProtocol.setMusicAlert({open});
+            }
+                break;
+        }
+        return {viewObj};
+    }
+
+    async bindPickerChange({type, value}) {
+        const bleProtocol = getApp().getBLEManager().getProtocol(), config = TimeSettingDelegate.pageDataConfig(),
+            viewObj = {};
+        let bleProtocolArguments = {};
+        switch (type) {
+            case 'waterStartTime': {
+                const [hStartTimeIndex, mStartTimeIndex] = value, {time: {startTimeArray}} = config;
+                bleProtocolArguments = {
+                    hDuration: startTimeArray[0][hStartTimeIndex].value,
+                    mDuration: startTimeArray[1][mStartTimeIndex].value
+                };
+                await bleProtocol.setTimeAlert({});
+                viewObj['config.time.waterStartTimeIndex'] = [hStartTimeIndex, mStartTimeIndex];
+            }
+                break;
+            case 'wakeUpTone': {
+                const {water: {waterBetweenArray, waterDurationArray, waterDurationIndex: [hDurationIndex, mDurationIndex]}} = config,
+                    mBetweenDuration = waterBetweenArray[value].value;
+                await isTreble({
+                    waterDuration: waterDurationArray[0][hDurationIndex].value * 60 + waterDurationArray[1][mDurationIndex].value,
+                    betweenDuration: mBetweenDuration
+                });
+                bleProtocolArguments = {mBetweenDuration};
+                viewObj['config.water.waterBetweenIndex'] = value;
+            }
+                break;
+
+        }
+        await bleProtocol.setWater(bleProtocolArguments);
+        return {viewObj};
+    }
+
+    static pageDataConfig() {
+        return {
+            time: {
+                waterOpenWhenOpenDevice: false,
+                waterStartTimeIndex: [0, 0],
+                startTimeArray: [
+                    new Array(24).fill(0).map((item, index) => ({
+                        content: index + '时', value: index
+                    })),
+                    new Array(60).fill(0).map((item, index) => ({
+                        content: index + '分', value: index
+                    }))],
+                wakeUpToneOpenWhenOpenDevice: false,
+                wakeUpToneIndex: 0,
+                wakeUpToneArray: new Array(61).fill(0).map((item, index) => ({content: index + '分', value: index})),
+                timeRepeatEveryDay: false,
+            },
+        }
+    }
 }

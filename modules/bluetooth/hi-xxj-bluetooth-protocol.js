@@ -50,11 +50,11 @@ export default class HiXxjBluetoothProtocol extends LBlueToothProtocolOperator {
              * @param autoLight 七彩灯光开关
              * @returns {Promise<void>}
              */
-            '0x12': async ({brightness = this.xxjBLEConfig.light.brightness,autoLight = this.xxjBLEConfig.light.autoLight}) => {
+            '0x12': async ({brightness = this.xxjBLEConfig.light.brightness, autoLight = this.xxjBLEConfig.light.autoLight}) => {
                 console.log('0x12 brightness', brightness);
                 const result = await this.sendData({
                     command: '0x12',
-                    data: [18, Math.floor(brightness / 100 * 255), autoLight ? 1 : 0]
+                    data: [18, Math.floor(brightness / 100 * 255), Number(autoLight)]
                 });
                 this.xxjBLEConfig.setLight({autoLight, brightness});
                 return result;
@@ -68,7 +68,7 @@ export default class HiXxjBluetoothProtocol extends LBlueToothProtocolOperator {
                 console.log('0x52 lightOpen', lightOpen);
                 const result = await this.sendData({
                     command: '0x52',
-                    data: [lightOpen ? 1 : 0]
+                    data: [Number(lightOpen)]
                 });
                 this.xxjBLEConfig.setLight({lightOpen});
                 return result;
@@ -104,27 +104,35 @@ export default class HiXxjBluetoothProtocol extends LBlueToothProtocolOperator {
 
             /**
              * 雾化定时设置（写）
-             * @param openStatus 0x00:关 0x01:雾化开 0x11:每天重复开雾 0xff:不设置
+             * @param open 0x00:关 0x01:雾化开 0x11:每天重复开雾 0xff:不设置
+             * @param repeatEveryDay Boolean 每天重复
              * @param hStartTime 0x00-0x17 0xff:不设置
              * @param mStartTime 0x00-0x3B 0xff:不设置
              */
-            '0x54': ({openStatus = 255, hStartTime = 255, mStartTime = 255}) => {
-                return this.sendData({command: '0x54', data: [openStatus, hStartTime, mStartTime, 255, 255, 255]});
+            '0x54': async ({open, repeatEveryDay = false, hStartTime = 255, mStartTime = 255}) => {
+                const result = await this.sendData({
+                    command: '0x54',
+                    data: [repeatEveryDay ? 17 : (typeof open === "boolean" ? Number(open) : 255), hStartTime, mStartTime, 255, 255, 255]
+                });
+                this.xxjBLEConfig.setWaterAlert({open, repeatEveryDay, hStartTime, mStartTime});
+                return result;
             },
+
             /**
              * 音乐定时设置（写）
              * @param openStatus 0x00:关 0x01:定时音乐1开 0x11:每天重复音乐1 0x12:每天重复音乐2 ... 0xff:不设置
-             * @param circleCount 0x01:只播放1次 0x02:循环播放2次 0x03:循环播放3次 ... 0xff:不设置
+             * @param repeatCount 0x01:只播放1次 0x02:循环播放2次 0x03:循环播放3次 ... 0xff:不设置
              * @param hStartTime 0x00-0x17 0xff:不设置
              * @param mStartTime 0x00-0x3B 0xff:不设置
              * @param volume 0x00-0x06 0xff:不设置
              */
-            '0x55': ({openStatus = 255, circleCount = 255, hStartTime = 255, mStartTime = 255, volume}) => {
+            '0x55': ({openStatus = 255, repeatCount = 1, hStartTime = 255, mStartTime = 255, volume = 255}) => {
                 return this.sendData({
                     command: '0x55',
-                    data: [openStatus, circleCount, hStartTime, mStartTime, volume, 255]
+                    data: [openStatus, repeatCount, hStartTime, mStartTime, volume, 255]
                 });
             },
+
             /**
              * 读取香薰机状态（读）
              */
@@ -150,7 +158,14 @@ export default class HiXxjBluetoothProtocol extends LBlueToothProtocolOperator {
             '0x61': ({dataArray}) => {
                 console.log('接收到的0x61的数据 从byte2开始', dataArray);
                 const [brightness, red, green, blue, hDuration, mDuration] = dataArray;
-                this.xxjBLEConfig.setLight({brightness: Math.floor(brightness / 100 * 255), red, green, blue, hDuration, mDuration});
+                this.xxjBLEConfig.setLight({
+                    brightness: Math.floor(brightness / 100 * 255),
+                    red,
+                    green,
+                    blue,
+                    hDuration,
+                    mDuration
+                });
             },
             /**
              * 七彩灯设置
@@ -183,6 +198,13 @@ export default class HiXxjBluetoothProtocol extends LBlueToothProtocolOperator {
              */
             '0x64': ({dataArray}) => {
                 console.log('接收到的0x64的数据 从byte2开始', dataArray);
+                const [openState, hStartTime, mStartTime] = dataArray;
+                this.xxjBLEConfig.setWaterAlert({
+                    open: !!openState,
+                    repeatEveryDay: openState === 17,
+                    hStartTime,
+                    mStartTime
+                });
             },
             /**
              * 音乐定时设置（读）
@@ -206,6 +228,8 @@ export default class HiXxjBluetoothProtocol extends LBlueToothProtocolOperator {
     setAutoColorLight = this.sendAction['0x12'];
     setLightOpen = this.sendAction['0x52'];
     setWater = this.sendAction['0x53'];
+    setWaterAlert = this.sendAction['0x54'];
+    setMusicAlert = this.sendAction['0x55'];
 
     sendDataWithInput({array}) {
         const [command, ...data] = array;

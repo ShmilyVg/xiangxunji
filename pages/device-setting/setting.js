@@ -1,4 +1,4 @@
-import {LightSettingDelegate, WaterSettingDelegate} from "../scene-setting/scene-delegate";
+import {LightSettingDelegate, TimeSettingDelegate, WaterSettingDelegate} from "../scene-setting/scene-delegate";
 import {Toast} from "heheda-common-view";
 import HiNavigator from "../../navigator/hi-navigator";
 
@@ -9,6 +9,7 @@ Page({
         config: {
             ...WaterSettingDelegate.pageDataConfig(),
             ...LightSettingDelegate.pageDataConfig(),
+            ...TimeSettingDelegate.pageDataConfig(),
         }
     },
 
@@ -23,7 +24,10 @@ Page({
     },
     async onLightChanged(e) {
         this.setData({
-            ...((await this.lightSettingDelegate.onLightChanged({e, autoLight: this.data.config.light.autoLight})).viewObj)
+            ...((await this.lightSettingDelegate.onLightChanged({
+                e,
+                autoLight: this.data.config.light.autoLight
+            })).viewObj)
         });
     },
 
@@ -32,16 +36,19 @@ Page({
         Toast.showLoading();
         const {viewObj: waterViewObj} = await this.waterSettingDelegate.onSwitchChangeEvent({tag, open});
         const {viewObj: lightViewObj} = await this.lightSettingDelegate.onSwitchChangeEvent({tag, open});
+        const {viewObj: timeViewObj} = await this.timeSettingDelegate.onSwitchChangeEvent({tag, open});
         Toast.hiddenLoading();
-        this.setData({...waterViewObj, ...lightViewObj});
+        this.setData({...waterViewObj, ...lightViewObj, ...timeViewObj});
     },
 
     async onLoad(options) {
         this.waterSettingDelegate = new WaterSettingDelegate();
         this.lightSettingDelegate = new LightSettingDelegate();
+        this.timeSettingDelegate = new TimeSettingDelegate();
         this.setData({
             ...await this.waterSettingDelegate.getLatestData(),
             ...await this.lightSettingDelegate.getLatestData(),
+            ...await this.timeSettingDelegate.getLatestData(),
         });
 
     },

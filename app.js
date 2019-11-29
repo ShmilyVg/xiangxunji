@@ -15,10 +15,10 @@ App({
                 console.log('app.js 蓝牙连接状态更新', res);
                 switch (connectState) {
                     case ConnectState.CONNECTED:
-                        setTimeout(async () => {
-                            await bleProtocol.setLocalTime();
-                            await bleProtocol.getDeviceAllStatus();
-                        }, 1000);
+                        // setTimeout(async () => {
+                        await bleProtocol.setLocalTime();
+                        await bleProtocol.getDeviceAllStatus();
+                        // }, 1000);
                         break;
                     default:
 

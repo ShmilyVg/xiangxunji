@@ -1,5 +1,5 @@
 import AbstractBlueTooth from "./abstract-bluetooth";
-import {getStorageSync, onBLEConnectionStateChange, removeStorageSync, setStorageSync} from "./wx/apis";
+import {getStorageSync, removeStorageSync, setStorageSync} from "./wx/apis";
 import {CommonConnectState} from "heheda-bluetooth-state";
 
 
@@ -98,6 +98,15 @@ export default class BaseBlueTooth extends AbstractBlueTooth {
                     super.resetAllBLEFlag();
                     return await Promise.reject(error);
                 case 10003:
+                    // return new Promise(resolve => {
+                    //     setTimeout(async () => {
+                    //         await super.stopBlueToothDevicesDiscovery();
+                    //         setTimeout(async () => {
+                    //             await this.startBlueToothDevicesDiscovery();
+                    //         });
+                    //         resolve({isConnected: false, filter: true});
+                    //     }, 3000);
+                    // });
                 case 10012:
                     console.warn('连接不上', error);
                     // console.log('现重启蓝牙适配器');

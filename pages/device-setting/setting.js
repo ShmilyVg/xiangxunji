@@ -36,7 +36,10 @@ Page({
         Toast.showLoading();
         const {viewObj: waterViewObj} = await this.waterSettingDelegate.onSwitchChangeEvent({tag, open});
         const {viewObj: lightViewObj} = await this.lightSettingDelegate.onSwitchChangeEvent({tag, open});
-        const {viewObj: timeViewObj} = await this.timeSettingDelegate.onSwitchChangeEvent({tag, open});
+        const {viewObj: timeViewObj} = await this.timeSettingDelegate.onSwitchChangeEvent({
+            tag, open,
+            repeatEveryDay: this.data.config.time.timeRepeatEveryDay
+        });
         Toast.hiddenLoading();
         this.setData({...waterViewObj, ...lightViewObj, ...timeViewObj});
     },
@@ -58,7 +61,11 @@ Page({
         try {
             Toast.showLoading();
             const {viewObj: waterViewObj} = await this.waterSettingDelegate.bindPickerChange({type, value});
-            this.setData({...waterViewObj});
+            const {viewObj: timeViewObj} = await this.timeSettingDelegate.bindPickerChange({
+                type, value,
+                repeatEveryDay: this.data.config.time.timeRepeatEveryDay
+            });
+            this.setData({...waterViewObj, ...timeViewObj});
         } catch (e) {
             console.log('自定义设置出现错误 bindPickerChange', e);
         } finally {

@@ -1,3 +1,4 @@
+const DEFAULT_MUSIC = 1;
 export default class XXJBLEConfig {
     constructor() {
         this.light = {};
@@ -24,9 +25,36 @@ export default class XXJBLEConfig {
         filterProtocolData(this.waterAlert, arguments[0]);
     }
 
-    setMusicAlert({open, openMusicId, repeatEveryDayMusicId, repeatCount, hStartTime, mStartTime, volume}) {
-        filterProtocolData(this.musicAlert, arguments[0]);
+    setMusicAlert({open, musicAlertId, repeatCount, hStartTime, mStartTime, volume}) {
+        filterProtocolData(this.musicAlert, {
+            ...arguments[0],
+            musicAlertId: musicAlertId === 0 ? DEFAULT_MUSIC : musicAlertId
+        });
     }
+
+    getWaterAlertOpenStatus({open, repeatEveryDay}) {
+        return repeatEveryDay ? 17 : Number(open);
+    }
+
+    getMusicAlertOpenStatus({open, musicAlertId, repeatEveryDay}) {
+        if (!open) {
+            return 0;
+        }
+        if (musicAlertId === 0) {
+            musicAlertId = DEFAULT_MUSIC;
+        }
+        if (repeatEveryDay) {
+            if (musicAlertId >= 1 && musicAlertId <= 4) {
+                return musicAlertId + 1 << 4;
+            }
+        } else {
+            if (musicAlertId >= 17 && musicAlertId <= 20) {
+                return musicAlertId - 1 << 4;
+            }
+        }
+        return musicAlertId;
+    }
+
 
     getLightRGB() {
         const {red, green, blue} = this.water;

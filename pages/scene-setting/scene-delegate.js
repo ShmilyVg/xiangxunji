@@ -185,54 +185,84 @@ export class TimeSettingDelegate {
         };
     }
 
-    async onSwitchChangeEvent({tag, open}) {
-        const bleProtocol = getApp().getBLEManager().getProtocol(), viewObj = {};
+    async onSwitchChangeEvent({tag, open, repeatEveryDay}) {
+        const bleProtocol = getApp().getBLEManager().getProtocol(), viewObj = {},
+            xxjConfig = await getApp().getBLEManager().getXXJConfig();
         switch (tag) {
             case 'waterOpenWhenOpenDevice': {
+                await bleProtocol.setWaterAlert({
+                    openStatus: xxjConfig.getWaterAlertOpenStatus({
+                        open,
+                        repeatEveryDay
+                    })
+                });
                 viewObj['config.time.waterOpenWhenOpenDevice'] = open;
-                await bleProtocol.setWaterAlert({open});
+                const {musicAlert: {open: musicAlertOpen}} = xxjConfig;
+                viewObj['config.time.timeRepeatEveryDayBtnShow'] = open || musicAlertOpen;
             }
                 break;
 
             case 'wakeUpToneOpenWhenOpenDevice': {
+                const {waterAlert: {open: waterAlertOpen}, musicAlert: {musicAlertId}} = xxjConfig;
+                await bleProtocol.setMusicAlert({
+                    openStatus: xxjConfig.getMusicAlertOpenStatus({
+                        open,
+                        musicAlertId,
+                        repeatEveryDay
+                    })
+                });
                 viewObj['config.time.wakeUpToneOpenWhenOpenDevice'] = open;
-                // await bleProtocol.setMusicAlert({open});
+                viewObj['config.time.timeRepeatEveryDayBtnShow'] = open || waterAlertOpen;
             }
                 break;
 
             case 'timeRepeatEveryDay': {
+                const {waterAlert: {open: waterAlertOpen}, musicAlert: {open: musicAlertOpen, musicAlertId}} = xxjConfig,
+                    repeatEveryDay = open;
+                await bleProtocol.setWaterAlert({
+                    openStatus: xxjConfig.getWaterAlertOpenStatus({
+                        open: waterAlertOpen,
+                        repeatEveryDay
+                    })
+                });
+                await bleProtocol.setMusicAlert({
+                    openStatus: xxjConfig.getMusicAlertOpenStatus({
+                        open: musicAlertOpen,
+                        musicAlertId,
+                        repeatEveryDay
+                    })
+                });
                 viewObj['config.time.timeRepeatEveryDay'] = open;
-                // await bleProtocol.setMusicAlert({open});
             }
                 break;
         }
         return {viewObj};
     }
 
-    async bindPickerChange({type, value}) {
+    async bindPickerChange({type, value, repeatEveryDay}) {
         const bleProtocol = getApp().getBLEManager().getProtocol(), config = TimeSettingDelegate.pageDataConfig(),
             viewObj = {};
         let bleProtocolArguments = {};
         switch (type) {
             case 'waterStartTime': {
-                const [hStartTimeIndex, mStartTimeIndex] = value, {time: {startTimeArray}} = config;
-                bleProtocolArguments = {
-                    hDuration: startTimeArray[0][hStartTimeIndex].value,
-                    mDuration: startTimeArray[1][mStartTimeIndex].value
-                };
-                await bleProtocol.setTimeAlert({});
+                const [hStartTimeIndex, mStartTimeIndex] = value, {time: {waterStartTimeArray}} = config;
+                await bleProtocol.setWaterAlert({
+                    hStartTime: waterStartTimeArray[0][hStartTimeIndex].value,
+                    mStartTime: waterStartTimeArray[1][mStartTimeIndex].value
+                });
                 viewObj['config.time.waterStartTimeIndex'] = [hStartTimeIndex, mStartTimeIndex];
             }
                 break;
             case 'wakeUpTone': {
-                const {water: {waterBetweenArray, waterDurationArray, waterDurationIndex: [hDurationIndex, mDurationIndex]}} = config,
-                    mBetweenDuration = waterBetweenArray[value].value;
-                await isTreble({
-                    waterDuration: waterDurationArray[0][hDurationIndex].value * 60 + waterDurationArray[1][mDurationIndex].value,
-                    betweenDuration: mBetweenDuration
+                const xxjConfig = await getApp().getBLEManager().getXXJConfig(), {musicAlert: {open}} = xxjConfig, {time: {wakeUpToneArray}} = config,
+                    musicAlertId = wakeUpToneArray[value].value;
+                await bleProtocol.setMusicAlert({
+                    openStatus: xxjConfig.getMusicAlertOpenStatus({
+                        open, musicAlertId,
+                        repeatEveryDay
+                    })
                 });
-                bleProtocolArguments = {mBetweenDuration};
-                viewObj['config.water.waterBetweenIndex'] = value;
+                viewObj['config.time.wakeUpToneIndex'] = value;
             }
                 break;
 
@@ -246,7 +276,7 @@ export class TimeSettingDelegate {
             time: {
                 waterOpenWhenOpenDevice: false,
                 waterStartTimeIndex: [0, 0],
-                startTimeArray: [
+                waterStartTimeArray: [
                     new Array(24).fill(0).map((item, index) => ({
                         content: index + '时', value: index
                     })),
@@ -255,7 +285,11 @@ export class TimeSettingDelegate {
                     }))],
                 wakeUpToneOpenWhenOpenDevice: false,
                 wakeUpToneIndex: 0,
-                wakeUpToneArray: new Array(61).fill(0).map((item, index) => ({content: index + '分', value: index})),
+                wakeUpToneArray: [
+                    {content: 'Josh Leake - A Quiet Departure', value: 1},
+                    {content: 'SMOOTH J - 今日もどこかで', value: 2},
+                    {content: 'SR - Daybreak', value: 3},
+                    {content: 'みかん箱 - ひやむぎ、そーめん、时々うどん', value: 4}],
                 timeRepeatEveryDay: false,
             },
         }

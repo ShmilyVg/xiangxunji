@@ -104,17 +104,19 @@ export default class HiXxjBluetoothProtocol extends LBlueToothProtocolOperator {
 
             /**
              * 雾化定时设置（写）
-             * @param open 0x00:关 0x01:雾化开 0x11:每天重复开雾 0xff:不设置
-             * @param repeatEveryDay Boolean 每天重复
+             * @param openStatus 0x00:关 0x01:雾化开 0x11:每天重复开雾 0xff:不设置
              * @param hStartTime 0x00-0x17 0xff:不设置
              * @param mStartTime 0x00-0x3B 0xff:不设置
              */
-            '0x54': async ({open, repeatEveryDay = false, hStartTime = 255, mStartTime = 255}) => {
+            '0x54': async ({openStatus = 255, hStartTime = 255, mStartTime = 255}) => {
                 const result = await this.sendData({
                     command: '0x54',
-                    data: [repeatEveryDay ? 17 : (typeof open === "boolean" ? Number(open) : 255), hStartTime, mStartTime, 255, 255, 255]
+                    data: [openStatus, hStartTime, mStartTime, 255, 255, 255]
                 });
-                this.xxjBLEConfig.setWaterAlert({open, repeatEveryDay, hStartTime, mStartTime});
+                this.xxjBLEConfig.setWaterAlert({
+                    open: !!openStatus,
+                    repeatEveryDay: openStatus === 17, hStartTime, mStartTime
+                });
                 return result;
             },
 
@@ -126,11 +128,17 @@ export default class HiXxjBluetoothProtocol extends LBlueToothProtocolOperator {
              * @param mStartTime 0x00-0x3B 0xff:不设置
              * @param volume 0x00-0x06 0xff:不设置
              */
-            '0x55': ({openStatus = 255, repeatCount = 1, hStartTime = 255, mStartTime = 255, volume = 255}) => {
-                return this.sendData({
+            '0x55': async ({openStatus = 255, repeatCount = 1, hStartTime = 255, mStartTime = 255, volume = 255}) => {
+                const result = await this.sendData({
                     command: '0x55',
                     data: [openStatus, repeatCount, hStartTime, mStartTime, volume, 255]
                 });
+
+                this.xxjBLEConfig.setMusicAlert({
+                    open: !!openStatus,
+                    musicAlertId: openStatus, repeatCount, hStartTime, mStartTime, volume
+                })
+                return result;
             },
 
             /**
@@ -174,7 +182,7 @@ export default class HiXxjBluetoothProtocol extends LBlueToothProtocolOperator {
             '0x62': ({dataArray}) => {
                 console.log('接收到的0x62的数据 从byte2开始', dataArray);
                 const [brightness, autoLight] = dataArray;
-                this.xxjBLEConfig.setLight({autoLight, brightness: Math.floor(brightness / 100 * 255)});
+                this.xxjBLEConfig.setLight({brightness: Math.floor(brightness / 100 * 255), autoLight: !!autoLight});
             },
             /**
              * 雾化设置（读）
@@ -190,18 +198,17 @@ export default class HiXxjBluetoothProtocol extends LBlueToothProtocolOperator {
                     sBetweenDuration,
                     speed
                 });
-                this.xxjBLEConfig.isAllStateReceive = true;
-                return {protocolState: XXJProtocolState.RECEIVE_ALL_STATE};
+
             },
             /**
              * 雾化定时设置（读）
              */
             '0x64': ({dataArray}) => {
                 console.log('接收到的0x64的数据 从byte2开始', dataArray);
-                const [openState, hStartTime, mStartTime] = dataArray;
+                const [openStatus, hStartTime, mStartTime] = dataArray;
                 this.xxjBLEConfig.setWaterAlert({
-                    open: !!openState,
-                    repeatEveryDay: openState === 17,
+                    open: !!openStatus,
+                    repeatEveryDay: openStatus === 17,
                     hStartTime,
                     mStartTime
                 });
@@ -211,6 +218,17 @@ export default class HiXxjBluetoothProtocol extends LBlueToothProtocolOperator {
              */
             '0x65': ({dataArray}) => {
                 console.log('接收到的0x65的数据 从byte2开始', dataArray);
+                const [openStatus, repeatCount, hStartTime, mStartTime, volume] = dataArray;
+                this.xxjBLEConfig.setMusicAlert({
+                    open: !!openStatus,
+                    musicAlertId: openStatus,
+                    repeatCount,
+                    hStartTime,
+                    mStartTime,
+                    volume
+                });
+                this.xxjBLEConfig.isAllStateReceive = true;
+                return {protocolState: XXJProtocolState.RECEIVE_ALL_STATE};
             },
 
         };
@@ -229,7 +247,10 @@ export default class HiXxjBluetoothProtocol extends LBlueToothProtocolOperator {
     setLightOpen = this.sendAction['0x52'];
     setWater = this.sendAction['0x53'];
     setWaterAlert = this.sendAction['0x54'];
-    setMusicAlert = this.sendAction['0x55'];
+
+    setMusicAlert({openStatus, repeatCount, hStartTime, mStartTime, volume}) {
+        return this.sendAction['0x55'](arguments[0]);
+    }
 
     sendDataWithInput({array}) {
         const [command, ...data] = array;
@@ -237,7 +258,6 @@ export default class HiXxjBluetoothProtocol extends LBlueToothProtocolOperator {
     }
 
     getDeviceAllStatus() {
-        console.warn('我要发送获取设备状态协议');
         return this.sendAction['0x56']();
     }
 

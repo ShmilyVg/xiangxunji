@@ -38,7 +38,7 @@ export default class HiXxjBluetoothProtocol extends LBlueToothProtocolOperator {
                 // await this.setAutoColorLight({brightness, autoLight: false});
                 const result = await this.sendData({
                     command: '0x11',
-                    data: [17, Math.floor(brightness / 100 * 255), red, green, blue, hDuration, mDuration]
+                    data: [Math.floor(brightness / 100 * 255), red, green, blue, hDuration, mDuration]
                 });
                 this.xxjBLEConfig.setLight({autoLight: false, brightness, red, green, blue, hDuration, mDuration});
                 return result;

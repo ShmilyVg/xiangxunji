@@ -1,7 +1,5 @@
 import HiNavigator from "../../navigator/hi-navigator";
-import {Storage} from "../../utils/storage";
 import {DIALOG_BG_ANIMATION_DURATION} from "../../utils/config";
-import {XXJProtocolState} from "../../modules/bluetooth/bluetooth-state";
 import {Toast} from "heheda-common-view";
 
 const App = getApp();
@@ -40,22 +38,23 @@ Component({
     methods: {
         async _clickOpenSwitch(e) {
             const {detail: {tag: type, open}} = e;
-            if (type === 'light') {
-                // App.getBLEManager().setLight({isSetAllColor, red, green, yellow, hDuration = 255, mDuration = 255});
-                this.setData({isLightOpen: open}, async () => {
-                    await Storage.setLightOpen({open});
-                });
-            } else if (type === 'water') {
-                Toast.showLoading();
-                try {
-                    await App.getBLEManager().getProtocol().setWater({openStatus: open ? 1 : 0,});
+            Toast.showLoading();
+            try {
+                const bleProtocol = App.getBLEManager().getProtocol();
+                if (type === 'light') {
+                    await bleProtocol.setLightOpen({lightOpen: open});
+                    this.setData({isLightOpen: open});
+                } else if (type === 'water') {
+                    await bleProtocol.setWater({openStatus: open ? 1 : 0,});
                     this.setData({isWaterOpen: open});
-                } catch (e) {
-                    console.error('设置雾化开关失败', e);
-                } finally {
-                    Toast.hiddenLoading();
                 }
+            } catch (e) {
+                console.error('在播放页面设置设备失败', e);
+            } finally {
+                Toast.hiddenLoading();
             }
+
+
         },
         _toMoreSettingPage() {
             HiNavigator.navigateToMoreSetting();

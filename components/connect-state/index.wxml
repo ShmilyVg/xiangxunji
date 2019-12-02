@@ -1,6 +1,9 @@
-<view bindtap="_toReconnectEvent"  style="margin-top: {{stateObj.show?'0':'-90rpx'}};" class="fill-width flex-row align-items-center justify-center index-connect-device-layout">
+<view style="margin-top: {{stateObj.show?'0':'-90rpx'}};" class="fill-width flex-row align-items-center justify-center index-connect-device-layout relative">
     <view class="flex-row align-items-center index-connect-device-text">
         <image src="../../images/index/retry.png" style="display: {{stateObj.connecting?'block':'none'}}" class="index-retry-icon"></image>
         {{stateObj.text}}
-        <view wx:if="{{stateObj.showRetryBtn}}" style="color: #F7879E;">重连</view></view>
+        <view wx:if="{{stateObj.showRetryBtn}}" bindtap="_toReconnectEvent" style="color: #F7879E;">重新连接</view></view>
+<!--    <view bindtap="_closeConnectStateView" class="absolute flex-row fill-height align-items-center justify-center index-connect-device-close-layout">-->
+<!--        <image src="./images/close.png" class="index-connect-device-close-icon"></image>-->
+<!--    </view>-->
 </view>

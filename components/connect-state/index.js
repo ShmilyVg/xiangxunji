@@ -1,8 +1,7 @@
 import {ConnectState} from "../../modules/bluetooth/bluetooth-state";
-import {CommonConnectState} from "heheda-bluetooth-state";
 
 const App = getApp(),
-    stateOptions = {};
+    stateOptions = {}, CLOSE_FOREVER = 'close_forever';
 stateOptions[ConnectState.CONNECTING] = {
     show: true,
     showRetryBtn: false,
@@ -19,13 +18,18 @@ stateOptions[ConnectState.CONNECTED] = {
     show: false,
     showRetryBtn: false,
     connecting: false,
-    text: '已连接'
+    text: '已连接',
+    dismiss: true
 };
 stateOptions[ConnectState.DISCONNECT] = {
     show: true,
     showRetryBtn: true,
     connecting: false,
-    text: '与设备连接中断，点击此处'
+    text: '没有找到香薰机，没关系，你可以'
+};
+stateOptions[CLOSE_FOREVER] = {
+    show: false,
+    dismiss: true
 };
 //自定义的NavigationBar
 Component({
@@ -45,11 +49,17 @@ Component({
         'state'(newConnectState) {
             // 在 numberA 或者 numberB 被设置时，执行这个函数
             console.log('设置stateObj', newConnectState);
-            if (!newConnectState) {
+            if (this.data.closeForever || !newConnectState) {
                 return;
             }
             this.setData({
                 stateObj: stateOptions[newConnectState]
+            }, () => {
+                setTimeout(() => {
+                    !!this.data.stateObj.dismiss && this.setData({
+                        dismiss: true
+                    });
+                }, 1500);
             });
         }
     },
@@ -57,7 +67,9 @@ Component({
      * 组件的初始数据
      */
     data: {
-        stateObj: stateOptions.connecting
+        stateObj: stateOptions.connecting,
+        dismiss: false,
+        closeForever: false
     },
     pageLifetimes: {
         show() {
@@ -81,6 +93,17 @@ Component({
      * 组件的方法列表
      */
     methods: {
+        _closeConnectStateView() {
+            this.setData({
+                stateObj: {...this.data.stateObj, ...stateOptions[CLOSE_FOREVER],}
+            }, () => {
+                setTimeout(() => {
+                    !!this.data.stateObj.dismiss && this.setData({
+                        dismiss: true
+                    });
+                }, 1500);
+            });
+        },
         _toReconnectEvent() {
             App.getBLEManager().connect();
         },

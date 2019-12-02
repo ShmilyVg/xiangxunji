@@ -12,6 +12,17 @@
     line-height:28rpx;
 }
 
+.index-connect-device-close-layout {
+    width: 90rpx;
+    top: 0;
+    right: 0;
+}
+
+.index-connect-device-close-icon {
+    width: 42rpx;
+    height: 42rpx;
+}
+
 .index-image-layout {
     overflow: hidden;
 }

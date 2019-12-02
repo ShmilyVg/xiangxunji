@@ -11,8 +11,7 @@ export class LightSettingDelegate {
             }
                 break;
             case 'lightOpen': {
-                viewObj['config.water.lightOpen'] = open;
-
+                viewObj['config.light.lightOpen'] = open;
                 await bleProtocol.setLightOpen({lightOpen: open});
             }
                 break;

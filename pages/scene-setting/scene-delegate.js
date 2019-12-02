@@ -220,6 +220,13 @@ export class TimeSettingDelegate {
                     })
                 });
                 viewObj['config.time.wakeUpToneOpenWhenOpenDevice'] = open;
+                const {musicAlert: {repeatEveryDay: musicRepeatEveryDay}} = xxjConfig,
+                    {time: {wakeUpToneArray}} = TimeSettingDelegate.pageDataConfig(),
+                    originMusicIdInWakeUpToneArray = xxjConfig.getOriginMusicId({
+                        musicAlertId,
+                        repeatEveryDay: musicRepeatEveryDay
+                    });
+                viewObj['config.time.wakeUpToneIndex'] = wakeUpToneArray.findIndex(item => originMusicIdInWakeUpToneArray === item.value);
             }
                 break;
 

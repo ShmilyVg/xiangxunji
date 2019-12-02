@@ -54,7 +54,7 @@ export default class HiXxjBluetoothProtocol extends LBlueToothProtocolOperator {
                 console.log('0x12 brightness', brightness);
                 const result = await this.sendData({
                     command: '0x12',
-                    data: [18, Math.floor(brightness / 100 * 255), Number(autoLight)]
+                    data: [Math.floor(brightness / 100 * 255), Number(autoLight)]
                 });
                 this.xxjBLEConfig.setLight({autoLight, brightness});
                 return result;

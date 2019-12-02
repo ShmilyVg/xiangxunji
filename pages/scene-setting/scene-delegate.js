@@ -51,6 +51,7 @@ export class LightSettingDelegate {
             'config.light.lightOpen': light.lightOpen,
             'config.light.autoLight': light.autoLight,
             'config.light.currentColor': light.currentColor,
+            'config.light.brightness': light.brightness
         };
 
     }

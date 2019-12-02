@@ -34,16 +34,14 @@ Page({
     async onSwitchChangeEvent({detail: {open, tag}}) {
         console.log(open, tag);
         Toast.showLoading();
-        const currentPageConfig = this.data.config,
+        const {config: currentPageConfig} = this.data,
             {viewObj: waterViewObj} = await this.waterSettingDelegate.onSwitchChangeEvent({
                 tag,
                 open,
-                currentPageConfig,
             }),
             {viewObj: lightViewObj} = await this.lightSettingDelegate.onSwitchChangeEvent({
                 tag,
                 open,
-                currentPageConfig,
             }),
             {viewObj: timeViewObj} = await this.timeSettingDelegate.onSwitchChangeEvent({
                 tag,
@@ -71,7 +69,7 @@ Page({
         try {
             Toast.showLoading();
 
-            const currentPageConfig = this.data.config,
+            const {config: currentPageConfig} = this.data,
                 {viewObj: waterViewObj} = await this.waterSettingDelegate.bindPickerChange({
                     type,
                     value,

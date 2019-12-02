@@ -28,7 +28,10 @@ Page({
     },
     async onLightChanged(e) {
         this.setData({
-            ...((await this.lightSettingDelegate.onLightChanged({e, autoLight: this.data.config.light.autoLight})).viewObj)
+            ...((await this.lightSettingDelegate.onLightChanged({
+                e,
+                autoLight: this.data.config.light.autoLight
+            })).viewObj)
         });
     },
 
@@ -64,7 +67,12 @@ Page({
 
         try {
             Toast.showLoading();
-            const {viewObj: waterViewObj} = await this.waterSettingDelegate.bindPickerChange({type, value});
+            const {config: currentPageConfig} = this.data,
+                {viewObj: waterViewObj} = await this.waterSettingDelegate.bindPickerChange({
+                    type,
+                    value,
+                    currentPageConfig
+                });
             this.setData({...waterViewObj});
         } catch (e) {
             console.log('自定义设置出现错误 bindPickerChange', e);

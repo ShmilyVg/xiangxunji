@@ -46,10 +46,8 @@ Page({
 
     async reset() {
         this.setData({
-            config: {
-                ...(await this.waterSettingDelegate.getResetData()),
-                ...(await this.lightSettingDelegate.getResetData())
-            }
+            ...await this.waterSettingDelegate.getResetData(),
+            ...await this.lightSettingDelegate.getResetData()
         });
     },
     async onLoad(options) {

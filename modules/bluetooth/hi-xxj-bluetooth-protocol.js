@@ -38,7 +38,7 @@ export default class HiXxjBluetoothProtocol extends LBlueToothProtocolOperator {
                 // await this.setAutoColorLight({brightness, autoLight: false});
                 const result = await this.sendData({
                     command: '0x11',
-                    data: [Math.floor(brightness / 100 * 255), red, green, blue, hDuration, mDuration]
+                    data: [brightness / 100 * 255, red, green, blue, hDuration, mDuration]
                 });
                 this.xxjBLEConfig.setLight({autoLight: false, brightness, red, green, blue, hDuration, mDuration});
                 return result;
@@ -54,7 +54,7 @@ export default class HiXxjBluetoothProtocol extends LBlueToothProtocolOperator {
                 console.log('0x12 brightness', brightness);
                 const result = await this.sendData({
                     command: '0x12',
-                    data: [Math.floor(brightness / 100 * 255), Number(autoLight)]
+                    data: [brightness / 100 * 255, Number(autoLight)]
                 });
                 this.xxjBLEConfig.setLight({autoLight, brightness});
                 return result;
@@ -167,7 +167,7 @@ export default class HiXxjBluetoothProtocol extends LBlueToothProtocolOperator {
                 console.log('接收到的0x61的数据 从byte2开始', dataArray);
                 const [brightness, red, green, blue, hDuration, mDuration] = dataArray;
                 this.xxjBLEConfig.setLight({
-                    brightness: Math.floor(brightness / 100 * 255),
+                    brightness: brightness / 255 * 100,
                     red,
                     green,
                     blue,
@@ -182,7 +182,7 @@ export default class HiXxjBluetoothProtocol extends LBlueToothProtocolOperator {
             '0x62': ({dataArray}) => {
                 console.log('接收到的0x62的数据 从byte2开始', dataArray);
                 const [brightness, autoLight] = dataArray;
-                this.xxjBLEConfig.setLight({brightness: Math.floor(brightness / 100 * 255), autoLight: !!autoLight});
+                this.xxjBLEConfig.setLight({brightness: brightness / 255 * 100, autoLight: !!autoLight});
             },
             /**
              * 雾化设置（读）

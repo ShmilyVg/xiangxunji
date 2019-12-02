@@ -104,13 +104,14 @@ export class WaterSettingDelegate {
         return {viewObj};
     }
 
-    async bindPickerChange({type, value}) {
+    async bindPickerChange({type, value, currentPageConfig}) {
         const bleProtocol = getApp().getBLEManager().getProtocol(), config = WaterSettingDelegate.pageDataConfig(),
             viewObj = {};
         let bleProtocolArguments = {};
         switch (type) {
             case 'waterDuration': {
-                const [hDurationIndex, mDurationIndex] = value, {water: {waterDurationArray, waterBetweenArray, waterBetweenIndex}} = config,
+                const [hDurationIndex, mDurationIndex] = value, {water: {waterDurationArray, waterBetweenArray}} = config,
+                    {water: {waterBetweenIndex}} = currentPageConfig,
                     mBetweenDuration = waterBetweenArray[waterBetweenIndex].value;
                 await isTreble({
                     waterDuration: waterDurationArray[0][hDurationIndex].value * 60 + waterDurationArray[1][mDurationIndex].value,
@@ -124,7 +125,8 @@ export class WaterSettingDelegate {
             }
                 break;
             case 'waterBetween': {
-                const {water: {waterBetweenArray, waterDurationArray, waterDurationIndex: [hDurationIndex, mDurationIndex]}} = config,
+                const {water: {waterBetweenArray, waterDurationArray}} = config,
+                    {water: {waterDurationIndex: [hDurationIndex, mDurationIndex]}} = currentPageConfig,
                     mBetweenDuration = waterBetweenArray[value].value;
                 await isTreble({
                     waterDuration: waterDurationArray[0][hDurationIndex].value * 60 + waterDurationArray[1][mDurationIndex].value,
@@ -195,8 +197,9 @@ export class TimeSettingDelegate {
         };
     }
 
-    async onSwitchChangeEvent({tag, open, repeatEveryDay}) {
-        const bleProtocol = getApp().getBLEManager().getProtocol(), viewObj = {},
+    async onSwitchChangeEvent({tag, open, currentPageConfig}) {
+        const repeatEveryDay = currentPageConfig.time.timeRepeatEveryDay,
+            bleProtocol = getApp().getBLEManager().getProtocol(), viewObj = {},
             xxjConfig = await getApp().getBLEManager().getXXJConfig();
         switch (tag) {
             case 'waterOpenWhenOpenDevice': {
@@ -253,8 +256,9 @@ export class TimeSettingDelegate {
         return {viewObj};
     }
 
-    async bindPickerChange({type, value, repeatEveryDay}) {
-        const bleProtocol = getApp().getBLEManager().getProtocol(), config = TimeSettingDelegate.pageDataConfig(),
+    async bindPickerChange({type, value, currentPageConfig}) {
+        const repeatEveryDay = currentPageConfig.time.timeRepeatEveryDay,
+            bleProtocol = getApp().getBLEManager().getProtocol(), config = TimeSettingDelegate.pageDataConfig(),
             viewObj = {};
         switch (type) {
             case 'waterStartTime': {

@@ -34,12 +34,22 @@ Page({
     async onSwitchChangeEvent({detail: {open, tag}}) {
         console.log(open, tag);
         Toast.showLoading();
-        const {viewObj: waterViewObj} = await this.waterSettingDelegate.onSwitchChangeEvent({tag, open});
-        const {viewObj: lightViewObj} = await this.lightSettingDelegate.onSwitchChangeEvent({tag, open});
-        const {viewObj: timeViewObj} = await this.timeSettingDelegate.onSwitchChangeEvent({
-            tag, open,
-            repeatEveryDay: this.data.config.time.timeRepeatEveryDay
-        });
+        const currentPageConfig = this.data.config,
+            {viewObj: waterViewObj} = await this.waterSettingDelegate.onSwitchChangeEvent({
+                tag,
+                open,
+                currentPageConfig,
+            }),
+            {viewObj: lightViewObj} = await this.lightSettingDelegate.onSwitchChangeEvent({
+                tag,
+                open,
+                currentPageConfig,
+            }),
+            {viewObj: timeViewObj} = await this.timeSettingDelegate.onSwitchChangeEvent({
+                tag,
+                open,
+                currentPageConfig,
+            });
         Toast.hiddenLoading();
         this.setData({...waterViewObj, ...lightViewObj, ...timeViewObj});
     },
@@ -60,11 +70,17 @@ Page({
         console.log('type=', type, 'value=', value);
         try {
             Toast.showLoading();
-            const {viewObj: waterViewObj} = await this.waterSettingDelegate.bindPickerChange({type, value});
-            const {viewObj: timeViewObj} = await this.timeSettingDelegate.bindPickerChange({
-                type, value,
-                repeatEveryDay: this.data.config.time.timeRepeatEveryDay
-            });
+
+            const currentPageConfig = this.data.config,
+                {viewObj: waterViewObj} = await this.waterSettingDelegate.bindPickerChange({
+                    type,
+                    value,
+                    currentPageConfig
+                }),
+                {viewObj: timeViewObj} = await this.timeSettingDelegate.bindPickerChange({
+                    type, value,
+                    currentPageConfig,
+                });
             this.setData({...waterViewObj, ...timeViewObj});
         } catch (e) {
             console.log('自定义设置出现错误 bindPickerChange', e);

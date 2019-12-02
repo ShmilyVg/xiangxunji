@@ -44,13 +44,13 @@ Page({
         this.setData({...waterViewObj, ...lightViewObj});
     },
 
-    reset() {
-        // this.setData({
-        //     config: {
-        //         color: '', brightness: 50, autoLight: false,
-        //         lightOpen: false, waterOpen: true, deviceOpen: false
-        //     }
-        // });
+    async reset() {
+        this.setData({
+            config: {
+                ...(await this.waterSettingDelegate.getResetData()),
+                ...(await this.lightSettingDelegate.getResetData())
+            }
+        });
     },
     async onLoad(options) {
         this.waterSettingDelegate = new WaterSettingDelegate();

@@ -1,7 +1,23 @@
 import {isTreble} from "../../utils/util";
 import {getRGBByColor} from "../../modules/bluetooth/xxj-ble-config";
+import {
+    setDeviceLightConfigWithDefaultSceneConfig,
+    setDeviceWaterConfigWithDefaultSceneConfig
+} from "../index/custom-config";
 
 export class LightSettingDelegate {
+
+    async getLatestData() {
+        const xxjConfig = await getApp().getBLEManager().getXXJConfig(), {light} = xxjConfig;
+        return {
+            'config.light.lightOpen': light.lightOpen,
+            'config.light.autoLight': light.autoLight,
+            'config.light.currentColor': light.currentColor,
+            'config.light.brightness': light.brightness
+        };
+
+    }
+
     async onSwitchChangeEvent({tag, open}) {
         const bleProtocol = getApp().getBLEManager().getProtocol(), viewObj = {};
         switch (tag) {
@@ -44,17 +60,6 @@ export class LightSettingDelegate {
         return {viewObj};
     }
 
-    async getLatestData() {
-        const xxjConfig = await getApp().getBLEManager().getXXJConfig(), {light} = xxjConfig;
-        return {
-            'config.light.lightOpen': light.lightOpen,
-            'config.light.autoLight': light.autoLight,
-            'config.light.currentColor': light.currentColor,
-            'config.light.brightness': light.brightness
-        };
-
-    }
-
     static pageDataConfig() {
         return {
             light: {
@@ -75,6 +80,11 @@ export class LightSettingDelegate {
                 ],
             },
         }
+    }
+
+    async getResetData() {
+        await setDeviceLightConfigWithDefaultSceneConfig();
+        return this.getLatestData();
     }
 }
 
@@ -169,7 +179,10 @@ export class WaterSettingDelegate {
         }
     }
 
-
+    async getResetData() {
+        await setDeviceWaterConfigWithDefaultSceneConfig();
+        return this.getLatestData();
+    }
 }
 
 /**

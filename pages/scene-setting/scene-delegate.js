@@ -176,12 +176,18 @@ export class WaterSettingDelegate {
 export class TimeSettingDelegate {
 
     async getLatestData() {
-        const xxjConfig = await getApp().getBLEManager().getXXJConfig(), {time} = xxjConfig, {time: {startTimeArray, wakeUpToneArray}} = TimeSettingDelegate.pageDataConfig();
+        const xxjConfig = await getApp().getBLEManager().getXXJConfig(),
+            {
+                waterAlert: {open: waterAlertOpen, hStartTime, mStartTime, repeatEveryDay: waterRepeatEveryDay},
+                musicAlert: {open: musicAlertOpen, musicAlertId, repeatEveryDay: musicRepeatEveryDay}
+            } = xxjConfig,
+            {time: {wakeUpToneArray}} = TimeSettingDelegate.pageDataConfig();
         return {
-            // 'config.time.waterOpenWhenOpenDevice': !!time.openStatus,
-            // 'config.time.waterDurationIndex': [time.hDuration, time.mDuration],
-            // 'config.time.waterBetweenIndex': time.mBetweenDuration,
-            // 'config.time.waterSpeedIndex': startTimeArray.findIndex(item => water.speed === item.value),
+            'config.time.waterOpenWhenOpenDevice': waterAlertOpen,
+            'config.time.waterStartTimeIndex': [hStartTime, mStartTime],
+            'config.time.wakeUpToneOpenWhenOpenDevice': musicAlertOpen,
+            'config.time.wakeUpToneIndex': wakeUpToneArray.findIndex(item => musicAlertId === item.value),
+            'config.time.timeRepeatEveryDay': waterRepeatEveryDay || musicRepeatEveryDay,
         };
     }
 
@@ -197,13 +203,11 @@ export class TimeSettingDelegate {
                     })
                 });
                 viewObj['config.time.waterOpenWhenOpenDevice'] = open;
-                const {musicAlert: {open: musicAlertOpen}} = xxjConfig;
-                viewObj['config.time.timeRepeatEveryDayBtnShow'] = open || musicAlertOpen;
             }
                 break;
 
             case 'wakeUpToneOpenWhenOpenDevice': {
-                const {waterAlert: {open: waterAlertOpen}, musicAlert: {musicAlertId}} = xxjConfig;
+                const {musicAlert: {musicAlertId}} = xxjConfig;
                 await bleProtocol.setMusicAlert({
                     openStatus: xxjConfig.getMusicAlertOpenStatus({
                         open,
@@ -212,7 +216,6 @@ export class TimeSettingDelegate {
                     })
                 });
                 viewObj['config.time.wakeUpToneOpenWhenOpenDevice'] = open;
-                viewObj['config.time.timeRepeatEveryDayBtnShow'] = open || waterAlertOpen;
             }
                 break;
 
@@ -242,7 +245,6 @@ export class TimeSettingDelegate {
     async bindPickerChange({type, value, repeatEveryDay}) {
         const bleProtocol = getApp().getBLEManager().getProtocol(), config = TimeSettingDelegate.pageDataConfig(),
             viewObj = {};
-        let bleProtocolArguments = {};
         switch (type) {
             case 'waterStartTime': {
                 const [hStartTimeIndex, mStartTimeIndex] = value, {time: {waterStartTimeArray}} = config;
@@ -267,7 +269,6 @@ export class TimeSettingDelegate {
                 break;
 
         }
-        await bleProtocol.setWater(bleProtocolArguments);
         return {viewObj};
     }
 

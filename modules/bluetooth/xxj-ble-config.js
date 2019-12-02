@@ -23,6 +23,7 @@ export default class XXJBLEConfig {
 
     setWaterAlert({open, repeatEveryDay, hStartTime, mStartTime}) {
         filterProtocolData(this.waterAlert, arguments[0]);
+        console.log('设置定时雾化', this.waterAlert);
     }
 
     setMusicAlert({open, musicAlertId, repeatCount, hStartTime, mStartTime, volume}) {
@@ -30,6 +31,8 @@ export default class XXJBLEConfig {
             ...arguments[0],
             musicAlertId: musicAlertId === 0 ? DEFAULT_MUSIC : musicAlertId
         });
+        this.musicAlert.repeatEveryDay = musicAlertId >= 17 && musicAlertId <= 20;
+        console.log('设置定时音乐', this.musicAlert);
     }
 
     getWaterAlertOpenStatus({open, repeatEveryDay}) {
@@ -45,11 +48,11 @@ export default class XXJBLEConfig {
         }
         if (repeatEveryDay) {
             if (musicAlertId >= 1 && musicAlertId <= 4) {
-                return musicAlertId + 1 << 4;
+                return musicAlertId + (1 << 4);
             }
         } else {
             if (musicAlertId >= 17 && musicAlertId <= 20) {
-                return musicAlertId - 1 << 4;
+                return musicAlertId - (1 << 4);
             }
         }
         return musicAlertId;

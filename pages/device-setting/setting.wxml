@@ -112,7 +112,7 @@
             <my-switch bind:onSwitchClickEvent="onSwitchChangeEvent" open="{{config.time.wakeUpToneOpenWhenOpenDevice}}"
                        tag="wakeUpToneOpenWhenOpenDevice"></my-switch>
         </view>
-        <block wx:if="">
+        <block wx:if="{{config.time.wakeUpToneOpenWhenOpenDevice}}">
             <view class="setting-divide-line"></view>
             <picker class="fill-width" bindchange="bindPickerChange" data-type="wakeUpTone" value="{{config.time.wakeUpToneIndex}}" range-key="content" range="{{config.time.wakeUpToneArray}}">
                 <view class="fill-width flex-row space-between setting-item-layout-02">
@@ -125,7 +125,7 @@
             </picker>
         </block>
 
-        <block wx:if="{{config.time.timeRepeatEveryDayBtnShow}}">
+        <block wx:if="{{config.time.waterOpenWhenOpenDevice||config.time.wakeUpToneOpenWhenOpenDevice}}">
             <view class="setting-divide-line"></view>
             <view class="fill-width flex-row align-items-center space-between setting-item-layout-02">
                 <view class="setting-item-title">每天重复</view>

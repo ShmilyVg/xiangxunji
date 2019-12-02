@@ -33,8 +33,8 @@ export default class HiXxjBluetoothProtocol extends LBlueToothProtocolOperator {
              * @param hDuration 0x00:0h 0x01:1h ... 0x0C:12h 0xff:不设置
              * @param mDuration 0x00:0分钟 0x01:1分钟 ... 0x3B:59分钟 0xff:不设置
              */
-            '0x11': async ({brightness = this.xxjBLEConfig.light.brightness, red = this.xxjBLEConfig.light.red, green = this.xxjBLEConfig.light.green, blue = this.xxjBLEConfig.light.blue, lightOpen = this.xxjBLEConfig.light.lightOpen, hDuration = 255, mDuration = 255}) => {
-                console.log('0x11 brightness', brightness, ' red=', red, ' green=', green, ' blue=', blue, ' lightOpen=', lightOpen, ' hDuration=', hDuration, ' mDuration=', mDuration);
+            '0x11': async ({brightness = this.xxjBLEConfig.light.brightness, red = this.xxjBLEConfig.light.red, green = this.xxjBLEConfig.light.green, blue = this.xxjBLEConfig.light.blue, hDuration = 255, mDuration = 255}) => {
+                console.log('0x11 brightness', brightness, ' red=', red, ' green=', green, ' blue=', blue, ' hDuration=', hDuration, ' mDuration=', mDuration);
                 // await this.setAutoColorLight({brightness, autoLight: false});
                 const result = await this.sendData({
                     command: '0x11',
@@ -242,7 +242,10 @@ export default class HiXxjBluetoothProtocol extends LBlueToothProtocolOperator {
         });
     }
 
-    setSingleColorLight = this.sendAction['0x11'];
+    setSingleColorLight({brightness, red, green, blue, hDuration, mDuration}) {
+        return this.sendAction['0x11'](arguments[0]);
+    }
+
     setAutoColorLight = this.sendAction['0x12'];
     setLightOpen = this.sendAction['0x52'];
     setWater = this.sendAction['0x53'];

@@ -181,12 +181,16 @@ export class TimeSettingDelegate {
                 waterAlert: {open: waterAlertOpen, hStartTime, mStartTime, repeatEveryDay: waterRepeatEveryDay},
                 musicAlert: {open: musicAlertOpen, musicAlertId, repeatEveryDay: musicRepeatEveryDay}
             } = xxjConfig,
-            {time: {wakeUpToneArray}} = TimeSettingDelegate.pageDataConfig();
+            {time: {wakeUpToneArray}} = TimeSettingDelegate.pageDataConfig(),
+            originMusicIdInWakeUpToneArray = xxjConfig.getOriginMusicId({
+                musicAlertId,
+                repeatEveryDay: musicRepeatEveryDay
+            });
         return {
             'config.time.waterOpenWhenOpenDevice': waterAlertOpen,
             'config.time.waterStartTimeIndex': [hStartTime, mStartTime],
             'config.time.wakeUpToneOpenWhenOpenDevice': musicAlertOpen,
-            'config.time.wakeUpToneIndex': wakeUpToneArray.findIndex(item => musicAlertId === item.value),
+            'config.time.wakeUpToneIndex': wakeUpToneArray.findIndex(item => originMusicIdInWakeUpToneArray === item.value),
             'config.time.timeRepeatEveryDay': waterRepeatEveryDay || musicRepeatEveryDay,
         };
     }

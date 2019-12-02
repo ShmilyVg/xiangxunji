@@ -39,6 +39,15 @@ export default class XXJBLEConfig {
         return repeatEveryDay ? 17 : Number(open);
     }
 
+    getOriginMusicId({musicAlertId, repeatEveryDay}) {
+        if (repeatEveryDay) {
+            if (musicAlertId >= 17 && musicAlertId <= 20) {
+                return musicAlertId - (1 << 4);
+            }
+        }
+        return musicAlertId;
+    }
+
     getMusicAlertOpenStatus({open, musicAlertId, repeatEveryDay}) {
         if (!open) {
             return 0;

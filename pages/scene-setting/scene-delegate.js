@@ -315,10 +315,10 @@ export class TimeSettingDelegate {
                 wakeUpToneOpenWhenOpenDevice: false,
                 wakeUpToneIndex: 0,
                 wakeUpToneArray: [
-                    {content: 'Josh Leake - A Quiet Departure', value: 1},
-                    {content: 'SMOOTH J - 今日もどこかで', value: 2},
-                    {content: 'SR - Daybreak', value: 3},
-                    {content: 'みかん箱 - ひやむぎ、そーめん、时々うどん', value: 4}],
+                    {content: '悠闲午后', value: 1},
+                    {content: '收获幸福', value: 2},
+                    {content: '白日畅想', value: 3},
+                    {content: '随心舞动', value: 4}],
                 timeRepeatEveryDay: false,
             },
         }

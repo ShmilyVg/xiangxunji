@@ -55,7 +55,10 @@
         <view class="setting-divide-line"></view>
         <picker class="fill-width" bindchange="bindPickerChange" data-type="waterBetween" value="{{config.water.waterBetweenIndex}}" range-key="content" range="{{config.water.waterBetweenArray}}">
             <view class="fill-width flex-row align-items-center space-between setting-item-layout-02">
-                <view class="setting-item-title">喷雾时间间隔</view>
+                <view class="flex-column">
+                    <view class="setting-item-title">喷雾时间间隔</view>
+                    <view class="setting-item-subtitle">按照设定的时间间隔喷雾，再按照设定的时间停一次，以此循环</view>
+                </view>
                 <view class="flex-row align-items-center">
                     <view class="setting-water-duration">每隔{{config.water.waterBetweenArray[config.water.waterBetweenIndex].content}}</view>
                     <image src="../../images/user-center/arrow.png" class="setting-item-arrow"></image>

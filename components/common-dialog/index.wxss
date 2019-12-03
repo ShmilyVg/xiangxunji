@@ -1,0 +1,68 @@
+.dialog-bg-layout {
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.dialog-layout {
+    width: 80%;
+    margin-top: 40%;
+    background: rgba(40,40,40,0.95);
+    border-radius: 40rpx;
+    padding: 72rpx 67rpx 52rpx;
+}
+
+.dialog-title-layout {
+    width: 100%;
+    margin-bottom: 40rpx;
+}
+
+.dialog-title-line {
+    height: 14rpx;
+    background: rgba(175,105,229,0.3);
+    border-radius: 7rpx;
+}
+
+.dialog-title {
+    font-size: 40rpx;
+    font-family: PingFang SC;
+    font-weight: 500;
+    color: rgba(255,255,255,1);
+    line-height: 44rpx;
+
+}
+
+.dialog-content {
+    font-size:32rpx;
+    font-family:PingFang SC;
+    font-weight:400;
+    color:rgba(221,221,221,1);
+    line-height:50rpx;
+    margin-bottom: 53rpx;
+}
+
+.dialog-btn-common{
+    min-width: 206rpx;
+    max-width: 266rpx;
+    border-radius:50rpx;
+    padding: 20rpx;
+}
+
+.dialog-cancel-btn {
+    border:1rpx solid rgba(153,153,153,1);
+    background-color: transparent;
+    font-size:30rpx;
+    font-family:PingFang SC;
+    font-weight:400;
+    color:rgba(153,153,153,1);
+    line-height:44rpx;
+    margin-right: 40rpx;
+}
+
+.dialog-confirm-btn{
+    border:1rpx solid transparent;
+    background:rgba(120,105,229,1);
+    font-size:30rpx;
+    font-family:PingFang SC;
+    font-weight:400;
+    color:rgba(255,255,255,1);
+    line-height:44rpx;
+}

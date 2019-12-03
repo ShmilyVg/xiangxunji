@@ -26,5 +26,5 @@
 <!--    </view>-->
     <play-action play-state="{{playState}}"></play-action>
     <wave></wave>
-
 </view>
+<common-dialog></common-dialog>

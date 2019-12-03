@@ -66,3 +66,12 @@ export function dealAuthUserInfo(e) {
         }
     });
 }
+
+
+export function getActiveArguments(argument) {
+    let obj = {};
+    for (const key of Object.keys(argument)) {
+        !!key && (obj[key] = argument[key]);
+    }
+    return obj;
+}

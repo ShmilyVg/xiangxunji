@@ -1,17 +1,17 @@
-<view class="fixed fill-width fill-height align-items-center flex-column dialog-bg-layout">
+<view wx:if="{{showDialog}}" class="fixed fill-width fill-height align-items-center flex-column dialog-bg-layout">
     <view class="flex-column box-sizing-border-box dialog-layout">
-        <view class="flex-column align-items-center dialog-title-layout">
-            <view class="dialog-title">TIPS</view>
+        <view wx:if="{{!!title}}" class="flex-column align-items-center dialog-title-layout">
+            <view class="dialog-title">{{title}}</view>
 <!--            <view class="fill-width dialog-title-line"></view>-->
         </view>
         <view class="dialog-content">
-            即将播放助眠冥想音频，请及时在设备中添加水和香薰精油。
-            如已添加，可点击开始播放。
+            {{content}}
+            <slot></slot>
         </view>
 
         <view class="flex-row align-items-center justify-center">
-            <view wx:if="{{true}}" class="flex-row justify-center box-sizing-border-box dialog-btn-common dialog-cancel-btn">结束离开</view>
-            <view class="flex-row justify-center box-sizing-border-box dialog-btn-common dialog-confirm-btn">继续冥想</view>
+            <view wx:if="{{!!cancelText}}" catchtap="_cancelEvent" class="flex-row justify-center box-sizing-border-box dialog-btn-common dialog-cancel-btn">{{cancelText}}</view>
+            <view catchtap="_confirmEvent" class="flex-row justify-center box-sizing-border-box dialog-btn-common dialog-confirm-btn">{{confirmText}}</view>
         </view>
     </view>
 </view>

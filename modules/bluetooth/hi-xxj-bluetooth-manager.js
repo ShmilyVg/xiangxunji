@@ -42,11 +42,11 @@ export default class HiXxjBluetoothManager extends LBlueToothManager {
     }
 
     judgeBLEIsConnected() {
-        return new Promise((resolve) => {
+        return new Promise((resolve, reject) => {
             if (this.getBLELatestConnectState() === ConnectState.CONNECTED) {
                 resolve();
             } else {
-                WXDialog.showDialog({content: '您未与香薰机连接，请在连接上后重试'});
+                reject();
             }
         });
     }

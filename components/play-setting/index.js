@@ -62,20 +62,24 @@ Component({
         },
         async _showFun() {
             const bleManager = App.getBLEManager();
-            await bleManager.judgeBLEIsConnected();
-            const xxjConfig = await bleManager.getXXJConfig();
-            console.log('xxjConfig', xxjConfig);
-            const waterOpen = xxjConfig.water.openStatus;
-            // const lightOpen = Storage.getWaterOpen();
-            this.setData({
-                isLightOpen: true,
-                isWaterOpen: !!waterOpen,
-                show: true
-            }, () => {
+            try {
+                await bleManager.judgeBLEIsConnected();
+                const xxjConfig = await bleManager.getXXJConfig();
+                console.log('xxjConfig', xxjConfig);
+                const waterOpen = xxjConfig.water.openStatus;
+                // const lightOpen = Storage.getWaterOpen();
                 this.setData({
-                    showJoinAnimation: true
-                })
-            });
+                    isLightOpen: true,
+                    isWaterOpen: !!waterOpen,
+                    show: true
+                }, () => {
+                    this.setData({
+                        showJoinAnimation: true
+                    })
+                });
+            } catch (e) {
+                console.error(e);
+            }
         },
         _hideFun() {
             this.setData({

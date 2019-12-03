@@ -6,31 +6,31 @@
         <view class="user-center-name">{{userInfo.nickName}}</view>
     </view>
 
-    <view class="flex-row align-items-center space-between box-sizing-border-box user-center-data-layout">
-        <view class="flex-column align-items-center flex-sub user-center-data-item-layout">
-            <view class="flex-row user-center-num-layout">
-                <view class="user-center-large-num">14</view>
-                <view class="user-center-small-text">天</view>
-            </view>
-            <view class="user-center-middle-text">累计天数</view>
-        </view>
-        <view class="flex-column align-items-center flex-sub user-center-data-item-layout">
-            <view class="flex-row user-center-num-layout">
-                <view class="user-center-large-num">0</view>
-                <view class="user-center-small-text">时</view>
-                <view class="user-center-large-num" style="margin-left: 7rpx">53</view>
-                <view class="user-center-small-text">分</view>
-            </view>
-            <view class="user-center-middle-text">累计时长</view>
-        </view>
-        <view class="flex-column align-items-center flex-sub user-center-data-item-layout">
-            <view class="flex-row user-center-num-layout">
-                <view class="user-center-large-num">26</view>
-                <view class="user-center-small-text">次</view>
-            </view>
-            <view class="user-center-middle-text">共使用</view>
-        </view>
-    </view>
+<!--    <view class="flex-row align-items-center space-between box-sizing-border-box user-center-data-layout">-->
+<!--        <view class="flex-column align-items-center flex-sub user-center-data-item-layout">-->
+<!--            <view class="flex-row user-center-num-layout">-->
+<!--                <view class="user-center-large-num">14</view>-->
+<!--                <view class="user-center-small-text">天</view>-->
+<!--            </view>-->
+<!--            <view class="user-center-middle-text">累计天数</view>-->
+<!--        </view>-->
+<!--        <view class="flex-column align-items-center flex-sub user-center-data-item-layout">-->
+<!--            <view class="flex-row user-center-num-layout">-->
+<!--                <view class="user-center-large-num">0</view>-->
+<!--                <view class="user-center-small-text">时</view>-->
+<!--                <view class="user-center-large-num" style="margin-left: 7rpx">53</view>-->
+<!--                <view class="user-center-small-text">分</view>-->
+<!--            </view>-->
+<!--            <view class="user-center-middle-text">累计时长</view>-->
+<!--        </view>-->
+<!--        <view class="flex-column align-items-center flex-sub user-center-data-item-layout">-->
+<!--            <view class="flex-row user-center-num-layout">-->
+<!--                <view class="user-center-large-num">26</view>-->
+<!--                <view class="user-center-small-text">次</view>-->
+<!--            </view>-->
+<!--            <view class="user-center-middle-text">共使用</view>-->
+<!--        </view>-->
+<!--    </view>-->
 
 
     <view class="flex-row align-items-center" style="align-self: flex-start;">

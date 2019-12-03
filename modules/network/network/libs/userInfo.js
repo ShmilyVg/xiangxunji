@@ -19,9 +19,9 @@ export default class UserInfo {
         });
     }
 
-    static set({nickname, portraitUrl, id}) {
+    static set({nickName, portraitUrl, id}) {
         const globalData = getApp().globalData;
-        globalData.userInfo = {nickname, headUrl: portraitUrl, id};
+        globalData.userInfo = {nickName, headUrl: portraitUrl, id};
         wx.setStorage({key: 'userInfo', data: globalData.userInfo});
     }
 

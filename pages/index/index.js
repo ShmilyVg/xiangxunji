@@ -1,11 +1,14 @@
 import {getMindPractiseList, getWelcomeContent, getWelcomeTime, getWhiteNoiseListAtIndexPage} from "./data-manager";
 import HiNavigator from "../../navigator/hi-navigator";
 import {Storage} from "../../utils/storage";
+import {dealAuthUserInfo} from "../../utils/util";
+import UserInfo from "../../modules/network/network/libs/userInfo";
 
 const App = getApp();
 const haveShowRemindDialog = Storage.getIndexPageRemindHaveShow();
 Page({
     data: {
+        userInfo: {},
         welcomeObj: {title: '', content: getWelcomeContent()},
         habits: [],
         minds: getMindPractiseList(),
@@ -30,18 +33,20 @@ Page({
         this.setData(obj);
     },
 
-    onGetUserInfo(e) {
+    async onGetUserInfo(e) {
         console.log(e);
+        await dealAuthUserInfo(e);
         HiNavigator.navigateToUserCenter();
     },
-    onShow() {
+    async onShow() {
         App.onAppBLEConnectStateChangedListener = ({connectState}) => {
             console.log('index.js [onShow] 接收到连接状态', connectState);
             this.setData({connectState});
         };
         this.setData({
             'welcomeObj.title': getWelcomeTime(),
-            connectState: App.getBLEManager().getBLELatestConnectState()
+            connectState: App.getBLEManager().getBLELatestConnectState(),
+            ...await UserInfo.get()
         });
     },
 

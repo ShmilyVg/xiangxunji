@@ -1,6 +1,7 @@
 // pages/user-center/user-center.js
 import HiNavigator from "../../navigator/hi-navigator";
 import {SoftwareVersion} from "../../utils/config";
+import UserInfo from "../../modules/network/network/libs/userInfo";
 
 const App = getApp();
 Page({
@@ -9,6 +10,7 @@ Page({
      * 页面的初始数据
      */
     data: {
+        userInfo: {},
         SoftwareVersion,
         connectState: ''
     },
@@ -16,13 +18,11 @@ Page({
     reconnectEvent() {
         App.getBLEManager().connect();
     },
-    /**
-     * 生命周期函数--监听页面加载
-     */
-    onLoad(options) {
+    async onLoad(options) {
         App.onAppBLEConnectStateChangedListener = ({connectState}) => {
             this.updateConnectStateView({connectState});
         };
+        this.setData({...await UserInfo.get()});
     },
     toMyDeviceSettingPage() {
         HiNavigator.navigateToDeviceSetting();

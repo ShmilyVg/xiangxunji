@@ -2,8 +2,8 @@
     <navbar title="个人中心"></navbar>
 
     <view class="flex-row align-items-center" style="margin-left: 40rpx;margin-top: 45rpx;margin-bottom: 42rpx;align-self: flex-start;">
-        <image src="../../images/user-center/default.png" class="user-center-head"></image>
-        <view class="user-center-name">陆小贱Lucy</view>
+        <image src="{{userInfo.headUrl||'../../images/user-center/default.png'}}" class="user-center-head"></image>
+        <view class="user-center-name">{{userInfo.nickName}}</view>
     </view>
 
     <view class="flex-row align-items-center space-between box-sizing-border-box user-center-data-layout">

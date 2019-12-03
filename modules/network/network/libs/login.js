@@ -76,36 +76,36 @@ const loginFailObj = {
     }
 };
 
-function login({resolve, reject}) {
-    return wxLogin().then(resolve, reject);
-}
-
 // function login({resolve, reject}) {
-//     return wxLogin().then(res => {
-//             const token = wx.getStorageSync('token');
-//             return BaseNetworkImp.request({
-//                 url: 'account/login',
-//                 data: {js_code: res.code, token},
-//                 requestWithoutLogin: true
-//             })
-//         }
-//     ).then(data => {
-//         setToken({data});
-//         console.log('登录成功，开始重发协议');
-//         BaseNetworkImp.resendAll();
-//         resolve();
-//     }).catch(res => {
-//         console.log('login failed', res);
-//         if (res.data) {
-//             const {data: {code}} = res;
-//             const obj = loginFailObj[code];
-//             obj && obj({resolve, reject});
-//             reject(res);
-//             return;
-//         }
-//         WXDialog.showDialog({title: '糟糕', content: '抱歉，目前小程序无法登录，请稍后重试'});
-//         reject(res);
-//     })
-//
-//
+//     return wxLogin().then(resolve, reject);
 // }
+
+function login({resolve, reject}) {
+    return wxLogin().then(res => {
+            const token = wx.getStorageSync('token');
+            return BaseNetworkImp.request({
+                url: 'account/login',
+                data: {js_code: res.code, token},
+                requestWithoutLogin: true
+            })
+        }
+    ).then(data => {
+        setToken({data});
+        console.log('登录成功，开始重发协议');
+        BaseNetworkImp.resendAll();
+        resolve();
+    }).catch(res => {
+        console.log('login failed', res);
+        if (res.data) {
+            const {data: {code}} = res;
+            const obj = loginFailObj[code];
+            obj && obj({resolve, reject});
+            reject(res);
+            return;
+        }
+        WXDialog.showDialog({title: '糟糕', content: '抱歉，目前小程序无法登录，请稍后重试'});
+        reject(res);
+    })
+
+
+}

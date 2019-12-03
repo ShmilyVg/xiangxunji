@@ -34,8 +34,22 @@ App({
                 this.onAppBLEReceiveDataListener && this.onAppBLEReceiveDataListener({protocolState, value});
             }
         });
-        await Login.doLogin();
         this.bLEManager.connect();
+        try {
+            await Login.doLogin();
+            this.globalData.isNeedRegister = false;
+        } catch (e) {
+            console.log(e);
+            const {data: {code}} = e;
+            if (code === 2) {
+                this.globalData.isNeedRegister = true;
+            }
+        }
+    },
+
+    judgeNeedRegister() {
+        const {isNeedRegister} = this.globalData;
+        return {isNeedRegister}
     },
 
     getBLEManager() {
@@ -52,6 +66,7 @@ App({
     onAppBLEConnectStateChangedListener: null,
     onAppBLEReceiveDataListener: null,
     globalData: {
+        isNeedRegister: false,
         userInfo: null
     }
 });

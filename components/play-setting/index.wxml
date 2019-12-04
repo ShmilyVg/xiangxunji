@@ -22,4 +22,11 @@
         </view>
     </view>
 </view>
-<common-dialog id="commonDialog"></common-dialog>
+<common-dialog id="settingRemindDialog">
+    <view class="flex-column">
+        <view wx:for="{{settingDialogContent}}" wx:key="content" class="flex-row" style="align-items: baseline;">
+            <view class="flex-row justify-center align-items-center play-setting-dialog-index-layout">{{index+1}}</view>
+            <view class="play-setting-dialog-content">{{item.content}}</view>
+        </view>
+    </view>
+</common-dialog>

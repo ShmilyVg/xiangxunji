@@ -16,7 +16,12 @@ Component({
     /**
      * 组件的初始数据
      */
-    data: {show: false, isLightOpen: false, isWaterOpen: false, showJoinAnimation: false},
+    data: {
+        show: false, isLightOpen: false, isWaterOpen: false, showJoinAnimation: false,
+        settingDialogContent: [{content: '请确保蓝牙开启；'},
+            {content: '在蓝牙列表手动连接名为“Hi+anicesleep"的音箱蓝牙；'},
+            {content: '设备在蓝牙信号接收范围内；'},]
+    },
     lifetimes: {
         async attached() {
             // App.onAppBLEReceiveDataListener = ({protocolState, value}) => {
@@ -79,6 +84,13 @@ Component({
                 });
             } catch (e) {
                 console.error(e);
+                if (e && e.errCode === 101) {
+                    this.settingRemindDialog = this.selectComponent('#settingRemindDialog');
+                    console.log(this.settingRemindDialog);
+                    this.settingRemindDialog.setDialog({title: '设置香薰机均衡器', confirmText: '我知道了'});
+                    this.settingRemindDialog.show();
+                }
+
             }
         },
         _hideFun() {

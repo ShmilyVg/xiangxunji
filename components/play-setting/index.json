@@ -1,6 +1,8 @@
 {
   "component": true,
   "usingComponents": {
-    "my-switch": "../switch/index"
+    "my-switch": "../switch/index",
+    "common-dialog": "../common-dialog/index"
+
   }
 }

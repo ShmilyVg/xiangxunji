@@ -1,5 +1,8 @@
 .dialog-bg-layout {
+    left: 0;
+    top: 0;
     background-color: rgba(0, 0, 0, 0.3);
+    z-index: 20;
 }
 
 .dialog-layout {

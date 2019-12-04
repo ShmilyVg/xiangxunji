@@ -46,7 +46,7 @@ export default class HiXxjBluetoothManager extends LBlueToothManager {
             if (this.getBLELatestConnectState() === ConnectState.CONNECTED) {
                 resolve();
             } else {
-                reject();
+                reject({errCode: 101});
             }
         });
     }

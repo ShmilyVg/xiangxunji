@@ -9,7 +9,7 @@ Page({
      * 页面的初始数据
      */
     data: {
-        version: '0.1.1'
+        version: '0.1.2'
     },
 
     /**

@@ -77,8 +77,7 @@ Page({
     },
 
     onReady() {
-        this.commonDialog = this.selectComponent('commonDialog');
-        this.commonDialog.setDialog({title: '设置香薰机均衡器', content: '',confirmText:''});
+
     },
     /**
      * 生命周期函数--监听页面隐藏

@@ -1,3 +1,5 @@
+import {AppVoiceDelegate} from "../../modules/voice-play/voice-delegate";
+
 export function getDefaultSceneConfigById({voiceId}) {
     return {
         1: {

@@ -32,24 +32,27 @@
             <my-switch bind:onSwitchClickEvent="onSwitchChangeEvent" open="{{config.light.lightOpen}}"
                        tag="lightOpen"></my-switch>
         </view>
-        <view class="setting-divide-line"></view>
-        <view class="fill-width flex-row align-items-center space-between setting-item-layout">
-            <view class="setting-item-title">定时关灯</view>
-            <my-switch bind:onSwitchClickEvent="onSwitchChangeEvent" open="{{config.light.lightCloseTimerOpen}}"
-                       tag="lightCloseTimerOpen"></my-switch>
-        </view>
-        <block wx:if="{{config.light.lightCloseTimerOpen}}">
+        <block wx:if="{{!config.light.autoLight}}">
             <view class="setting-divide-line"></view>
-            <picker mode="multiSelector" class="fill-width" bindchange="bindPickerChange" data-type="lightCloseTimer" value="{{config.light.lightCloseTimeIndex}}" range-key="pickItemContent" range="{{config.light.lightCloseTimerArray}}">
-                <view class="fill-width flex-row align-items-center space-between setting-item-layout-02">
-                    <view class="setting-item-title">关闭时间</view>
-                    <view class="flex-row align-items-center">
-                        <view class="setting-water-duration">{{config.light.lightCloseTimerArray[0][config.light.lightCloseTimeIndex[0]].content}}{{config.light.lightCloseTimerArray[1][config.light.lightCloseTimeIndex[1]].content}}</view>
-                        <image src="../../images/user-center/arrow.png" class="setting-item-arrow"></image>
+            <view class="fill-width flex-row align-items-center space-between setting-item-layout">
+                <view class="setting-item-title">定时关灯</view>
+                <my-switch bind:onSwitchClickEvent="onSwitchChangeEvent" open="{{config.light.lightCloseTimerOpen}}"
+                           tag="lightCloseTimerOpen"></my-switch>
+            </view>
+            <block wx:if="{{config.light.lightCloseTimerOpen}}">
+                <view class="setting-divide-line"></view>
+                <picker mode="multiSelector" class="fill-width" bindchange="bindPickerChange" data-type="lightCloseTimer" value="{{config.light.lightCloseTimeIndex}}" range-key="pickItemContent" range="{{config.light.lightCloseTimerArray}}">
+                    <view class="fill-width flex-row align-items-center space-between setting-item-layout-02">
+                        <view class="setting-item-title">关闭时间</view>
+                        <view class="flex-row align-items-center">
+                            <view class="setting-water-duration">{{config.light.lightCloseTimerArray[0][config.light.lightCloseTimeIndex[0]].content}}{{config.light.lightCloseTimerArray[1][config.light.lightCloseTimeIndex[1]].content}}</view>
+                            <image src="../../images/user-center/arrow.png" class="setting-item-arrow"></image>
+                        </view>
                     </view>
-                </view>
-            </picker>
+                </picker>
+            </block>
         </block>
+
     </view>
     <view class="setting-divide-line" style="border-width: 20rpx;width: 100%;"></view>
 

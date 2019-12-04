@@ -32,6 +32,26 @@
             <my-switch bind:onSwitchClickEvent="onSwitchChangeEvent" open="{{config.light.lightOpen}}"
                        tag="lightOpen"></my-switch>
         </view>
+        <block wx:if="{{!config.light.autoLight}}">
+            <view class="setting-divide-line"></view>
+            <view class="fill-width flex-row align-items-center space-between setting-item-layout">
+                <view class="setting-item-title">定时关灯</view>
+                <my-switch bind:onSwitchClickEvent="onSwitchChangeEvent" open="{{config.light.lightCloseTimerOpen}}"
+                           tag="lightCloseTimerOpen"></my-switch>
+            </view>
+            <block wx:if="{{config.light.lightCloseTimerOpen}}">
+                <view class="setting-divide-line"></view>
+                <picker mode="multiSelector" class="fill-width" bindchange="bindPickerChange" data-type="lightCloseTimer" value="{{config.light.lightCloseTimeIndex}}" range-key="pickItemContent" range="{{config.light.lightCloseTimerArray}}">
+                    <view class="fill-width flex-row align-items-center space-between setting-item-layout-02">
+                        <view class="setting-item-title">关闭时间</view>
+                        <view class="flex-row align-items-center">
+                            <view class="setting-water-duration">{{config.light.lightCloseTimerArray[0][config.light.lightCloseTimeIndex[0]].content}}{{config.light.lightCloseTimerArray[1][config.light.lightCloseTimeIndex[1]].content}}</view>
+                            <image src="../../images/user-center/arrow.png" class="setting-item-arrow"></image>
+                        </view>
+                    </view>
+                </picker>
+            </block>
+        </block>
     </view>
     <view class="setting-divide-line" style="border-width: 20rpx;width: 100%;"></view>
 
@@ -87,55 +107,55 @@
 
 
     </view>
-    <view class="setting-divide-line" style="border-width: 20rpx;width: 100%;"></view>
+<!--    <view class="setting-divide-line" style="border-width: 20rpx;width: 100%;"></view>-->
 
     <view class="fill-width flex-column align-items-center box-sizing-border-box setting-part-layout">
-        <view class="setting-title">定时设置</view>
-        <view class="fill-width flex-row align-items-center space-between setting-item-layout-02" style="padding-top: 12rpx;">
-            <view class="setting-item-title">开机喷雾</view>
-            <my-switch bind:onSwitchClickEvent="onSwitchChangeEvent" open="{{config.time.waterOpenWhenOpenDevice}}"
-                       tag="waterOpenWhenOpenDevice"></my-switch>
-        </view>
-        <block wx:if="{{config.time.waterOpenWhenOpenDevice}}">
-            <view class="setting-divide-line"></view>
-            <picker mode="multiSelector" class="fill-width" bindchange="bindPickerChange" data-type="waterStartTime" value="{{config.time.waterStartTimeIndex}}" range-key="content" range="{{config.oneDayTimeArray}}">
-                <view class="fill-width flex-row space-between setting-item-layout-02">
-                    <view class="setting-item-title">开始时间</view>
-                    <view class="flex-row align-items-center">
-                        <view class="setting-water-duration">{{config.oneDayTimeArray[0][config.time.waterStartTimeIndex[0]].content}}{{config.oneDayTimeArray[1][config.time.waterStartTimeIndex[1]].content}}</view>
-                        <image src="../../images/user-center/arrow.png" class="setting-item-arrow"></image>
-                    </view>
-                </view>
-            </picker>
-        </block>
+<!--        <view class="setting-title">定时设置</view>-->
+<!--        <view class="fill-width flex-row align-items-center space-between setting-item-layout-02" style="padding-top: 12rpx;">-->
+<!--            <view class="setting-item-title">开机喷雾</view>-->
+<!--            <my-switch bind:onSwitchClickEvent="onSwitchChangeEvent" open="{{config.time.waterOpenWhenOpenDevice}}"-->
+<!--                       tag="waterOpenWhenOpenDevice"></my-switch>-->
+<!--        </view>-->
+<!--        <block wx:if="{{config.time.waterOpenWhenOpenDevice}}">-->
+<!--            <view class="setting-divide-line"></view>-->
+<!--            <picker mode="multiSelector" class="fill-width" bindchange="bindPickerChange" data-type="waterStartTime" value="{{config.time.waterStartTimeIndex}}" range-key="content" range="{{config.oneDayTimeArray}}">-->
+<!--                <view class="fill-width flex-row space-between setting-item-layout-02">-->
+<!--                    <view class="setting-item-title">开始时间</view>-->
+<!--                    <view class="flex-row align-items-center">-->
+<!--                        <view class="setting-water-duration">{{config.oneDayTimeArray[0][config.time.waterStartTimeIndex[0]].content}}{{config.oneDayTimeArray[1][config.time.waterStartTimeIndex[1]].content}}</view>-->
+<!--                        <image src="../../images/user-center/arrow.png" class="setting-item-arrow"></image>-->
+<!--                    </view>-->
+<!--                </view>-->
+<!--            </picker>-->
+<!--        </block>-->
 
-        <view class="setting-divide-line"></view>
-        <view class="fill-width flex-row align-items-center space-between setting-item-layout-02">
-            <view class="setting-item-title">开机播放音乐</view>
-            <my-switch bind:onSwitchClickEvent="onSwitchChangeEvent" open="{{config.time.wakeUpToneOpenWhenOpenDevice}}"
-                       tag="wakeUpToneOpenWhenOpenDevice"></my-switch>
-        </view>
-        <block wx:if="{{config.time.wakeUpToneOpenWhenOpenDevice}}">
-            <view class="setting-divide-line"></view>
-            <picker class="fill-width" bindchange="bindPickerChange" data-type="wakeUpTone" value="{{config.time.wakeUpToneIndex}}" range-key="content" range="{{config.time.wakeUpToneArray}}">
-                <view class="fill-width flex-row space-between setting-item-layout-02">
-                    <view class="setting-item-title">唤醒音</view>
-                    <view class="flex-row align-items-center">
-                        <view class="setting-water-duration">{{config.time.wakeUpToneArray[config.time.wakeUpToneIndex].content}}</view>
-                        <image src="../../images/user-center/arrow.png" class="setting-item-arrow"></image>
-                    </view>
-                </view>
-            </picker>
-        </block>
+<!--        <view class="setting-divide-line"></view>-->
+<!--        <view class="fill-width flex-row align-items-center space-between setting-item-layout-02">-->
+<!--            <view class="setting-item-title">开机播放音乐</view>-->
+<!--            <my-switch bind:onSwitchClickEvent="onSwitchChangeEvent" open="{{config.time.wakeUpToneOpenWhenOpenDevice}}"-->
+<!--                       tag="wakeUpToneOpenWhenOpenDevice"></my-switch>-->
+<!--        </view>-->
+<!--        <block wx:if="{{config.time.wakeUpToneOpenWhenOpenDevice}}">-->
+<!--            <view class="setting-divide-line"></view>-->
+<!--            <picker class="fill-width" bindchange="bindPickerChange" data-type="wakeUpTone" value="{{config.time.wakeUpToneIndex}}" range-key="content" range="{{config.time.wakeUpToneArray}}">-->
+<!--                <view class="fill-width flex-row space-between setting-item-layout-02">-->
+<!--                    <view class="setting-item-title">唤醒音</view>-->
+<!--                    <view class="flex-row align-items-center">-->
+<!--                        <view class="setting-water-duration">{{config.time.wakeUpToneArray[config.time.wakeUpToneIndex].content}}</view>-->
+<!--                        <image src="../../images/user-center/arrow.png" class="setting-item-arrow"></image>-->
+<!--                    </view>-->
+<!--                </view>-->
+<!--            </picker>-->
+<!--        </block>-->
 
-        <block wx:if="{{config.time.waterOpenWhenOpenDevice||config.time.wakeUpToneOpenWhenOpenDevice}}">
-            <view class="setting-divide-line"></view>
-            <view class="fill-width flex-row align-items-center space-between setting-item-layout-02">
-                <view class="setting-item-title">每天重复</view>
-                <my-switch bind:onSwitchClickEvent="onSwitchChangeEvent" open="{{config.time.timeRepeatEveryDay}}"
-                           tag="timeRepeatEveryDay"></my-switch>
-            </view>
-        </block>
+<!--        <block wx:if="{{config.time.waterOpenWhenOpenDevice||config.time.wakeUpToneOpenWhenOpenDevice}}">-->
+<!--            <view class="setting-divide-line"></view>-->
+<!--            <view class="fill-width flex-row align-items-center space-between setting-item-layout-02">-->
+<!--                <view class="setting-item-title">每天重复</view>-->
+<!--                <my-switch bind:onSwitchClickEvent="onSwitchChangeEvent" open="{{config.time.timeRepeatEveryDay}}"-->
+<!--                           tag="timeRepeatEveryDay"></my-switch>-->
+<!--            </view>-->
+<!--        </block>-->
         <view class="setting-divide-line"></view>
         <view bindtap="disconnectDevice" class="setting-reset-btn setting-item-layout-02" hover-class="press-btn-class" hover-stay-time="100">断开连接</view>
     </view>

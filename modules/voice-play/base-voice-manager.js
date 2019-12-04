@@ -4,6 +4,7 @@ export default class BaseVoiceManager {
         this._onTimeUpdateListener = null;
         this._onPauseListener = null;
         this._onPlayListener = null;
+        this._onPlayListenerForVoiceDuration = null;
         this.backgroundAudioManager.onError(err => {
             console.error('backgroundAudioManager 报错', err);
         });
@@ -26,6 +27,7 @@ export default class BaseVoiceManager {
                     this._onTimeUpdateListener({currentTime, duration});
                 }
             });
+            this._onPlayListenerForVoiceDuration && this._onPlayListenerForVoiceDuration({duration});
         });
 
         this.backgroundAudioManager.onPause(() => {
@@ -49,6 +51,18 @@ export default class BaseVoiceManager {
 
     getCurrentTime() {
         return Math.floor(this.backgroundAudioManager.currentTime);
+    }
+
+    getVoiceDurationWhenPlay() {
+        if (this.backgroundAudioManager.duration) {
+            return Promise.resolve(this.getDuration());
+        } else {
+            return new Promise(resolve => {
+                this._onPlayListenerForVoiceDuration = ({duration}) => {
+                    resolve(duration);
+                };
+            });
+        }
     }
 
     getDuration() {

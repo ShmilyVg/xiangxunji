@@ -65,6 +65,9 @@ class VoiceDelegate {
         return {replay: false};
     }
 
+    async getVoiceDuration() {
+        return await getVoiceManager.getVoiceDurationWhenPlay();
+    }
 
     playCurrentVoice() {
         getVoiceManager.playCurrentVoice();

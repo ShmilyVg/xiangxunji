@@ -67,7 +67,9 @@ export async function setDeviceWaterConfigWithDefaultSceneConfig() {
 
 export async function setDeviceLightConfigWithDefaultSceneConfig() {
     const bleProtocol = getApp().getBLEManager().getProtocol(),
-        {light: {lightOpen, brightness, red, green, blue, hDuration: hLightDuration, mDuration: mLightDuration}} = getDefaultSceneConfigById({voiceId: latestConfigVoiceId});
+        {light: {lightOpen, brightness, red, green, blue}} = getDefaultSceneConfigById({voiceId: latestConfigVoiceId}),
+        duration = await AppVoiceDelegate.getVoiceDuration(), hLightDuration = Math.floor(duration / 3600),
+        mLightDuration = Math.ceil(duration / 60);
     await bleProtocol.setLightOpen({lightOpen});
     return await bleProtocol.setSingleColorLight({
         brightness,

@@ -1,6 +1,6 @@
 // pages/setting/setting.js
 import {Toast} from "heheda-common-view";
-import {LightSettingDelegate, WaterSettingDelegate} from "./scene-delegate";
+import {getOneDayTimeArrayObj, LightSettingDelegate, WaterSettingDelegate} from "./scene-delegate";
 
 
 Page({
@@ -11,6 +11,7 @@ Page({
     data: {
 
         config: {
+            ...getOneDayTimeArrayObj(),
             ...WaterSettingDelegate.pageDataConfig(),
             ...LightSettingDelegate.pageDataConfig(),
         },
@@ -70,8 +71,13 @@ Page({
                     type,
                     value,
                     currentPageConfig
+                }),
+                {viewObj: lightViewObj} = await this.lightSettingDelegate.bindPickerChange({
+                    type,
+                    value,
+                    currentPageConfig
                 });
-            this.setData({...waterViewObj});
+            this.setData({...waterViewObj, ...lightViewObj});
         } catch (e) {
             console.log('自定义设置出现错误 bindPickerChange', e);
         } finally {

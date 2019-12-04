@@ -8,12 +8,17 @@ import {
 export class LightSettingDelegate {
 
     async getLatestData() {
-        const xxjConfig = await getApp().getBLEManager().getXXJConfig(), {light} = xxjConfig;
+        const xxjConfig = await getApp().getBLEManager().getXXJConfig(), {light: {lightOpen, autoLight, currentColor, brightness, hDuration, mDuration}} = xxjConfig,
+            {light: {lightCloseTimerArray}} = LightSettingDelegate.pageDataConfig();
         return {
-            'config.light.lightOpen': light.lightOpen,
-            'config.light.autoLight': light.autoLight,
-            'config.light.currentColor': light.currentColor,
-            'config.light.brightness': light.brightness
+            'config.light.lightOpen': lightOpen,
+            'config.light.autoLight': autoLight,
+            'config.light.currentColor': currentColor,
+            'config.light.brightness': brightness,
+            'config.light.lightCloseTimerOpen': !!hDuration || !!mDuration,
+            'config.light.lightCloseTimeIndex': [lightCloseTimerArray[0].findIndex(item => item.value === hDuration),
+                lightCloseTimerArray[1].findIndex(item => item.value === mDuration)],
+
         };
 
     }
@@ -29,6 +34,27 @@ export class LightSettingDelegate {
             case 'lightOpen': {
                 viewObj['config.light.lightOpen'] = open;
                 await bleProtocol.setLightOpen({lightOpen: open});
+            }
+                break;
+            case 'lightCloseTimerOpen': {
+                viewObj['config.light.lightCloseTimerOpen'] = open;
+            }
+                break;
+        }
+        return {viewObj};
+    }
+
+    async bindPickerChange({type, value, currentPageConfig}) {
+        const bleProtocol = getApp().getBLEManager().getProtocol(), viewObj = {};
+        switch (type) {
+            case 'lightCloseTimer': {
+                const [hCloseTimeIndex, mCloseTimeIndex] = value,
+                    {light: {lightCloseTimerArray}} = LightSettingDelegate.pageDataConfig();
+                await bleProtocol.setSingleColorLight({
+                    hDuration: lightCloseTimerArray[0][hCloseTimeIndex].value,
+                    mDuration: lightCloseTimerArray[1][mCloseTimeIndex].value
+                });
+                viewObj['config.light.lightCloseTimeIndex'] = [hCloseTimeIndex, mCloseTimeIndex];
             }
                 break;
         }
@@ -65,8 +91,19 @@ export class LightSettingDelegate {
             light: {
                 autoLight: false,
                 lightOpen: false,
-                brightness: 50,
+                brightness: 0,
                 currentColor: '',
+                lightCloseTimerOpen: false,
+                lightCloseTimeIndex: [0, 0],
+                lightCloseTimerArray: [new Array(13).fill(0).map((item, index) => ({
+                    pickItemContent: index + '小时',
+                    content: index !== 0 ? index + '小时' : '',
+                    value: index
+                })), new Array(60).fill(0).map((item, index) => ({
+                    pickItemContent: index + '分',
+                    content: index !== 0 ? index + '分' : '',
+                    value: index
+                }))],
                 colorList: [
                     {color: 'rgb(243,243,243)'},
                     {color: 'rgb(168,62,56)'},
@@ -117,7 +154,7 @@ export class WaterSettingDelegate {
     async bindPickerChange({type, value, currentPageConfig}) {
         const bleProtocol = getApp().getBLEManager().getProtocol(), config = WaterSettingDelegate.pageDataConfig(),
             viewObj = {};
-        let bleProtocolArguments = {};
+        let bleProtocolArguments = null;
         switch (type) {
             case 'waterDuration': {
                 const [hDurationIndex, mDurationIndex] = value, {water: {waterDurationArray, waterBetweenArray}} = config,
@@ -155,7 +192,9 @@ export class WaterSettingDelegate {
                 break;
 
         }
-        await bleProtocol.setWater(bleProtocolArguments);
+        if (bleProtocolArguments) {
+            await bleProtocol.setWater(bleProtocolArguments);
+        }
         return {viewObj};
     }
 
@@ -275,10 +314,10 @@ export class TimeSettingDelegate {
             viewObj = {};
         switch (type) {
             case 'waterStartTime': {
-                const [hStartTimeIndex, mStartTimeIndex] = value, {time: {waterStartTimeArray}} = config;
+                const [hStartTimeIndex, mStartTimeIndex] = value, {oneDayTimeArray} = getOneDayTimeArrayObj();
                 await bleProtocol.setWaterAlert({
-                    hStartTime: waterStartTimeArray[0][hStartTimeIndex].value,
-                    mStartTime: waterStartTimeArray[1][mStartTimeIndex].value
+                    hStartTime: oneDayTimeArray[0][hStartTimeIndex].value,
+                    mStartTime: oneDayTimeArray[1][mStartTimeIndex].value
                 });
                 viewObj['config.time.waterStartTimeIndex'] = [hStartTimeIndex, mStartTimeIndex];
             }
@@ -305,13 +344,6 @@ export class TimeSettingDelegate {
             time: {
                 waterOpenWhenOpenDevice: false,
                 waterStartTimeIndex: [0, 0],
-                waterStartTimeArray: [
-                    new Array(24).fill(0).map((item, index) => ({
-                        content: index + '时', value: index
-                    })),
-                    new Array(60).fill(0).map((item, index) => ({
-                        content: index + '分', value: index
-                    }))],
                 wakeUpToneOpenWhenOpenDevice: false,
                 wakeUpToneIndex: 0,
                 wakeUpToneArray: [
@@ -323,4 +355,16 @@ export class TimeSettingDelegate {
             },
         }
     }
+}
+
+export function getOneDayTimeArrayObj() {
+    return {
+        oneDayTimeArray: [
+            new Array(24).fill(0).map((item, index) => ({
+                content: index + '时', value: index
+            })),
+            new Array(60).fill(0).map((item, index) => ({
+                content: index + '分', value: index
+            }))]
+    };
 }

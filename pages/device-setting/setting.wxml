@@ -98,11 +98,11 @@
         </view>
         <block wx:if="{{config.time.waterOpenWhenOpenDevice}}">
             <view class="setting-divide-line"></view>
-            <picker mode="multiSelector" class="fill-width" bindchange="bindPickerChange" data-type="waterStartTime" value="{{config.time.waterStartTimeIndex}}" range-key="content" range="{{config.time.waterStartTimeArray}}">
+            <picker mode="multiSelector" class="fill-width" bindchange="bindPickerChange" data-type="waterStartTime" value="{{config.time.waterStartTimeIndex}}" range-key="content" range="{{config.oneDayTimeArray}}">
                 <view class="fill-width flex-row space-between setting-item-layout-02">
                     <view class="setting-item-title">开始时间</view>
                     <view class="flex-row align-items-center">
-                        <view class="setting-water-duration">{{config.time.waterStartTimeArray[0][config.time.waterStartTimeIndex[0]].content}}{{config.time.waterStartTimeArray[1][config.time.waterStartTimeIndex[1]].content}}</view>
+                        <view class="setting-water-duration">{{config.oneDayTimeArray[0][config.time.waterStartTimeIndex[0]].content}}{{config.oneDayTimeArray[1][config.time.waterStartTimeIndex[1]].content}}</view>
                         <image src="../../images/user-center/arrow.png" class="setting-item-arrow"></image>
                     </view>
                 </view>

@@ -25,7 +25,7 @@ export default class HiXxjBluetoothManager extends LBlueToothManager {
         return this.bluetoothProtocol;
     }
 
-    getXXJConfig() {
+    async getXXJConfig() {
         const {xxjBLEConfig, xxjBLEConfig: {isAllStateReceive}} = this.getProtocol();
         if (isAllStateReceive) {
             return Promise.resolve(xxjBLEConfig);

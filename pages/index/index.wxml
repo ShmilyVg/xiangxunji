@@ -11,7 +11,7 @@
         <view>
             <button bindgetuserinfo="onGetUserInfo" open-type="getUserInfo" hover-class="none"
                     bindtap="remindDismissEvent" data-type="userCenter">
-                <image src="{{userInfo.headUrl}}" class="index-user-head"></image>
+                <image src="{{userInfo.headUrl||'../../images/index/logo.png'}}" class="index-user-head"></image>
                 <view wx:if="{{showRemindDialogObj.userCenter}}" class="absolute index-remind-layout">
                     进入“个人中心”可查看并控制设备
                     <image src="../../images/index/remind_arrow.png" class="index-remind-layout-arrow index-remind-layout-top-arrow"></image>

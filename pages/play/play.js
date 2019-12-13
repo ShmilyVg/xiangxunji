@@ -46,7 +46,7 @@ Page({
             listener: ({currentTime, duration}) => {
                 const delaySecond = (duration - currentTime);
                 this.setData({
-                    delayTime: ['0' + Math.floor(delaySecond / 60), '0' + Math.floor(delaySecond % 60)].map(item => item.slice(-2)).join(':')
+                    delayTime: [Math.floor(delaySecond / 60), Math.floor(delaySecond % 60)].map(item => item.toString().padStart(2, '0').slice(-2)).join(':')
                 });
             }
         });

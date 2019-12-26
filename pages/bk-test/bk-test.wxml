@@ -5,8 +5,9 @@
 <view class="flex-column fill-width">
     <form bindsubmit="onSubmitEvent">
         <input name="sendDataValue" placeholder="byte1~byte7，以英文逗号隔开" class="fill-width" style="margin-top: 200rpx;margin-bottom:250rpx;background-color: white;color: #000;padding: 50rpx 0;text-align: center"/>
-        <button form-type="submit" style="margin-top: 50rpx;margin-bottom:250rpx;background-color: white;color: #000;" class="fill-width" hover-class="press-btn-class">点击发送</button>
+        <button form-type="submit" style="margin-top: 50rpx;margin-bottom:50rpx;background-color: white;color: #000;" class="fill-width" hover-class="press-btn-class">点击发送</button>
     </form>
+    <button bindtap="send0x56" style="margin-top: 50rpx;margin-bottom:200rpx;background-color: white;color: #000;" class="fill-width" hover-class="press-btn-class">获取机器状态</button>
     <text style="background-color: white;padding: 30rpx 0;" class="fill-width">测试版版本号：{{version}}</text>
 </view>
 

@@ -230,6 +230,12 @@ export default class HiXxjBluetoothProtocol extends LBlueToothProtocolOperator {
                 this.xxjBLEConfig.isAllStateReceive = true;
                 return {protocolState: XXJProtocolState.RECEIVE_ALL_STATE};
             },
+            '0x66': ({dataArray}) => {
+                console.log('接收到的0x66的数据 从byte2开始', dataArray);
+            },
+            '0x67': ({dataArray}) => {
+                console.log('接收到的0x67的数据 从byte2开始', dataArray);
+            }
 
         };
     }
